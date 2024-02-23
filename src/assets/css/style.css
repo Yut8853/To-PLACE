@@ -1,0 +1,95 @@
+@font-face {
+  font-family: 'Aboreto';
+  src: url('../fonts/Aboreto/Aboreto-Regular.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Corm';
+  src: url('../fonts/Cormorant_Infant/CormorantInfant-Light.ttf');
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto-normal';
+  src: url('../fonts/Noto_Serif_JP/NotoSerifJP-ExtraLight-Alphabetic.off');
+  font-display: swap;
+}
+
+
+
+.menu {
+    all:unset;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #000;
+    cursor: pointer;
+}
+
+main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  #slider {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+    
+  }
+  #slider canvas {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    aspect-ratio: 16 / 9;
+  }
+  
+  #slider img {
+    width: 100%;
+    max-width: 100%;
+    z-index: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .slider-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    z-index: 5;
+    display: none;
+  }
+  
+  #slider-content {
+    padding: 0 10px;
+  }
+  #slider-content h1 {
+    font-family: "Aboreto", serif;
+    font-size: 30px;
+    letter-spacing: -1px;
+    color: white;
+    line-height: 30px;
+    margin: 20px 0 60px;
+  }
+  
+  /* CSSで背景用divを追加 */
+  #background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../images/hero-image-01.jpg') no-repeat center center;
+    background-size: cover;
+    filter: blur(0px);
+  }
