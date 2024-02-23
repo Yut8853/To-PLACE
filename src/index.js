@@ -22,11 +22,27 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.z = 2;
 
-// テクスチャの非同期ロード
+// レンダラーのサイズを更新する関数
+function updateRendererSize() {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+// ウィンドウサイズが変更された時に実行する関数
+function onWindowResize(material) {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    updateRendererSize();
+    if (material) {
+        // ここで画像アスペクト比とプレーンアスペクト比を更新する
+        material.uniforms.uPlaneAspect.value = window.innerWidth / window.innerHeight;
+    }
+}
+
+// テクスチャの非同期ロード関数
 async function loadTextures(urls) {
-    const loader = new THREE.TextureLoader();
-    const texturePromises = urls.map(url => new Promise((resolve) => resolve(loader.load(url))));
-    return Promise.all(texturePromises);
+  const loader = new THREE.TextureLoader();
+  const texturePromises = urls.map(url => new Promise(resolve => loader.load(url, texture => resolve(texture))));
+  return Promise.all(texturePromises);
 }
 
 // メインの非同期セットアップ関数
@@ -53,19 +69,26 @@ async function setupScene() {
     const plane = new THREE.Mesh(planeGeometry, material);
     scene.add(plane);
 
-    const triggerAnimation = () => {
-        gsap.to(material.uniforms.dispFactor, {
-            value: 1,
-            duration: 1.5,
-            ease: 'power2.inOut',
-            onComplete: () => {
-                currentIndex = (currentIndex + 1) % textures.length;
-                material.uniforms.currentImage.value = textures[currentIndex];
-                material.uniforms.nextImage.value = textures[(currentIndex + 1) % textures.length];
-                material.uniforms.dispFactor.value = 0;
-            }
-        });
-    };
+    // ウィンドウリサイズイベントリスナーにmaterialを渡す
+    window.addEventListener('resize', () => onWindowResize(material));
+
+    // アニメーショントリガー関数
+    function triggerAnimation() {
+      const nextIndex = (currentIndex + 1) % textures.length;
+      material.uniforms.nextImage.value = textures[nextIndex];
+
+      gsap.to(material.uniforms.dispFactor, {
+          value: 1,
+          duration: 1,
+          ease: "power2.inOut",
+          onComplete: () => {
+              material.uniforms.currentImage.value = textures[nextIndex];
+              material.uniforms.nextImage.value = textures[(nextIndex + 1) % textures.length];
+              material.uniforms.dispFactor.value = 0;
+              currentIndex = nextIndex;
+          }
+      });
+    }
 
     const animate = () => {
         requestAnimationFrame(animate);
