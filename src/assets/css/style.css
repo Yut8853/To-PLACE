@@ -1,19 +1,19 @@
 @font-face {
   font-family: 'Aboreto';
-  src: url('../fonts/Aboreto/Aboreto-Regular.ttf');
+  src: url('../fonts/Aboreto-Regular.ttf');
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Corm';
-  src: url('../fonts/Cormorant_Infant/CormorantInfant-Light.ttf');
+  src: url('../fonts/CormorantInfant-Light.ttf');
   font-weight: 100;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Noto-normal';
-  src: url('../fonts/Noto_Serif_JP/NotoSerifJP-ExtraLight-Alphabetic.off');
+  src: url('../fonts/NotoSerifJP-ExtraLight.otf');
   font-display: swap;
 }
 

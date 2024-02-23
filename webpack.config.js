@@ -1,76 +1,96 @@
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
-module.exports = {
-  mode: 'development',
-  entry: path.resolve(__dirname, './src/index.js'),
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-    module: true, // Add this line
-  },
-  experiments: {
-    outputModule: true, // And this line
-  },
-  devServer: {
-    static: './dist',
-  },
-  resolve: {
-    extensions: ['.js', '.glsl', '.vs', '.fs','.vert', '.frag','.scss','.sass','.css'],
-    alias: {
-      '@assets': path.resolve(__dirname, 'src/assets'),
+module.exports = (env, argv) => {
+  const isDevelopment = argv.mode === 'development';
+
+  return {
+    mode: isDevelopment ? 'development' : 'production',
+    devtool: isDevelopment ? 'eval-source-map' : 'source-map',
+    entry: path.resolve(__dirname, './src/index.js'),
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].[contenthash].js',
+      assetModuleFilename: 'assets/[hash][ext][query]',
+      clean: true,
     },
-  },
-  module: {
-    rules: [
-      {
-        test: /\.html$/i,
-        loader: "html-loader",
+    devServer: {
+      static: './dist',
+      hot: true,
+    },
+    optimization: {
+      minimize: !isDevelopment,
+      splitChunks: {
+        chunks: 'all',
       },
-      {
-        test: /\.(png|jpe?g|gif|svg)$/i,
-        type: 'asset/resource',
-        generator: {
-          filename: 'assets/images/[hash][ext][query]'
-        }
+      runtimeChunk: {
+        name: 'runtime',
       },
-      {
-        test: /\.(sass|scss|css)$/,
-        use:[
-          {
-            loader: MiniCssExtractPlugin.loader,
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
             options: {
-              publicPath: (resourcePath, context) => {
-                return path.relative(path.dirname(resourcePath), context) + '/';
-              },
+              presets: ['@babel/preset-env'],
             },
           },
-          'css-loader',
-          'sass-loader',
-        ]
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: ['babel-loader'],
-      },
-      {
-        test: /\.(glsl|vs|fs|vert|frag)$/,
-        use: ['raw-loader', 'glslify-loader']
-      },
-    ],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-      minify: true,
-      chunksSortMode: 'auto',
-      scriptLoading: 'defer',
-      type: 'module', // add this line
-    }),
-    new MiniCssExtractPlugin({
-      filename: 'assets/css/[name].css',
-    }),
-  ],
+        },
+        {
+          test: /\.(sass|scss|css)$/,
+          use: [
+            isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+            'css-loader',
+            'sass-loader',
+          ],
+        },
+        {
+          test: /\.(png|jpe?g|gif|svg)$/i,
+          type: 'asset/resource',
+        },
+        {
+          test: /\.(glsl|vs|fs|vert|frag)$/,
+          use: [
+            'raw-loader',
+            'glslify-loader',
+          ],
+        },
+        {
+          test: /\.(woff|woff2|eot|ttf|otf)$/i,
+          type: 'asset/resource',
+        },
+        {
+          test: /\.html$/,
+          use: 'html-loader',
+        }
+      ],
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: './src/index.html',
+        minify: isDevelopment ? false : { removeComments: true, collapseWhitespace: true },
+      }),
+      new MiniCssExtractPlugin({
+        filename: 'assets/css/[name].[contenthash].css',
+      }),
+      new CleanWebpackPlugin(),
+      new ImageMinimizerPlugin({
+        minimizerOptions: {
+          plugins: [
+            ['gifsicle', { interlaced: true }],
+            ['jpegtran', { progressive: true }],
+            ['optipng', { optimizationLevel: 5 }],
+            // SVG と WEBP に関する設定もここで追加可能
+          ],
+        },
+      }),
+      // 画像の最適化に関する設定をここに追加...
+    ].filter(Boolean),
+  };
 };

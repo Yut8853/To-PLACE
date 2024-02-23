@@ -1,152 +1,122 @@
-import * as THREE from 'three'
+import { Scene, PlaneGeometry, MeshBasicMaterial, Mesh, OrthographicCamera, WebGLRenderer, TextureLoader, ShaderMaterial, DoubleSide } from 'three';
+import gsap from 'gsap';
 
-import vertex from './assets/shaders/vertex.glsl'
-import fragment from './assets/shaders/fragment.glsl'
+// シェーダーファイルとテクスチャのインポート
+import vertexShaderSource from './assets/shaders/vertex.glsl';
+import fragmentShaderSource from './assets/shaders/fragment.glsl';
+const imageUrls = [
+  './assets/images/hero-image-01.jpg',
+  './assets/images/hero-image-02.jpg',
+  './assets/images/hero-image-03.jpg'
+];
 
-const canvasEl = document.getElementById('webgl-canvas');
-const canvasSize = {
-  w: window.innerWidth,
-  h: window.innerHeight,
-};
+// Canvasのサイズとパディングを設定
+const padding = { x: 116, y: 168 }; // フルHDでのパディング
+const responsiveBreakpoint = 768; // レスポンシブのブレークポイント
 
-const renderer = new THREE.WebGLRenderer({ canvas: canvasEl });
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(canvasSize.w, canvasSize.h);
+let camera, renderer, scene, material, mesh, textureIndex = 0, textures = [];
 
-const fov = 60;
-const fovRad = (fov / 2) * (Math.PI / 180);
-const dist = canvasSize.h / 2 / Math.tan(fovRad);
-const camera = new THREE.PerspectiveCamera(
-  fov,
-  canvasSize.w / canvasSize.h,
-  0.1,
-  2000
-);
-camera.position.z = dist;
-
-const scene = new THREE.Scene();
-
-const loader = new THREE.TextureLoader();
-
-class ImagePlane {
-  constructor(mesh, img) {
-    this.refImage = img;
-    this.mesh = mesh;
-  }
-
-  setParams() {
-    const rect = this.refImage.getBoundingClientRect();
-
-    this.mesh.scale.x = rect.width;
-    this.mesh.scale.y = rect.height;
-
-    const x = rect.left - canvasSize.w / 2 + rect.width / 2;
-    const y = -rect.top + canvasSize.h / 2 - rect.height / 2;
-    // const x = 0;
-    this.mesh.position.set(x, y, this.mesh.position.z);
-  }
-
-  update(offset) {
-    this.setParams();
-
-    this.mesh.material.uniforms.uTime.value = offset;
-  }
+async function loadTextures(loader, urls) {
+  const promises = urls.map(url => new Promise((resolve) => loader.load(url, resolve)));
+  return Promise.all(promises);
 }
 
-const createMesh = (img) => {
-  const texture = loader.load(img.src);
-  const disp = loader.load('/assets/images/disp.png')
+function setupScene(textures) {
+  scene = new Scene();
 
-  const uniforms = {
-    uTexture: { type: 'sampler2D', value: texture },
-    uDisp: { type: 'sampler2D', value: disp },
-    uImageAspect: { type: 'f', value: img.naturalWidth / img.naturalHeight },
-    uPlaneAspect: { type: 'f', value: img.clientWidth / img.clientHeight },
-    uTime: { type: 'f', value: 0 },
+  // 背景画像の設定（背景用メッシュの作成）
+  const bgGeometry = new PlaneGeometry(window.innerWidth, window.innerHeight);
+  const bgMaterial = new MeshBasicMaterial({ map: textures[0], side: DoubleSide }); // 最初の画像を背景に設定
+  const bgMesh = new Mesh(bgGeometry, bgMaterial);
+  scene.add(bgMesh);
 
-  };
-  const geo = new THREE.PlaneGeometry(1, 1, 100, 100); 
-  const mat = new THREE.ShaderMaterial({
-    uniforms,
-    vertexShader: vertex,
-    fragmentShader: fragment
+  // WebGLスライダー用のメッシュを設定
+  const geometry = new PlaneGeometry(window.innerWidth - padding.x * 2, window.innerHeight - padding.y * 2);
+  material = new ShaderMaterial({
+    uniforms: {
+      currentImage: { type: "t", value: textures[0] },
+      nextImage: { type: "t", value: textures[1] },
+      dispFactor: { type: "f", value: 0 },
+      // その他のuniforms...
+    },
+    vertexShader: vertexShaderSource,
+    fragmentShader: fragmentShaderSource,
+    transparent: true,
   });
+  mesh = new Mesh(geometry, material);
+  scene.add(mesh);
+}
 
-  const mesh = new THREE.Mesh(geo, mat);
+function setupCamera() {
+  camera = new OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, 1, 1000);
+  camera.position.z = 1;
+}
 
-  return mesh;
-};
+function setupRenderer() {
+  renderer = new WebGLRenderer({ alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+}
 
-let targetScrollY = 0;
-let currentScrollY = 0;
-let scrollOffset = 0;
+function onWindowResize() {
+  // レスポンシブ対応のサイズ調整
+}
 
-const lerp = (start, end, multiplier) => {
-  return (1 - multiplier) * start + multiplier * end;
-};
-
-const updateScroll = () => {
-
-  targetScrollY = document.documentElement.scrollTop;
-
-  currentScrollY = lerp(currentScrollY, targetScrollY, 0.1);
-
-  scrollOffset = targetScrollY - currentScrollY;
-};
-
-const imagePlaneArray = [];
-
-const loop = () => {
-  updateScroll();
-  for (const plane of imagePlaneArray) {
-    plane.update(scrollOffset);
-  }
+function animate() {
+  requestAnimationFrame(animate);
   renderer.render(scene, camera);
+}
 
-  requestAnimationFrame(loop);
-};
+function startBlurAnimation(nextIndex) {
+  // 背景画像のぼかし効果を適用する前に現在の画像を更新
+  document.getElementById("background").style.backgroundImage = `url(${imageUrls[nextIndex]})`;
 
-const resize = () => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-
-  canvasSize.w = width;
-  canvasSize.h = height;
-
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(width, height);
-
-  camera.aspect = width / height;
-  camera.updateProjectionMatrix();
-
-  const fov = 60;
-  const fovRad = (fov / 2) * (Math.PI / 180);
-  const dist = canvasSize.h / 2 / Math.tan(fovRad);
-  camera.position.z = dist;
-
-  const imageArray = [...document.querySelectorAll('img')];
-  imagePlaneArray.forEach( (plane, i) => {
-    plane.mesh.material.uniforms.uImageAspect.value = imageArray[i].naturalWidth / imageArray[i].naturalHeight
-    plane.mesh.material.uniforms.uPlaneAspect.value = imageArray[i].clientWidth / imageArray[i].clientHeight
-  })
-};
-
-const main = () => {
-  window.addEventListener('load', () => {
-    const imageArray = [...document.querySelectorAll('img')];
-    for (const img of imageArray) {
-      const mesh = createMesh(img);
-      scene.add(mesh);
-
-      const imagePlane = new ImagePlane(mesh, img);
-      imagePlane.setParams();
-
-      imagePlaneArray.push(imagePlane);
+  // ぼかし効果を適用
+  gsap.to("#background", {
+    filter: "blur(20px)",
+    duration: 1.5, // ぼかし効果をかける時間を半分にして、トータルで3秒になるように調整
+    ease: "power1.inOut",
+    onComplete: () => {
+      // ぼかし効果を解除
+      gsap.to("#background", {
+        filter: "blur(0px)",
+        duration: 1.5,
+        ease: "power1.inOut"
+      });
     }
-    loop();
   });
+}
 
-  window.addEventListener('resize', resize, {passive: true})
-};
+function changeSlide() {
+  const nextIndex = (textureIndex + 1) % textures.length;
 
-main();
+  // バックグラウンドの画像を更新し、ぼかしアニメーションを開始
+  startBlurAnimation(nextIndex);
+
+  // スライダー画像のディストーションエフェクトアニメーション
+  material.uniforms.nextImage.value = textures[nextIndex]; // 次の画像を先に設定
+  gsap.to(material.uniforms.dispFactor, {
+    value: 1,
+    duration: 3, // ディストーションエフェクトの持続時間を3秒に設定
+    ease: "power2.inOut",
+    onComplete: () => {
+      material.uniforms.currentImage.value = textures[nextIndex];
+      material.uniforms.nextImage.value = textures[(nextIndex + 1) % textures.length]; // 次の次の画像を予め設定
+      material.uniforms.dispFactor.value = 0; // ディスプレイスメントファクターをリセット
+      textureIndex = nextIndex;
+    }
+  });
+}
+
+async function init() {
+  const loader = new TextureLoader();
+  textures = await loadTextures(loader, imageUrls);
+  setupRenderer();
+  setupCamera();
+  setupScene(textures);
+  window.addEventListener('resize', onWindowResize, false);
+  animate();
+  setInterval(changeSlide, 3000); // 3秒ごとにスライドを切り替え
+}
+
+init();
