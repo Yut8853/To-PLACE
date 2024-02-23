@@ -1,46 +1,43 @@
-import { Scene, PlaneGeometry, MeshBasicMaterial, Mesh, OrthographicCamera, WebGLRenderer, TextureLoader, ShaderMaterial, DoubleSide } from 'three';
+// 必要な最小限のthreeモジュールとgsapのインポート
+import { Scene, OrthographicCamera, WebGLRenderer } from 'three';
 import gsap from 'gsap';
-
-// シェーダーファイルとテクスチャのインポート
-import vertexShaderSource from './assets/shaders/vertex.glsl';
-import fragmentShaderSource from './assets/shaders/fragment.glsl';
-const imageUrls = [
-  './assets/images/hero-image-01.jpg',
-  './assets/images/hero-image-02.jpg',
-  './assets/images/hero-image-03.jpg'
-];
-
-// Canvasのサイズとパディングを設定
-const padding = { x: 116, y: 168 }; // フルHDでのパディング
-const responsiveBreakpoint = 768; // レスポンシブのブレークポイント
 
 let camera, renderer, scene, material, mesh, textureIndex = 0, textures = [];
 
-async function loadTextures(loader, urls) {
-  const promises = urls.map(url => new Promise((resolve) => loader.load(url, resolve)));
+async function loadTextures() {
+  const { TextureLoader } = await import('three');
+  const loader = new TextureLoader();
+  const imageUrls = [
+    './assets/images/hero-image-01.jpg',
+    './assets/images/hero-image-02.jpg',
+    './assets/images/hero-image-03.jpg'
+  ];
+  const promises = imageUrls.map(url => new Promise((resolve) => loader.load(url, resolve)));
   return Promise.all(promises);
 }
 
-function setupScene(textures) {
+async function setupScene(textures) {
   scene = new Scene();
+  const { PlaneGeometry, MeshBasicMaterial, Mesh, ShaderMaterial, DoubleSide } = await import('three');
+  const vertexShaderSource = await import('./assets/shaders/vertex.glsl');
+  const fragmentShaderSource = await import('./assets/shaders/fragment.glsl');
 
-  // 背景画像の設定（背景用メッシュの作成）
+  // 背景用メッシュの設定
   const bgGeometry = new PlaneGeometry(window.innerWidth, window.innerHeight);
-  const bgMaterial = new MeshBasicMaterial({ map: textures[0], side: DoubleSide }); // 最初の画像を背景に設定
+  const bgMaterial = new MeshBasicMaterial({ map: textures[0], side: DoubleSide });
   const bgMesh = new Mesh(bgGeometry, bgMaterial);
   scene.add(bgMesh);
 
-  // WebGLスライダー用のメッシュを設定
-  const geometry = new PlaneGeometry(window.innerWidth - padding.x * 2, window.innerHeight - padding.y * 2);
+  // WebGLスライダー用のメッシュ設定
+  const geometry = new PlaneGeometry(window.innerWidth - 116 * 2, window.innerHeight - 168 * 2);
   material = new ShaderMaterial({
     uniforms: {
       currentImage: { type: "t", value: textures[0] },
       nextImage: { type: "t", value: textures[1] },
       dispFactor: { type: "f", value: 0 },
-      // その他のuniforms...
     },
-    vertexShader: vertexShaderSource,
-    fragmentShader: fragmentShaderSource,
+    vertexShader: vertexShaderSource.default,
+    fragmentShader: fragmentShaderSource.default,
     transparent: true,
   });
   mesh = new Mesh(geometry, material);
@@ -59,7 +56,13 @@ function setupRenderer() {
 }
 
 function onWindowResize() {
-  // レスポンシブ対応のサイズ調整
+  camera.left = window.innerWidth / -2;
+  camera.right = window.innerWidth / 2;
+  camera.top = window.innerHeight / 2;
+  camera.bottom = window.innerHeight / -2;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
@@ -68,16 +71,18 @@ function animate() {
 }
 
 function startBlurAnimation(nextIndex) {
-  // 背景画像のぼかし効果を適用する前に現在の画像を更新
+  const imageUrls = [
+    './assets/images/hero-image-01.jpg',
+    './assets/images/hero-image-02.jpg',
+    './assets/images/hero-image-03.jpg'
+  ];
   document.getElementById("background").style.backgroundImage = `url(${imageUrls[nextIndex]})`;
 
-  // ぼかし効果を適用
   gsap.to("#background", {
     filter: "blur(20px)",
-    duration: 1.5, // ぼかし効果をかける時間を半分にして、トータルで3秒になるように調整
+    duration: 1.5,
     ease: "power1.inOut",
     onComplete: () => {
-      // ぼかし効果を解除
       gsap.to("#background", {
         filter: "blur(0px)",
         duration: 1.5,
@@ -90,30 +95,27 @@ function startBlurAnimation(nextIndex) {
 function changeSlide() {
   const nextIndex = (textureIndex + 1) % textures.length;
 
-  // バックグラウンドの画像を更新し、ぼかしアニメーションを開始
   startBlurAnimation(nextIndex);
 
-  // スライダー画像のディストーションエフェクトアニメーション
-  material.uniforms.nextImage.value = textures[nextIndex]; // 次の画像を先に設定
+  material.uniforms.nextImage.value = textures[nextIndex];
   gsap.to(material.uniforms.dispFactor, {
     value: 1,
-    duration: 3, // ディストーションエフェクトの持続時間を3秒に設定
+    duration: 3,
     ease: "power2.inOut",
     onComplete: () => {
       material.uniforms.currentImage.value = textures[nextIndex];
-      material.uniforms.nextImage.value = textures[(nextIndex + 1) % textures.length]; // 次の次の画像を予め設定
-      material.uniforms.dispFactor.value = 0; // ディスプレイスメントファクターをリセット
+      material.uniforms.nextImage.value = textures[(nextIndex + 1) % textures.length];
+      material.uniforms.dispFactor.value = 0;
       textureIndex = nextIndex;
     }
   });
 }
 
 async function init() {
-  const loader = new TextureLoader();
-  textures = await loadTextures(loader, imageUrls);
+  textures = await loadTextures();
   setupRenderer();
   setupCamera();
-  setupScene(textures);
+  await setupScene(textures);
   window.addEventListener('resize', onWindowResize, false);
   animate();
   setInterval(changeSlide, 3000); // 3秒ごとにスライドを切り替え

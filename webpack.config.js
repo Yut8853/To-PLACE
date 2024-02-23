@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
 module.exports = (env, argv) => {
@@ -21,14 +20,35 @@ module.exports = (env, argv) => {
       static: './dist',
       hot: true,
     },
+    performance: {
+      // アセットサイズの警告を無視する設定
+      hints: false,
+  
+      // オプションで、特定のアセットに対するカスタムしきい値を設定することもできます。
+      // maxEntrypointSize: 数値, // エントリポイントの最大サイズ (バイト単位)
+      // maxAssetSize: 数値, // アセットの最大サイズ (バイト単位)
+    },
     optimization: {
-      minimize: !isDevelopment,
       splitChunks: {
-        chunks: 'all',
-      },
-      runtimeChunk: {
-        name: 'runtime',
-      },
+        chunks: 'all', // すべてのチャンクに対して分割を適用
+        minSize: 20000, // 生成されるチャンクの最小サイズ（バイト単位）
+        maxSize: 500000, // チャンクの最大サイズ（0は無効）
+        minChunks: 1, // 分割前に共有される最小チャンク数
+        maxAsyncRequests: 30, // 非同期チャンクの最大数
+        maxInitialRequests: 30, // エントリーポイントでの非同期チャンクの最大数
+        automaticNameDelimiter: '~', // 生成される名前の区切り文字
+        cacheGroups: { // キャッシュグループの設定
+          vendors: {
+            test: /[\\/]node_modules[\\/]/, // node_modules内のモジュールを対象
+            priority: -10 // 優先度
+          },
+          default: {
+            minChunks: 2, // このグループに含まれるチャンクは最低2回使用されている必要がある
+            priority: -20,
+            reuseExistingChunk: true // 既存のチャンクを再利用
+          }
+        }
+      }
     },
     module: {
       rules: [
@@ -49,10 +69,16 @@ module.exports = (env, argv) => {
             'css-loader',
             'sass-loader',
           ],
+          generator: {
+            filename: 'assets/css/[hash][ext][query]'
+          },
         },
         {
           test: /\.(png|jpe?g|gif|svg)$/i,
           type: 'asset/resource',
+          generator: {
+            filename: 'assets/images/[hash][ext][query]'
+          },
         },
         {
           test: /\.(glsl|vs|fs|vert|frag)$/,
@@ -60,10 +86,16 @@ module.exports = (env, argv) => {
             'raw-loader',
             'glslify-loader',
           ],
+          generator: {
+            filename: 'assets/shaders/[hash][ext][query]'
+          },
         },
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/i,
           type: 'asset/resource',
+          generator: {
+            filename: 'assets/fonts/[hash][ext][query]'
+          },
         },
         {
           test: /\.html$/,
@@ -79,18 +111,23 @@ module.exports = (env, argv) => {
       new MiniCssExtractPlugin({
         filename: 'assets/css/[name].[contenthash].css',
       }),
-      new CleanWebpackPlugin(),
-      new ImageMinimizerPlugin({
-        minimizerOptions: {
-          plugins: [
-            ['gifsicle', { interlaced: true }],
-            ['jpegtran', { progressive: true }],
-            ['optipng', { optimizationLevel: 5 }],
-            // SVG と WEBP に関する設定もここで追加可能
-          ],
-        },
-      }),
+new ImageMinimizerPlugin({
+  minimizer: {
+    implementation: ImageMinimizerPlugin.imageminMinify,
+    options: {
+      plugins: [
+        ['gifsicle', { interlaced: true }],
+        ['jpegtran', { progressive: true }],
+        ['optipng', { optimizationLevel: 5 }],
+        // SVG と WEBP に関する設定もここで追加可能
+      ],
+    },
+  },
+  // 他の必要なオプションをここに追加...
+}),
+
       // 画像の最適化に関する設定をここに追加...
     ].filter(Boolean),
   };
+
 };
