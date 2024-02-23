@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
+
 module.exports = (env, argv) => {
   const isDevelopment = argv.mode === 'development';
 
@@ -111,21 +112,27 @@ module.exports = (env, argv) => {
       new MiniCssExtractPlugin({
         filename: 'assets/css/[name].[contenthash].css',
       }),
-new ImageMinimizerPlugin({
-  minimizer: {
-    implementation: ImageMinimizerPlugin.imageminMinify,
-    options: {
-      plugins: [
-        ['gifsicle', { interlaced: true }],
-        ['jpegtran', { progressive: true }],
-        ['optipng', { optimizationLevel: 5 }],
-        // SVG と WEBP に関する設定もここで追加可能
-      ],
-    },
-  },
-  // 他の必要なオプションをここに追加...
-}),
-
+      new ImageMinimizerPlugin({
+        minimizer: {
+          implementation: ImageMinimizerPlugin.imageminMinify,
+          options: {
+            plugins: [
+              ['imagemin-mozjpeg', { quality: 75 }],
+              ['imagemin-pngquant', { quality: [0.65, 0.90] }],
+              // SVGファイルの最適化設定を追加
+              ['imagemin-svgo', {
+                plugins: [
+                  // ここにSVGOの設定を追加
+                  { removeViewBox: false },
+                  { cleanupIDs: true },
+                ],
+              }],
+            ],
+          },
+        },
+        loader: false,
+      }),
+      new CleanWebpackPlugin(),
       // 画像の最適化に関する設定をここに追加...
     ].filter(Boolean),
   };
