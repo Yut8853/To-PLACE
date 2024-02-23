@@ -22,21 +22,29 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.z = 2;
 
-// レンダラーのサイズを更新する関数
-function updateRendererSize() {
-    renderer.setSize(window.innerWidth, window.innerHeight);
+let material;
+
+// ウィンドウサイズが変更された時の処理を更新
+function onWindowResize() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  
+  // キャンバスのサイズをウィンドウに合わせて更新
+  renderer.setSize(width, height);
+  
+  // 新しいビューポートのアスペクト比を計算
+  const newAspect = width / height;
+  
+  // カメラのアスペクト比を更新
+  camera.aspect = newAspect;
+  camera.updateProjectionMatrix();
+  
+  // シェーダーのuniformsを更新
+  if (material) {
+    material.uniforms.uPlaneAspect.value = window.innerWidth / window.innerHeight;
+  }
 }
 
-// ウィンドウサイズが変更された時に実行する関数
-function onWindowResize(material) {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    updateRendererSize();
-    if (material) {
-        // ここで画像アスペクト比とプレーンアスペクト比を更新する
-        material.uniforms.uPlaneAspect.value = window.innerWidth / window.innerHeight;
-    }
-}
 
 // テクスチャの非同期ロード関数
 async function loadTextures(urls) {
@@ -57,7 +65,7 @@ async function setupScene() {
             nextImage: { value: textures[(currentIndex + 1) % textures.length] },
             disp: { value: dispTexture },
             dispFactor: { value: 0.0 },
-            uImageAspect: { value: 1.33 }, // 例: 4:3アスペクト比
+            uImageAspect: { value: 1699 / 597 },
             uPlaneAspect: { value: window.innerWidth / window.innerHeight },
         },
         vertexShader: vertexShaderSource,
@@ -70,7 +78,7 @@ async function setupScene() {
     scene.add(plane);
 
     // ウィンドウリサイズイベントリスナーにmaterialを渡す
-    window.addEventListener('resize', () => onWindowResize(material));
+    window.addEventListener('resize', onWindowResize);
 
     // アニメーショントリガー関数
     function triggerAnimation() {
