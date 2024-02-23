@@ -1,140 +1,97 @@
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
+const path = require('path');
 
-
-module.exports = (env, argv) => {
-  const isDevelopment = argv.mode === 'development';
-
-  return {
-    mode: isDevelopment ? 'development' : 'production',
-    devtool: isDevelopment ? 'eval-source-map' : 'source-map',
-    entry: path.resolve(__dirname, './src/index.js'),
-    output: {
-      path: path.resolve(__dirname, 'dist'),
-      filename: '[name].[contenthash].js',
-      assetModuleFilename: 'assets/[hash][ext][query]',
-      clean: true,
-    },
-    devServer: {
-      static: './dist',
-      hot: true,
-    },
-    performance: {
-      // アセットサイズの警告を無視する設定
-      hints: false,
-  
-      // オプションで、特定のアセットに対するカスタムしきい値を設定することもできます。
-      // maxEntrypointSize: 数値, // エントリポイントの最大サイズ (バイト単位)
-      // maxAssetSize: 数値, // アセットの最大サイズ (バイト単位)
-    },
-    optimization: {
-      splitChunks: {
-        chunks: 'all', // すべてのチャンクに対して分割を適用
-        minSize: 20000, // 生成されるチャンクの最小サイズ（バイト単位）
-        maxSize: 500000, // チャンクの最大サイズ（0は無効）
-        minChunks: 1, // 分割前に共有される最小チャンク数
-        maxAsyncRequests: 30, // 非同期チャンクの最大数
-        maxInitialRequests: 30, // エントリーポイントでの非同期チャンクの最大数
-        automaticNameDelimiter: '~', // 生成される名前の区切り文字
-        cacheGroups: { // キャッシュグループの設定
-          vendors: {
-            test: /[\\/]node_modules[\\/]/, // node_modules内のモジュールを対象
-            priority: -10 // 優先度
-          },
-          default: {
-            minChunks: 2, // このグループに含まれるチャンクは最低2回使用されている必要がある
-            priority: -20,
-            reuseExistingChunk: true // 既存のチャンクを再利用
-          }
-        }
-      }
-    },
-    module: {
-      rules: [
-        {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
+module.exports = {
+  mode: 'production',
+  entry: path.resolve(__dirname, './src/index.js'),
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[contenthash].js',
+    clean: true,
+    publicPath: '/', // この行を追加
+  },
+  module: {
+    rules: [
+      // CSS/SASS loaders
+      {
+        test: /\.(sass|scss|css)$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
+      },
+      // JavaScript loader
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: ['babel-loader'],
+      },
+      // Image and fonts loader (asset modules)
+      {
+        test: /\.(png|jpe?g|gif|svg|woff2?|eot|ttf|otf)$/,
+        type: 'asset/resource',
+        use: [
+          {
+            loader: 'image-webpack-loader',
             options: {
-              presets: ['@babel/preset-env'],
-            },
+              mozjpeg: {
+                progressive: true,
+                quality: 65
+              },
+              optipng: {
+                enabled: false,
+              },
+              pngquant: {
+                quality: [0.65, 0.90],
+                speed: 4
+              },
+              gifsicle: {
+                interlaced: false,
+              },
+              webp: {
+                quality: 75
+              }
+            }
           },
+        ],
+        generator: {
+          filename: 'assets/[type]/[name].[hash][ext]',
         },
-        {
-          test: /\.(sass|scss|css)$/,
-          use: [
-            isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-            'css-loader',
-            'sass-loader',
-          ],
-          generator: {
-            filename: 'assets/css/[hash][ext][query]'
-          },
-        },
-        {
-          test: /\.(png|jpe?g|gif|svg)$/i,
-          type: 'asset/resource',
-          generator: {
-            filename: 'assets/images/[hash][ext][query]'
-          },
-        },
-        {
-          test: /\.(glsl|vs|fs|vert|frag)$/,
-          use: [
-            'raw-loader',
-            'glslify-loader',
-          ],
-          generator: {
-            filename: 'assets/shaders/[hash][ext][query]'
-          },
-        },
-        {
-          test: /\.(woff|woff2|eot|ttf|otf)$/i,
-          type: 'asset/resource',
-          generator: {
-            filename: 'assets/fonts/[hash][ext][query]'
-          },
-        },
-        {
-          test: /\.html$/,
-          use: 'html-loader',
-        }
+      },
+      // GLSL shaders loader
+      {
+        test: /\.(glsl|vs|fs|vert|frag)$/,
+        use: [
+          'raw-loader', // GLSLファイルを文字列として読み込む
+        ],
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      minify: true,
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: "src/assets/shaders", to: "assets/shaders" },
+        { from: "src/assets/textures", to: "assets/textures" },
+        { from: "src/assets/images", to: "assets/images"}
       ],
+    }),
+  ],
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
     },
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: './src/index.html',
-        minify: isDevelopment ? false : { removeComments: true, collapseWhitespace: true },
-      }),
-      new MiniCssExtractPlugin({
-        filename: 'assets/css/[name].[contenthash].css',
-      }),
-      new ImageMinimizerPlugin({
-        minimizer: {
-          implementation: ImageMinimizerPlugin.imageminMinify,
-          options: {
-            plugins: [
-              ['imagemin-mozjpeg', { quality: 75 }],
-              ['imagemin-pngquant', { quality: [0.65, 0.90] }],
-              // SVGファイルの最適化設定を追加
-              ['imagemin-svgo', {
-                plugins: [
-                  // ここにSVGOの設定を追加
-                  { removeViewBox: false },
-                  { cleanupIDs: true },
-                ],
-              }],
-            ],
-          },
-        },
-        loader: false,
-      }),
-      new CleanWebpackPlugin(),
-      // 画像の最適化に関する設定をここに追加...
-    ].filter(Boolean),
-  };
-
+  },
+  performance: {
+    hints: false,
+  },
 };
