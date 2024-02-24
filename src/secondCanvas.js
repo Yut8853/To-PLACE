@@ -3,36 +3,83 @@ import vertex2 from './assets/shaders/canvas-two-vertex.vert';
 import fragment2 from './assets/shaders/canvas-two-fragment.frag';
 
 let scene, renderer, camera, textureLoader, materials = [], currentIndex = 0, plane;
+let container;
+
+const aspectRatio = 1900 / 971;
 
 export const setupScene = (imageUrls) => {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / 971, 0.1, 1000); // アスペクト比をブラウザの幅に合わせて設定
+    container = document.createElement('div');
+    container.classList.add('canvas-container');
+
+    // Ensure renderer and camera are initialized before they are used
+    renderer = new THREE.WebGLRenderer({ alpha: true });
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 2;
 
-    renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(1900, 971); // 固定のサイズを指定
-    document.body.appendChild(renderer.domElement);
+    // Set the size of the renderer based on the current window size
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+    document.body.appendChild(container);
+
+    scene = new THREE.Scene();
 
     textureLoader = new THREE.TextureLoader();
-    const containerAspectRatio = window.innerWidth / window.innerHeight;
     imageUrls.forEach(url => {
         let texture = textureLoader.load(url);
-        let material = new THREE.ShaderMaterial({
+        const material = new THREE.ShaderMaterial({
             uniforms: {
-                map: { value: texture },
-                aspectRatio: { value: 1900 / 971 }, // 画像のアスペクト比
-                containerAspectRatio: { value: containerAspectRatio } // コンテナのアスペクト比
+                map: { type: "t", value: texture },
+                aspectRatio: { type: "f", value: aspectRatio },
             },
             vertexShader: vertex2,
-            fragmentShader: fragment2
+            fragmentShader: fragment2,
+            transparent: true,
         });
+        
         materials.push(material);
     });
 
-    const aspectRatio = 1900 / 971; // アスペクト比
-    adjustPlaneSize(aspectRatio);
+    plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1 / aspectRatio), materials[currentIndex]);
+    scene.add(plane);
 
-    window.addEventListener('resize', () => adjustPlaneSize(aspectRatio));
+    // Ensure the renderer and plane size adjustment functions are properly defined
+    const adjustRendererSize = () => {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        renderer.setSize(width, height);
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+    };
+
+    const adjustPlaneSize = () => {
+        const canvasWidth = renderer.domElement.width;
+        const canvasHeight = renderer.domElement.height;
+
+        let planeWidth, planeHeight;
+        const browserAspectRatio = canvasWidth / canvasHeight;
+    
+        if (browserAspectRatio < aspectRatio) {
+            planeWidth = canvasHeight * aspectRatio;
+            planeHeight = canvasHeight;
+        } else {
+            planeWidth = canvasWidth;
+            planeHeight = canvasWidth / aspectRatio;
+        }
+
+        plane.scale.set(planeWidth / plane.geometry.parameters.width, planeHeight / plane.geometry.parameters.height, 1);
+    };
+
+    // Set up resize event listener after everything is initialized
+    window.addEventListener('resize', () => {
+        adjustRendererSize();
+        adjustPlaneSize();
+    });
+
+    // Adjust sizes upon setup
+    adjustRendererSize();
+    adjustPlaneSize();
 
     const animate = () => {
         requestAnimationFrame(animate);
@@ -41,37 +88,7 @@ export const setupScene = (imageUrls) => {
     animate();
 };
 
-const adjustPlaneSize = (aspectRatio) => {
-    if (plane) scene.remove(plane);
-
-    const height = window.innerHeight;
-    const width = window.innerWidth;
-    const planeAspectRatio = width / height;
-    let planeWidth, planeHeight;
-
-    if (planeAspectRatio > aspectRatio) {
-        // ウィンドウのアスペクト比が画像のアスペクト比より大きい場合
-        planeWidth = height * aspectRatio;
-        planeHeight = height;
-    } else {
-        // ウィンドウのアスペクト比が画像のアスペクト比より小さい、または等しい場合
-        planeWidth = width;
-        planeHeight = width / aspectRatio;
-    }
-
-    const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight, 1, 1);
-    plane = new THREE.Mesh(geometry, materials[currentIndex]); // plane を初期化
-    scene.add(plane);
-    plane.position.z = -500
-
-    const newContainerAspectRatio = window.innerWidth / window.innerHeight;
-    materials.forEach(material => {
-        material.uniforms.containerAspectRatio.value = newContainerAspectRatio;
-    });
-};
-
 export const updateImage = (index) => {
     currentIndex = index % materials.length;
     plane.material = materials[currentIndex];
 };
-

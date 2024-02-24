@@ -18,7 +18,6 @@
 }
 
 
-
 .menu {
     all:unset;
     width: 50px;
@@ -42,15 +41,12 @@ main {
     position: relative;
     
   }
-canvas {
+
+  .canvas-container {
     width: 100%;
     height: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    aspect-ratio: 16 / 9;
-  }
-  
+}
+
   #slider img {
     width: 100%;
     max-width: 100%;
