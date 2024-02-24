@@ -42,7 +42,7 @@ main {
     position: relative;
     
   }
-  #slider canvas {
+canvas {
     width: 100%;
     height: auto;
     position: absolute;

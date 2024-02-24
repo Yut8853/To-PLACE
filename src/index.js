@@ -5,11 +5,18 @@ import { gsap } from 'gsap';
 import vertexShaderSource from './assets/shaders/vertex.vert';
 import fragmentShaderSource from './assets/shaders/fragment.frag';
 
+import { setupScene, updateImage } from './secondCanvas.js';
+
 const imageUrls = [
     './assets/images/hero-image-01.jpg',
     './assets/images/hero-image-02.jpg',
     './assets/images/hero-image-03.jpg',
 ];
+
+setupScene(imageUrls);
+
+// SecondCanvasのインスタンス化をここに移動
+
 const dispMapUrl = './assets/textures/fluid.jpg';
 
 // レンダラーのセットアップ
@@ -24,42 +31,30 @@ camera.position.z = 2;
 
 let material;
 
-// ウィンドウサイズが変更された時の処理を更新
 function onWindowResize() {
   const width = window.innerWidth;
   const height = window.innerHeight;
-  
-  // キャンバスのサイズをウィンドウに合わせて更新
   renderer.setSize(width, height);
-  
-  // 新しいビューポートのアスペクト比を計算
   const newAspect = width / height;
-  
-  // カメラのアスペクト比を更新
   camera.aspect = newAspect;
   camera.updateProjectionMatrix();
-  
-  // シェーダーのuniformsを更新
   if (material) {
     material.uniforms.uPlaneAspect.value = window.innerWidth / window.innerHeight;
   }
 }
 
-
-// テクスチャの非同期ロード関数
 async function loadTextures(urls) {
   const loader = new THREE.TextureLoader();
   const texturePromises = urls.map(url => new Promise(resolve => loader.load(url, texture => resolve(texture))));
   return Promise.all(texturePromises);
 }
 
-// メインの非同期セットアップ関数
-async function setupScene() {
+async function initializeScene(imageUrls) {
     const textures = await loadTextures(imageUrls);
     const dispTexture = await new Promise(resolve => new THREE.TextureLoader().load(dispMapUrl, resolve));
-    let currentIndex = 0; // 現在表示中の画像インデックス
+    let currentIndex = 0;
 
-    const material = new THREE.ShaderMaterial({
+    material = new THREE.ShaderMaterial({
         uniforms: {
             currentImage: { value: textures[currentIndex] },
             nextImage: { value: textures[(currentIndex + 1) % textures.length] },
@@ -77,10 +72,8 @@ async function setupScene() {
     const plane = new THREE.Mesh(planeGeometry, material);
     scene.add(plane);
 
-    // ウィンドウリサイズイベントリスナーにmaterialを渡す
     window.addEventListener('resize', onWindowResize);
 
-    // アニメーショントリガー関数
     function triggerAnimation() {
       const nextIndex = (currentIndex + 1) % textures.length;
       material.uniforms.nextImage.value = textures[nextIndex];
@@ -96,6 +89,8 @@ async function setupScene() {
               currentIndex = nextIndex;
           }
       });
+      // currentIndexを渡しています
+      updateImage(currentIndex);
     }
 
     const animate = () => {
@@ -107,4 +102,5 @@ async function setupScene() {
     setInterval(triggerAnimation, 3000);
 }
 
-setupScene().catch(error => console.error(error));
+// initializeScene関数の呼び出しにimageUrlsを渡します。
+initializeScene(imageUrls).catch(error => console.error(error));
