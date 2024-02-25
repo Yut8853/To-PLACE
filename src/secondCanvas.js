@@ -52,11 +52,11 @@ export const setupScene = (imageUrls) => {
     const createPlane = () => {
         const aspect = 1900 / 971; // 画像のアスペクト比
         let planeWidth = 1; // プレーンの幅を一定に保つ
-        let planeHeight = 3 / aspect; // プレーンの高さをアスペクト比に基づいて設定
+        let planeHeight = 2 / aspect; // プレーンの高さをアスペクト比に基づいて設定
     
         // プレーンのジオメトリを生成
         plane = new THREE.Mesh(new THREE.PlaneGeometry(planeWidth, planeHeight), materials[currentIndex]);
-        plane.position.y = planeHeight / 1.7; // 上部に配置
+        plane.position.y = planeHeight / 4; // 上部に配置
     
         scene.add(plane);
         adjustPlaneSize(); // 初期サイズ調整の呼び出し

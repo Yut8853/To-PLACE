@@ -45,6 +45,11 @@ main {
   .canvas-container {
     width: 100%;
     height: auto;
+    position: absolute;
+}
+
+.canvas-container + canvas {
+  position: absolute;
 }
 
 
