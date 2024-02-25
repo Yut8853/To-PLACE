@@ -68,8 +68,9 @@ async function initializeScene(imageUrls) {
         transparent: true,
     });
 
-    const planeGeometry = new THREE.PlaneGeometry(2, 2 * (window.innerHeight / window.innerWidth));
+    const planeGeometry = new THREE.PlaneGeometry(4, 2.8 * (window.innerHeight / window.innerWidth));
     const plane = new THREE.Mesh(planeGeometry, material);
+    plane.position.y = .2;
     scene.add(plane);
 
     window.addEventListener('resize', onWindowResize);
