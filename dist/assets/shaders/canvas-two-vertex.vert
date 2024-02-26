@@ -1,4 +1,4 @@
-// vertex.vert
+// Vertex Shader
 varying vec2 vUv;
 
 void main() {

@@ -1,21 +1,21 @@
-// fragment.frag
+
+
+// Fragment Shader
 uniform sampler2D map;
 uniform float aspectRatio;
+uniform float containerAspectRatio;
 varying vec2 vUv;
 
 void main() {
-    vec2 uv = vUv;
-    float imageAspectRatio = aspectRatio; // 画像のアスペクト比 (例: 1900 / 971)
-    float containerAspectRatio = gl_FragCoord.w / gl_FragCoord.z; // コンテナのアスペクト比
-
-    // アスペクト比の調整
-    if (containerAspectRatio < imageAspectRatio) {
-        float scaleFactor = containerAspectRatio / imageAspectRatio;
-        uv.y = (uv.y - 0.5) * scaleFactor + 0.5; // 中心を基点にスケーリング
+    vec2 adjustedUV = vUv;
+    // テクスチャのアスペクト比とコンテナのアスペクト比を比較してUV座標を調整
+    if (aspectRatio > containerAspectRatio) {
+        // 画像がコンテナよりも横長の場合
+        adjustedUV.x = (vUv.x - 0.5) * (containerAspectRatio / aspectRatio) + 0.5;
     } else {
-        float scaleFactor = imageAspectRatio / containerAspectRatio;
-        uv.x = (uv.x - 0.5) * scaleFactor + 0.5; // 中心を基点にスケーリング
+        // 画像がコンテナよりも縦長の場合
+        adjustedUV.y = (vUv.y - 0.5) * (aspectRatio / containerAspectRatio) + 0.5;
     }
 
-    gl_FragColor = texture2D(map, uv);
+    gl_FragColor = texture2D(map, adjustedUV);
 }

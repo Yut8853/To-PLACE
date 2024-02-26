@@ -1,119 +1,110 @@
 import * as THREE from 'three';
+import { gsap } from 'gsap';
 import vertexShader from './assets/shaders/canvas-two-vertex.vert';
 import fragmentShader from './assets/shaders/canvas-two-fragment.frag';
 
-let scene, renderer, camera, textureLoader, materials = [], currentIndex = 0, plane;
-let container, imageAspectRatio = 1; // Default aspect ratio
+let scene, renderer, camera, textureLoader, currentIndex = 0, plane, textures;
 
-export const setupScene = (imageUrls) => {
-    container = document.createElement('div');
-    container.classList.add('canvas-container');
-    document.body.appendChild(container);
-
+export const setupScene = async (imageUrls) => {
     renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
+    const container = document.querySelector('.canvas-bg-blur');
     container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 2;
+    camera.position.z = 600;
 
     scene = new THREE.Scene();
     textureLoader = new THREE.TextureLoader();
 
-    const loadTextures = (urls) => {
-        urls.forEach((url, index) => { // Iterate through urls with index
-            textureLoader.load(url, (texture) => {
-                texture.magFilter = THREE.LinearFilter;
-                texture.minFilter = THREE.LinearFilter;
-                texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+    try {
+        textures = await Promise.all(imageUrls.map(url => 
+            new Promise((resolve, reject) => {
+                textureLoader.load(url, texture => {
+                    texture.magFilter = THREE.LinearFilter;
 
-                if (index === 0) { // Only for the first texture
-                    imageAspectRatio = texture.image.width / texture.image.height;
-                    createPlane();
-                }
+                    resolve(texture);
+                }, undefined, reject);
+            })
+        ));
 
-                const material = new THREE.ShaderMaterial({
-                    uniforms: {
-                        map: { value: texture },
-                        aspectRatio: { value: imageAspectRatio },
-                        containerAspectRatio: { value: container.clientWidth / container.clientHeight },
-                    },
-                    vertexShader,
-                    fragmentShader,
-                    transparent: true,
-                });
-                materials.push(material);
-            });
+        const material = new THREE.ShaderMaterial({
+            uniforms: {
+                map: { value: textures[currentIndex] },
+                aspectRatio: { value: textures[currentIndex].image.width / textures[currentIndex].image.height },
+                containerAspectRatio: { value: window.innerWidth / window.innerHeight },
+            },
+            vertexShader,
+            fragmentShader,
+            transparent: true,
         });
-    };
 
-    let planeWidth, planeHeight;
+        createPlane(1900, 971, material);
 
-    const createPlane = () => {
-        const aspect = 1900 / 971; // 画像のアスペクト比
-        let planeWidth = 1; // プレーンの幅を一定に保つ
-        let planeHeight = 2 / aspect; // プレーンの高さをアスペクト比に基づいて設定
-    
-        // プレーンのジオメトリを生成
-        plane = new THREE.Mesh(new THREE.PlaneGeometry(planeWidth, planeHeight), materials[currentIndex]);
-        plane.position.y = planeHeight / 4; // 上部に配置
-    
-        scene.add(plane);
-        adjustPlaneSize(); // 初期サイズ調整の呼び出し
-    };
-    
+        setInterval(triggerAnimation, 5000);
 
-    const adjustPlaneSize = () => {
-        if (!plane) return;
-        
-        // ブラウザと画像のアスペクト比を取得
-        const windowAspect = window.innerWidth / window.innerHeight;
-        const imageAspect = imageAspectRatio; // 画像のアスペクト比は事前にロード時に設定
-    
-        let planeWidth, planeHeight;
-    
-        // ブラウザのアスペクト比と画像のアスペクト比を比較して適切なスケールを計算
-        if (windowAspect < imageAspect) {
-            // ウィンドウよりも画像が横長の場合
-            planeWidth = 6; // 任意の値
-            planeHeight = planeWidth / imageAspect;
-        } else {
-            // ウィンドウよりも画像が縦長の場合
-            planeHeight = 6; // 任意の値
-            planeWidth = planeHeight * imageAspect;
-        }
-    
-        // プレーンのスケールを更新
-        plane.scale.set(planeWidth, planeHeight, 1);
-    };
-    
-    
-
-    function onWindowResize() {
-        // カメラのアスペクト比をブラウザの新しいアスペクト比に更新
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        
-        // レンダラーのサイズをブラウザの新しいサイズに更新
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        
-        // プレーンのサイズを調整
-        adjustPlaneSize();
+    } catch (error) {
+        console.error('Error loading textures:', error);
     }
 
-    const animate = () => {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-    };
-
-    loadTextures(imageUrls);
     window.addEventListener('resize', onWindowResize, false);
+
     animate();
 };
 
+const createPlane = (width, height, material) => {
+    if (plane) scene.remove(plane);
+    const planeGeometry = new THREE.PlaneGeometry(width, height);
+    plane = new THREE.Mesh(planeGeometry, material);
+    scene.add(plane);
+    plane.position.set(0, 0, 0);
+};
+
+const onWindowResize = () => {
+    const aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = aspect;
+
+    // カメラの位置を調整して画面全体に表示されるようにします
+    const fov = 75; // 垂直視野角
+    const near = 0.1; // 近いクリッピング面
+    const far = 10000; // 遠いクリッピング面
+
+    // カメラの位置と視野角を再計算
+    const height = Math.tan(THREE.MathUtils.degToRad(fov) / 2) * near * 2;
+    const width = height * aspect;
+    camera.aspect = aspect;
+    camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(height / (2 * near)));
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+};
+
+
+
+
+const animate = () => {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+};
+
+function triggerAnimation() {
+    if (textures) {
+        const nextIndex = (currentIndex + 1) % textures.length;
+        plane.material.uniforms.map.value = textures[nextIndex];
+        currentIndex = nextIndex;
+    }
+    gsap.to('.canvas-bg-blur', {
+        duration: 5,
+        opacity: 0,
+        ease: 'power2.inOut',
+        repeat: -1,
+    });
+
+}
+
 export const updateImage = (index) => {
-    if (index < materials.length) {
+    if (textures && index < textures.length) {
         currentIndex = index;
-        plane.material = materials[currentIndex];
+        plane.material.uniforms.map.value = textures[currentIndex];
     }
 };

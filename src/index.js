@@ -13,54 +13,46 @@ const imageUrls = [
     './assets/images/hero-image-03.jpg',
 ];
 
-setupScene(imageUrls);
-
-// SecondCanvasのインスタンス化をここに移動
+let renderer, scene, camera, material;
+let currentIndex = 0;
 
 const dispMapUrl = './assets/textures/fluid.jpg';
 
-// レンダラーのセットアップ
-const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
-// シーンとカメラのセットアップ
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100);
-camera.position.z = 2;
-
-let material;
-
 function onWindowResize() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  renderer.setSize(width, height);
-  const newAspect = width / height;
-  camera.aspect = newAspect;
-  camera.updateProjectionMatrix();
-  if (material) {
-    material.uniforms.uPlaneAspect.value = window.innerWidth / window.innerHeight;
-  }
-}
-
-async function loadTextures(urls) {
-  const loader = new THREE.TextureLoader();
-  const texturePromises = urls.map(url => new Promise(resolve => loader.load(url, texture => resolve(texture))));
-  return Promise.all(texturePromises);
+    // ウィンドウのアスペクト比に基づいてレンダラーのサイズを更新
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  
+    // カメラのアスペクト比を更新
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+  
+    // マテリアルのuniformsを更新
+    if (material) {
+        material.uniforms.uPlaneAspect.value = window.innerWidth / window.innerHeight;
+    }
 }
 
 async function initializeScene(imageUrls) {
-    const textures = await loadTextures(imageUrls);
+    renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.querySelector('.canvas-bg-dist').appendChild(renderer.domElement);
+
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 2.6;
+
+    const textures = await Promise.all(
+        imageUrls.map(url => new Promise(resolve => new THREE.TextureLoader().load(url, resolve)))
+    );
     const dispTexture = await new Promise(resolve => new THREE.TextureLoader().load(dispMapUrl, resolve));
-    let currentIndex = 0;
 
     material = new THREE.ShaderMaterial({
         uniforms: {
-            currentImage: { value: textures[currentIndex] },
-            nextImage: { value: textures[(currentIndex + 1) % textures.length] },
+            currentImage: { value: textures[0] },
+            nextImage: { value: textures[1] },
             disp: { value: dispTexture },
             dispFactor: { value: 0.0 },
-            uImageAspect: { value: 1699 / 597 },
+            uImageAspect: { value: window.innerWidth / window.innerHeight },
             uPlaneAspect: { value: window.innerWidth / window.innerHeight },
         },
         vertexShader: vertexShaderSource,
@@ -68,9 +60,9 @@ async function initializeScene(imageUrls) {
         transparent: true,
     });
 
-    const planeGeometry = new THREE.PlaneGeometry(4, 2.8 * (window.innerHeight / window.innerWidth));
+    const planeGeometry = new THREE.PlaneGeometry(5, 5 * (window.innerHeight / window.innerWidth));
     const plane = new THREE.Mesh(planeGeometry, material);
-    plane.position.y = .2;
+    plane.position.y = -.3;
     scene.add(plane);
 
     window.addEventListener('resize', onWindowResize);
@@ -94,14 +86,15 @@ async function initializeScene(imageUrls) {
       updateImage(currentIndex);
     }
 
-    const animate = () => {
+    setInterval(triggerAnimation, 5000);
+
+    function animate() {
         requestAnimationFrame(animate);
         renderer.render(scene, camera);
-    };
+    }
     animate();
 
-    setInterval(triggerAnimation, 3000);
+    setupScene(imageUrls);
 }
 
-// initializeScene関数の呼び出しにimageUrlsを渡します。
 initializeScene(imageUrls).catch(error => console.error(error));
