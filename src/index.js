@@ -5,6 +5,8 @@ import { gsap } from 'gsap';
 import vertexShaderSource from './assets/shaders/vertex.vert';
 import fragmentShaderSource from './assets/shaders/fragment.frag';
 
+import './start.js';
+
 import { setupScene, updateImage } from './secondCanvas.js';
 import './waveCanvas.js'
 import './hamburger.js';
