@@ -79,9 +79,6 @@ const onWindowResize = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 };
 
-
-
-
 const animate = () => {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);

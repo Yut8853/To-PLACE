@@ -1,38 +1,62 @@
+html{-webkit-text-size-adjust:100%;box-sizing:border-box;-moz-tab-size:4;tab-size:4;word-break:normal}*,:after,:before{background-repeat:no-repeat;box-sizing:inherit}:after,:before{text-decoration:inherit;vertical-align:inherit}*{margin:0;padding:0}hr{color:inherit;height:0;overflow:visible}details,main{display:block}summary{display:list-item}small{font-size:80%}[hidden]{display:none}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}a{background-color:transparent}a:active,a:hover{outline-width:0}code,kbd,pre,samp{font-family:monospace,monospace}pre{font-size:1em}b,strong{font-weight:bolder}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{border-color:inherit;text-indent:0}iframe{border-style:none}input{border-radius:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}textarea{overflow:auto;resize:vertical}button,input,optgroup,select,textarea{font:inherit}optgroup{font-weight:700}button{overflow:visible}button,select{text-transform:none}[role=button],[type=button],[type=reset],[type=submit],button{cursor:pointer}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button:-moz-focusring{outline:1px dotted ButtonText}[type=reset],[type=submit],button,html [type=button]{-webkit-appearance:button}button,input,select,textarea{background-color:transparent;border-style:none}a:focus,button:focus,input:focus,select:focus,textarea:focus{outline-width:0}select{-moz-appearance:none;-webkit-appearance:none}select::-ms-expand{display:none}select::-ms-value{color:currentColor}legend{border:0;color:inherit;display:table;max-width:100%;white-space:normal}::-webkit-file-upload-button{-webkit-appearance:button;color:inherit;font:inherit}[disabled]{cursor:default}img{border-style:none}progress{vertical-align:baseline}[aria-busy=true]{cursor:progress}[aria-controls]{cursor:pointer}[aria-disabled=true]{cursor:default}
 @font-face {
   font-family: 'Aboreto';
-  src: url('./assets/fonts/AnyConv.com__Aboreto-Regular.woff2');
+  src: url('./assets/fonts/Aboreto-Regular.ttf');
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Corm';
-  src: url('./assets/fonts/AnyConv.com__CormorantInfant-Light.woff2');
+  src: url('./assets/fonts/CormorantInfant-Light.ttf');
   font-weight: 100;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Noto-normal';
-  src: url('./assets/fonts/AnyConv.com__NotoSerifJP-ExtraLight.woff2');
+  src: url('./assets/fonts/NotoSerifJP-ExtraLight.otf');
   font-display: swap;
 }
 
 body {
-  font-family: 'Aboreto', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   background: #f5f5f5;
   color: #000;
+}
+
+.body-inner {
   overflow: hidden;
 }
 
-.menu {
+header {
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  background: transparent;
+  z-index: 100;
+  width: 100%;
+  padding: 20px;
+  z-index: 100;
+}
+
+header > h1 {
+  display: flex;
+  font-family: 'Aboreto', sans-serif;
+  color: #fff;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+}
+
+.menu-btn {
     all:unset;
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: #000;
+    background: #fff;
     cursor: pointer;
 }
 
@@ -50,18 +74,143 @@ body {
   filter: blur(10px);}
 
 .canvas-bg-dist {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+.canvas-bg-dist > canvas {
   position: absolute;
-  width: 100%;
-  height: 100%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 40;
 }
 
 .hero-vision {
   position: absolute;
+  top: 35%;
+  left: 20%;
+  z-index: 1;
+}
+
+.hero-title {
+  font-family: 'Corm', sans-serif;
+  font-size: clamp(2.25rem, 0.825rem + 7.12vw, 9.375rem);
+  color: #fff;
+}
+
+.hero-text {
+  font-family: 'Noto-normal', sans-serif;
+  font-size: 18px;
+  color: #fff;
+}
+
+@media screen and (max-width: 768px){
+  .hero-vision {
+    left: 5%;
+  }
+}
+
+/* ハンバーガーメニュー */
+
+.menu-bg {
+  position: fixed;
   top: 0;
-  left: 0;
-  z-index: 5;
+  left: -100%; /* 初期状態で見えないように設定 */
+  width: 100%;
+  height: 100%;
+  background: #000; /* 背景色 */
+  z-index: 50; /* メニューボタンの背後に配置 */
+  font-family: 'Corm', sans-serif;
+}
+
+.menu-bg > nav {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+}
+
+.menu-bg > nav > ul {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(1.5rem, -0.075rem + 7.88vw, 9.375rem);
+  color: #fff;
+}
+
+.menu-bg > nav > ul > li {
+  list-style: none;
+  line-height: clamp(3rem, 2rem + 5vw, 8rem);
+} 
+
+.menu-bg > nav > ul > li > a {
+  text-decoration: none;
+  color: #1E1E1E;
+  width: 100%;
+}
+
+[class*="text-stroke-fill-"]:before, [class*="text-fill-"]:before {
+  content: attr(data-fill);
+  position: absolute;
+  white-space: nowrap;
+  background-color:#fff;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 0px;
+  -webkit-text-fill-color: transparent;
+  transition: all 1s cubic-bezier(0.19, 1, 0.4, 1);
+  z-index: 1;
+}
+
+[class*="-fill-ltr"]:before {top: 0; left: 0; right:100%;}
+[class*="-fill-ltr"]:hover:before {right:0;}
+
+.hover-reveal {
+  position: absolute;
+  width: 300px;
+  height: 400px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.5s ease;
+  mix-blend-mode: difference;
+}
+
+.hover-reveal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  transition: text-transform 0.5s ease;
+  z-index: -1;
+}
+
+@media screen and (max-width: 768px) {
+  .menu-bg > nav > ul > li > a {
+    color: #fff;
+  }
+  .hover-reveal img {
+    display: none;
+  }
+  
+}
+
+/* .wave */
+
+.wave-content {
+  display: flex;
+  align-items: center; /* 上下中央揃え */
+  justify-content: center; /* 左右中央揃え */
+  position: relative;
+}
+
+.col-heading-text {
+  position: absolute;
+  writing-mode: vertical-rl;
+  text-align: center;
+  color: #fff;
+  font-family: 'Corm', sans-serif;
 }
