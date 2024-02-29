@@ -431,7 +431,7 @@ progress {
 }
 @font-face {
   font-family: "Corm";
-  src: url(/assets/[type]/CormorantInfant-Light.3653df3e54188917e188.ttf);
+  src: url(/assets/[type]/CormorantInfant-Light.31d6cfe0d16ae931b73c.ttf);
   font-weight: 100;
   font-display: swap;
 }
@@ -450,6 +450,33 @@ body {
 
 .body-inner {
   overflow: hidden;
+}
+
+.loader {
+  position: fixed;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: 0.3s;
+}
+
+.loader__bg {
+  width: 5.555vw;
+  height: 100%;
+  background: #000;
+}
+
+.gs-anim {
+  will-change: transform;
+}
+
+.gs-anim {
+  opacity: 0;
+  transform: translateY(-30px);
 }
 
 header {
@@ -637,5 +664,6 @@ header > h1 {
   writing-mode: vertical-rl;
   text-align: center;
   color: #fff;
-  font-family: "Corm", sans-serif;
+  font-family: "Noto-normal", sans-serif;
+  line-height: 50px;
 }

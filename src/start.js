@@ -15,12 +15,6 @@ function loader() {
         stagger: 0.15,
         ease: 'power4.inOut'
     })
-    .to('.gs-anim', 1, {
-        x:0,
-        opacity: 1,
-        stagger: .8,
-        ease: 'power2.out'
-    })
 
 }
 
