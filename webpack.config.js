@@ -5,7 +5,13 @@ const path = require('path');
 
 module.exports = {
   mode: 'production',
-  entry: path.resolve(__dirname, './src/index.js'),
+  entry: {
+  main:  path.resolve(__dirname, './src/index.js'),
+  about: path.resolve(__dirname, './src/about.js'),
+  careers: path.resolve(__dirname, './src/careers.js'),
+  business: path.resolve(__dirname, './src/business.js'),
+  sales: path.resolve(__dirname, './src/sales.js'),
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
@@ -72,8 +78,34 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
+      filename: 'index.html',
       template: './src/index.html',
       minify: true,
+      chunks: ['main'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'about.html',
+      template: './src/about.html',
+      minify: true,
+      chunks: ['about'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'careers.html',
+      template: './src/careers.html',
+      minify: true,
+      chunks: ['careers'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'business.html',
+      template: './src/business.html',
+      minify: true,
+      chunks: ['business'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'sales.html',
+      template: './src/sales.html',
+      minify: true,
+      chunks: ['sales'],
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
