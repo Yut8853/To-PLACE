@@ -100,7 +100,7 @@ async function initializeScene(imageUrls) {
       });
     }
 
-    setInterval(triggerAnimation, 5000);
+    setInterval(triggerAnimation, 8000);
 
     function animate() {
       requestAnimationFrame(animate);

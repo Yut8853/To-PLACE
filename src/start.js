@@ -11,31 +11,28 @@ export function loader() {
     tl.to(loadItem,{
         scaleX: 0,
         transformOrigin: '0% 0%',
-        stagger: 0.1,
+        stagger: 0.07,
         ease: 'power4.inOut'
     })
     .to(".overlay-white", {
-        duration: .5,
+        duration: .7,
         xPercent: 100,
         ease: "cubic-bezier(0.961, 0.03, 0.961)",
       })
     .to(".overlay-red", {
-        duration: .2,
+        duration: .9,
         xPercent: 150,
-        ease: "cubic-bezier(0.961, 0.03, 0.961)",
-        delay: 0.4, // このアニメーションを0.4秒後に開始
+        ease: "cubic-bezier(0.961, 0.83, 0.961)",
       })
     .to('.overlay-white2', {
-        duration: .5,
+        duration: .7,
         xPercent: 100,
         ease: "cubic-bezier(0.961, 0.03, 0.961)",
-        delay: 0.5,
     })
     .to('.overlay-red2', {
-        duration: .5,
+        duration: .9,
         xPercent: 100,
         ease: "cubic-bezier(0.961, 0.03, 0.961)",
-        delay: 0.5,
     })
 
 }
@@ -43,5 +40,5 @@ export function loader() {
 window.addEventListener('DOMContentLoaded', ()=> {
     setTimeout(() => {
         loader();
-    }, 1000);
+    }, 100);
 })

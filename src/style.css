@@ -295,10 +295,67 @@ header > h1 {
 .news-section {
   max-width: calc(100% - 360px); /* 180px on each side */
   margin: 144px auto 0;
+  position: relative;
 }
 
 .news-section > h2 {
   font-family: 'Corm', sans-serif;
   font-size: clamp(2.25rem, 0.825rem + 7.12vw, 9.375rem);
   color: #fff;
+  margin: 0;
+}
+
+.news-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  list-style: none;
+  flex-wrap: wrap;
+  margin-top: 72px;
+}
+
+.news-list > li > h3 {
+  font-family: 'Noto-normal', sans-serif;
+  font-size: 24px;
+  margin-top: 30px;
+}
+
+.news-list > li > img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 734 / 256;
+}
+
+.news-list > li > p {
+  font-family: 'Noto-normal', sans-serif;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.news-list > li > hr {
+  margin: 40px 0;
+}
+
+.new {
+  background: red;
+  padding: 2px 5px;
+  margin: 0 10px;
+}
+
+.no-new {
+  display: inline-block;
+  width: 54.23px;
+}
+
+@media screen and (max-width: 768px) {
+  .news-section {
+    max-width: 100%;
+    margin: 72px auto 0;
+    padding: 0 20px;
+  }
+  .news-list {
+    justify-content: center;
+  }
+  
 }

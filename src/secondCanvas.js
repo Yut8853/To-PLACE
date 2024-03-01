@@ -41,7 +41,7 @@ export const setupScene = async (imageUrls) => {
 
         createPlane(1900, 971, material);
 
-        setInterval(triggerAnimation, 5000);
+        setInterval(triggerAnimation, 8000);
 
     } catch (error) {
         console.error('Error loading textures:', error);
@@ -91,7 +91,7 @@ function triggerAnimation() {
         currentIndex = nextIndex;
     }
     gsap.to('.canvas-bg-blur', {
-        duration: 5,
+        duration: 8,
         opacity: 0,
         ease: 'power2.inOut',
         repeat: -1,
