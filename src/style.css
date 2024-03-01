@@ -289,3 +289,16 @@ header > h1 {
   font-family: 'Noto-normal', sans-serif;
   line-height: 50px;
 }
+
+/* .news-section */
+
+.news-section {
+  max-width: calc(100% - 360px); /* 180px on each side */
+  margin: 144px auto 0;
+}
+
+.news-section > h2 {
+  font-family: 'Corm', sans-serif;
+  font-size: clamp(2.25rem, 0.825rem + 7.12vw, 9.375rem);
+  color: #fff;
+}
