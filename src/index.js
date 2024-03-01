@@ -4,7 +4,6 @@ import * as THREE from 'three';
 import { gsap } from 'gsap';
 import vertexShaderSource from './assets/shaders/vertex.vert';
 import fragmentShaderSource from './assets/shaders/fragment.frag';
-
 import './start.js';
 import { setupScene, updateImage } from './secondCanvas.js';
 import './waveCanvas.js';
@@ -109,7 +108,8 @@ async function initializeScene(imageUrls) {
     }
     animate();
 
-    setupScene(imageUrls); // Assuming this function is properly defined elsewhere
+    setupScene(imageUrls);
+
   } catch (error) {
     console.error('An error occurred:', error);
   }

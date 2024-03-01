@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 
-function loader() {
+export function loader() {
     let loadItem = document.querySelectorAll('.loader__bg');
     
     const tl = gsap.timeline()

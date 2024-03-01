@@ -10,13 +10,23 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/about.js":
-/*!**********************!*\
-  !*** ./src/about.js ***!
-  \**********************/
+/***/ "./src/careers.js":
+/*!************************!*\
+  !*** ./src/careers.js ***!
+  \************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _start_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./start.js */ \"./src/start.js\");\n\nconsole.log('about.js');\n\n//# sourceURL=webpack://three-shader-env01/./src/about.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _reset_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./reset.css */ \"./src/reset.css\");\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n/* harmony import */ var _start_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./start.js */ \"./src/start.js\");\n/* harmony import */ var _hamburger_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./hamburger.js */ \"./src/hamburger.js\");\n\n\n\n\nconsole.log('careers.js');\n\n//# sourceURL=webpack://three-shader-env01/./src/careers.js?");
+
+/***/ }),
+
+/***/ "./src/hamburger.js":
+/*!**************************!*\
+  !*** ./src/hamburger.js ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! gsap */ \"./node_modules/gsap/index.js\");\n\nlet menuOpen = false;\ndocument.querySelector('.menu-btn').addEventListener('click', function () {\n  const link = document.querySelectorAll('.text-stroke-fill-ltr');\n  const linkHoverReveal = document.querySelectorAll('.hover-reveal');\n  const linkImages = document.querySelectorAll('.hidden-img');\n  for (let i = 0; i < link.length; i++) {\n    link[i].addEventListener('mousemove', e => {\n      linkHoverReveal[i].style.opacity = .6;\n      linkHoverReveal[i].style.transform = `translate(150%, -70% ) rotate(5deg)`;\n      linkImages[i].style.transform = 'scale(1, 1)';\n      linkHoverReveal[i].style.left = e.clientX + \"px\";\n    });\n    link[i].addEventListener('mouseleave', e => {\n      linkHoverReveal[i].style.opacity = 0;\n      linkHoverReveal[i].style.transform = `translate(-50%, -50%) rotate(-5deg)`;\n      linkImages[i].style.transform = 'scale(0.8, 0.8)';\n    });\n  }\n  let tl = gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.timeline({\n    onStart: function () {\n      document.querySelector('.menu-bg').style.visibility = 'visible';\n    },\n    onComplete: function () {\n      if (!menuOpen) {\n        document.querySelector('.menu-bg').style.visibility = 'hidden';\n      }\n    }\n  });\n  if (menuOpen) {\n    // メニューが開いている場合、左に隠す\n    tl.to('.menu-bg', {\n      duration: .4,\n      left: '-100%',\n      ease: 'power4.Out'\n    });\n  } else {\n    // メニューが閉じている場合、右に表示\n    tl.to('.menu-bg', {\n      duration: .4,\n      left: 0,\n      ease: 'power4.In'\n    }).fromTo('.menu-bg nav ul li', {\n      x: -40,\n      opacity: 0\n    }, {\n      duration: 1,\n      x: 0,\n      opacity: 1,\n      stagger: 0.3,\n      ease: \"power2.out\"\n    });\n  }\n  menuOpen = !menuOpen;\n});\n\n//# sourceURL=webpack://three-shader-env01/./src/hamburger.js?");
 
 /***/ }),
 
@@ -26,7 +36,27 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _sta
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! gsap */ \"./node_modules/gsap/index.js\");\n\nfunction loader() {\n  const loader = document.querySelector('.loader');\n  let loadItem = document.querySelectorAll('.loader__bg');\n  const tl = gsap__WEBPACK_IMPORTED_MODULE_0__[\"default\"].timeline();\n  gsap__WEBPACK_IMPORTED_MODULE_0__[\"default\"].set(loadItem, {\n    transformOrigin: '100% 100%',\n    scaleX: 1\n  }), tl.to(loadItem, {\n    scaleX: 0,\n    transformOrigin: '0% 0%',\n    stagger: 0.15,\n    ease: 'power4.inOut'\n  });\n}\nwindow.addEventListener('DOMContentLoaded', () => {\n  setTimeout(() => {\n    loader();\n  }, 1000);\n});\n\n//# sourceURL=webpack://three-shader-env01/./src/start.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   loader: () => (/* binding */ loader)\n/* harmony export */ });\n/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! gsap */ \"./node_modules/gsap/index.js\");\n\nfunction loader() {\n  let loadItem = document.querySelectorAll('.loader__bg');\n  const tl = gsap__WEBPACK_IMPORTED_MODULE_0__[\"default\"].timeline();\n  gsap__WEBPACK_IMPORTED_MODULE_0__[\"default\"].set(loadItem, {\n    transformOrigin: '100% 100%',\n    scaleX: 1\n  }), tl.to(loadItem, {\n    scaleX: 0,\n    transformOrigin: '0% 0%',\n    stagger: 0.1,\n    ease: 'power4.inOut'\n  }).to(\".overlay-white\", {\n    duration: .5,\n    xPercent: 100,\n    ease: \"cubic-bezier(0.961, 0.03, 0.961)\"\n  }).to(\".overlay-red\", {\n    duration: .2,\n    xPercent: 150,\n    ease: \"cubic-bezier(0.961, 0.03, 0.961)\",\n    delay: 0.4 // このアニメーションを0.4秒後に開始\n  }).to('.overlay-white2', {\n    duration: .5,\n    xPercent: 100,\n    ease: \"cubic-bezier(0.961, 0.03, 0.961)\",\n    delay: 0.5\n  }).to('.overlay-red2', {\n    duration: .5,\n    xPercent: 100,\n    ease: \"cubic-bezier(0.961, 0.03, 0.961)\",\n    delay: 0.5\n  });\n}\nwindow.addEventListener('DOMContentLoaded', () => {\n  setTimeout(() => {\n    loader();\n  }, 1000);\n});\n\n//# sourceURL=webpack://three-shader-env01/./src/start.js?");
+
+/***/ }),
+
+/***/ "./src/reset.css":
+/*!***********************!*\
+  !*** ./src/reset.css ***!
+  \***********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n\n\n//# sourceURL=webpack://three-shader-env01/./src/reset.css?");
+
+/***/ }),
+
+/***/ "./src/style.css":
+/*!***********************!*\
+  !*** ./src/style.css ***!
+  \***********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n\n\n//# sourceURL=webpack://three-shader-env01/./src/style.css?");
 
 /***/ })
 
@@ -128,7 +158,8 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var gsap
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
-/******/ 			"about": 0
+/******/ 			"careers": 0,
+/******/ 			"src_reset_css-src_style_css": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -178,7 +209,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var gsap
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_gsap_index_js"], () => (__webpack_require__("./src/about.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_gsap_index_js","src_reset_css-src_style_css"], () => (__webpack_require__("./src/careers.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
