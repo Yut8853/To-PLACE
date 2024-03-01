@@ -55,7 +55,7 @@ for(let i = 0; i < link.length; i++) {
             duration: 1,
             x: 0,
             opacity: 1,
-            stagger: 0.6,
+            stagger: 0.3,
             ease: "power2.out"
         });
     }
