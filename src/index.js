@@ -8,6 +8,7 @@ import './start.js';
 import { setupScene, updateImage } from './secondCanvas.js';
 import './waveCanvas.js';
 import './hamburger.js';
+import './light.js'
 
 const imageUrls = [
   './assets/images/hero-image-01.jpg',

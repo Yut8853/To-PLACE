@@ -34,6 +34,23 @@ export function loader() {
         xPercent: 100,
         ease: "cubic-bezier(0.961, 0.03, 0.961)",
     })
+    .to(".white-outlined-text", {
+        duration: .8,
+        opacity: 1,
+        ease: "cubic-bezier(0.961, 0.03, 0.961)",
+        stagger: {
+            amount: .8,
+            from: "start"
+        },
+        transform: 'translateY(0)'
+    })
+    .to('.hero-text', {
+        duration: 1.5,
+        delay: .1,
+        color: 'rgba(60, 57, 57, 1)',
+        ease: "cubic-bezier(0.961, 0.03, 0.961)",
+        opacity: 1,
+    })
 
 }
 
