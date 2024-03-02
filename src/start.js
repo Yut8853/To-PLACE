@@ -56,6 +56,7 @@ export function loader() {
         xPercent: 0,
         opacity: 1,
         width: '100%',
+        ease: "cubic-bezier(0.961, 0.03, 0.961)",
     })
 
 }
