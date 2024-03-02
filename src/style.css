@@ -153,6 +153,18 @@ header > h1 {
   top: 35%;
   left: 20%;
   z-index: 1;
+  padding: 20px;
+}
+
+.hero-vision-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, .3); 
+  z-index: -1;
+  opacity: 0;
 }
 
 .hero-title {
@@ -168,12 +180,12 @@ header > h1 {
 }
 
 .white-outlined-text {
-  color: #000; /* テキストの色 */
-  text-shadow: 
+  color: #3C3939; /* テキストの色 */
+  /* text-shadow: 
     -1px -1px 0 #fff,  
      1px -1px 0 #fff,
     -1px  1px 0 #fff,
-     1px  1px 0 #fff; /* 白い境界線 */
+     1px  1px 0 #fff; 白い境界線 */
   opacity: 0;
   transform: translateY(-20px);
 }
@@ -181,6 +193,8 @@ header > h1 {
 @media screen and (max-width: 768px){
   .hero-vision {
     left: 5%;
+    background-color: none;
+    padding: 0;
   }
 }
 

@@ -51,6 +51,12 @@ export function loader() {
         ease: "cubic-bezier(0.961, 0.03, 0.961)",
         opacity: 1,
     })
+    .to('.hero-vision-bg', {
+        duration: .5,
+        xPercent: 0,
+        opacity: 1,
+        width: '100%',
+    })
 
 }
 
