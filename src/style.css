@@ -18,6 +18,60 @@ html{-webkit-text-size-adjust:100%;box-sizing:border-box;-moz-tab-size:4;tab-siz
   font-display: swap;
 }
 
+/* ボタン */
+
+
+.block-button {
+  display: inline-flex;
+  background-color: #fff;
+  position: relative;
+  border-radius: 20px;
+}
+
+.block-button .block-button-link {
+  display: inline-block;
+  padding: 1.4rem 1rem;
+  transition: .2s;
+  color: #3C3939;
+  text-decoration: none;
+  overflow: hidden;
+  position: relative;
+  width: 320px;
+  text-align: center;
+}
+
+.button-effect span:first-child {
+  display: block;
+  transform: translate(0);
+}
+
+.button-effect span {
+  transition: all .2s ease;
+}
+
+.button-effect span:last-child {
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translateY(100%) translateX(-50%);
+}
+
+.button-effect span {
+  display: inline-block;
+  font-size: 24px;
+  vertical-align: middle;
+  font-family: 'Corm', sans-serif;
+}
+
+.button-effect:hover span:first-child, button:hover .button-effect span:first-child {
+  transform: translateY(-200%);
+}
+
+.button-effect:hover span:last-child, button:hover .button-effect span:last-child {
+  transform: translateY(-100%) translateX(-50%);
+}
+
+
 body {
   margin: 0;
   padding: 0;
@@ -397,5 +451,79 @@ header > h1 {
   .news-list {
     justify-content: center;
   }
-  
 }
+
+/* OUR BUSINESS */
+
+.ouebusiness-section {
+  max-width: calc(100% - 360px); /* 180px on each side */
+  margin: 144px auto 0;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  min-height: 967px;
+}
+
+.ouebusiness-section > img {
+  width: 100%;
+  height: auto;
+  max-width: 1299px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  right: -180px;
+}
+
+.ouebusiness-section-text {
+  position: absolute;
+  top: 18%;
+  left:0;
+  z-index: 1;
+  mix-blend-mode: difference;
+}
+
+.ouebusiness-section-text > h2 {
+  font-family: 'Corm', sans-serif;
+  font-size: clamp(2.25rem, 0.825rem + 7.12vw, 9.375rem);
+  color: #fff;
+  margin: 0;
+}
+
+.ouebusiness-section-text > h3 {
+  font-family: 'Noto-normal', sans-serif;
+  font-size: 24px;
+  color: #fff;
+  margin-top: 30px;
+}
+
+.ouebusiness-section-text > p {
+  font-family: 'Noto-normal', sans-serif;
+  font-size: 18px;
+  color: #fff;
+  margin-top: 30px;
+  line-height: 1.8;
+}
+
+.ourbusiness-btn {
+  margin-top: 10%;
+}
+
+@media screen and (max-width: 768px) {
+  .ouebusiness-section {
+    max-width: 100%;
+    margin: 0;
+    padding: 0 20px;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .ouebusiness-section > img {
+    margin: 72px calc(50% - 50vw);
+    right: 0;
+  }
+
+  .ouebusiness-section-text {
+    padding: 0 20px;
+  }
+}
+
+/* SALES RECORDS CAROUSEL */
