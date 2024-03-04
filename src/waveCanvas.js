@@ -32,6 +32,9 @@ function init() {
   camera.position.z = 350;
   camera.lookAt(scene.position);
 
+  //set crear color de fondo
+  renderer.setClearColor(0x3C3939, 1);
+
   const positions = new Float32Array(particlesCount * 8);
 
   let i = 0;
