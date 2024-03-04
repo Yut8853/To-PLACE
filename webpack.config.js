@@ -29,6 +29,13 @@ module.exports = {
           'sass-loader',
         ],
       },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'videos/[name][ext]'
+        }
+      },
       // JavaScript loader
       {
         test: /\.js$/,

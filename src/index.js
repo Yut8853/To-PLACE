@@ -11,6 +11,7 @@ import './hamburger.js';
 import './light.js'
 import './carousel.js';
 import './scrollTrigger.js';
+import './video.js';
 
 const imageUrls = [
   './assets/images/hero-image-01.jpg',
