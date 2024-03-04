@@ -9,6 +9,8 @@ import { setupScene, updateImage } from './secondCanvas.js';
 import './waveCanvas.js';
 import './hamburger.js';
 import './light.js'
+import './carousel.js';
+import './scrollTrigger.js';
 
 const imageUrls = [
   './assets/images/hero-image-01.jpg',

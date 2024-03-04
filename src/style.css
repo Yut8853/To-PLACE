@@ -18,6 +18,12 @@ html{-webkit-text-size-adjust:100%;box-sizing:border-box;-moz-tab-size:4;tab-siz
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Sara';
+  src: url('./assets/fonts/Sarala-Regular.ttf');
+  font-display: swap;
+}
+
 /* ボタン */
 
 
@@ -527,3 +533,115 @@ header > h1 {
 }
 
 /* SALES RECORDS CAROUSEL */
+
+.carousel-section {
+  max-width: calc(100% - 360px); /* 180px on each side */
+  margin: 144px auto 0;
+  position: relative;
+}
+
+.carousel-section > h2 {
+  font-family: 'Corm', sans-serif;
+  font-size: clamp(2.25rem, 0.825rem + 7.12vw, 9.375rem);
+  color: #fff;
+  z-index: 999;
+}
+
+.carousel-section > p {
+  font-family: 'Noto-normal', sans-serif;
+  font-size: 18px;
+  color: #fff;
+  margin-top: 30px;
+  line-height: 1.8;
+}
+
+.carousel {
+  width: 100%;
+  cursor: grab;
+}
+.carousel.dragging {
+  cursor: grabbing;
+}
+.carousel--wrap {
+  white-space: nowrap;
+}
+.carousel--item {
+  display: inline-block;
+  width: 30vw;
+  padding: 3vw;
+  user-select: none;
+}
+.carousel--item figure {
+  position: relative;
+  z-index: 1;
+  display: block;
+  height: 0;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+}
+.carousel--item figure img {
+  position: absolute;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  vertical-align: middle;
+  transform-origin: center;
+}
+.carousel--item h2 {
+  position: absolute;
+  z-index: 1;
+  bottom: 1.8vw;
+  font-size: 6vw;
+  bottom: 1vw;
+  color: #fff;
+}
+.carousel--progress {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  bottom: 2vw;
+  width: 20vw;
+  left: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+.carousel--progress-bar {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  transform: scaleX(0);
+  transform-origin: 0% 0%;
+}
+
+.sales-btn {
+  position: absolute;
+  bottom: -100px;
+  right: 0;
+}
+
+/* video_section */
+
+.video-section {
+  overflow: hidden;
+  max-width: calc(100%); /* 180px on each side */
+  position: relative;
+}
+
+.parallax-left,
+.parallax-right {
+  font-family: 'Sara', sans-serif;
+  font-weight: bold;
+  font-size: clamp(3.125rem, -2.5rem + 28.13vw, 31.25rem);
+  color: rgba(0,0,0,.0);
+  white-space: nowrap;
+   -webkit-text-stroke: 1px #201f1f;
+}
+
+.parallax-right {
+  margin-top: -18vw;
+}
