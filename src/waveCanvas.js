@@ -18,7 +18,7 @@ let count = 0;
 // Additional parameters for dynamic waves
 const waveFrequencyX = 0.35;
 const waveFrequencyY = 0.2;
-const waveAmplitude = 35;
+const waveAmplitude = 155;
 const waveSpeed = 0.05;
 
 function init() {
@@ -29,13 +29,13 @@ function init() {
 
   camera.position.x = 350;
   camera.position.y = 150;
-  camera.position.z = 350;
+  camera.position.z = 250;
   camera.lookAt(scene.position);
 
   //set crear color de fondo
   renderer.setClearColor(0x3C3939, 1);
 
-  const positions = new Float32Array(particlesCount * 8);
+  const positions = new Float32Array(particlesCount * 10);
 
   let i = 0;
   for (let ix = 0; ix < amountX; ix++) {

@@ -385,7 +385,6 @@ header > h1 {
 .news-section > h2 {
   font-family: 'Corm', sans-serif;
   font-size: clamp(2.25rem, 0.825rem + 7.12vw, 9.375rem);
-  color: #fff;
   margin: 0;
 }
 
@@ -475,21 +474,18 @@ header > h1 {
 .ouebusiness-section-text > h2 {
   font-family: 'Corm', sans-serif;
   font-size: clamp(2.25rem, 0.825rem + 7.12vw, 9.375rem);
-  color: #fff;
   margin: 0;
 }
 
 .ouebusiness-section-text > h3 {
   font-family: 'Noto-normal', sans-serif;
   font-size: 24px;
-  color: #fff;
   margin-top: 30px;
 }
 
 .ouebusiness-section-text > p {
   font-family: 'Noto-normal', sans-serif;
   font-size: 18px;
-  color: #fff;
   margin-top: 30px;
   line-height: 1.8;
 }
@@ -527,14 +523,12 @@ header > h1 {
 .carousel-section > h2 {
   font-family: 'Corm', sans-serif;
   font-size: clamp(2.25rem, 0.825rem + 7.12vw, 9.375rem);
-  color: #fff;
   z-index: 999;
 }
 
 .carousel-section > p {
   font-family: 'Noto-normal', sans-serif;
   font-size: 18px;
-  color: #fff;
   margin-top: 30px;
   line-height: 1.8;
 }
@@ -578,7 +572,6 @@ header > h1 {
   bottom: 1.8vw;
   font-size: 6vw;
   bottom: 1vw;
-  color: #fff;
 }
 .carousel--progress {
   position: absolute;
@@ -645,4 +638,112 @@ header > h1 {
   object-fit: cover;
   position: sticky;
   top: 0;
+}
+
+/* careers-section */
+
+.careers-section {
+  max-width: calc(100% - 360px); /* 180px on each side */
+  margin: 350vh auto 0;
+  position: relative;
+}
+
+.careers-section > h2 {
+  font-family: 'Corm', sans-serif;
+  font-size: clamp(2.25rem, 0.825rem + 7.12vw, 9.375rem);
+  z-index: 999;
+}
+
+.careers-section > p {
+  font-family: 'Noto-normal', sans-serif;
+  font-size: 18px;
+  margin-top: 30px;
+  line-height: 1.8;
+}
+
+.careers-btn {
+  display: block;
+  margin-top: 5vw;
+  width: 320px;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+footer {
+  margin-top: 244px;
+  background-color: #000;
+  position: relative;
+  min-height: 900px;
+  padding: 100px 0;
+}
+
+.link-effect {
+  font-family: 'Corm', sans-serif;
+  font-size: clamp(2.25rem, -0.675rem + 14.63vw, 16.875rem);
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  position: relative;
+
+}
+
+.link-effect:after {    
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  background: #fff;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+}
+
+.link-effect:hover:after { 
+  width: 100%; 
+  left: 0; 
+}
+
+.footer-section {
+  display: flex;
+  justify-content: space-around;
+  padding: 144px;
+}
+
+.footer-section .right-section dl {
+  display: flex;
+  gap: 20px;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.footer-section .right-section dl dt {
+  font-family: 'Noto-normal', sans-serif;
+  color: #fff;
+  width: 100px;
+}
+
+.footer-section .left-section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  color: #fff;
+}
+
+.left-section a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.text-effect {
+  width: 100%;
+  color: rgb(182, 182, 182, 0.2);
+  background: linear-gradient(to right, #fff, #fff) no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-size: 0%;
+  transition: background-size cubic-bezier(.1,.5,.5,1) 0.5s;
 }
