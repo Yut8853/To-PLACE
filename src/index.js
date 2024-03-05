@@ -12,6 +12,7 @@ import './light.js'
 import './carousel.js';
 import './scrollTrigger.js';
 import './video.js';
+import './smooth.js'
 
 const imageUrls = [
   './assets/images/hero-image-01.jpg',
