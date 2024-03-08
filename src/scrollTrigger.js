@@ -39,6 +39,7 @@ textElements.forEach(text => {
       start: 'center 80%',
       end: 'center 20%',
       scrub: true,
+      once: true,
     },
   });
 });

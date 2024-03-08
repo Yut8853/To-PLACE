@@ -80,7 +80,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _studio_freight_lenis__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @studio-freight/lenis */ \"./node_modules/@studio-freight/lenis/dist/lenis.mjs\");\n\nconst lenis = new _studio_freight_lenis__WEBPACK_IMPORTED_MODULE_0__[\"default\"]();\nlenis.on('scroll', e => {\n  console.log(e);\n});\nfunction raf(time) {\n  lenis.raf(time);\n  requestAnimationFrame(raf);\n}\nrequestAnimationFrame(raf);\n\n//# sourceURL=webpack://three-shader-env01/./src/smooth.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _studio_freight_lenis__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @studio-freight/lenis */ \"./node_modules/@studio-freight/lenis/dist/lenis.mjs\");\n\n\n// イージング関数\nfunction easeOutQuart(t) {\n  return 1 - --t * t * t * t;\n}\nconst lenis = new _studio_freight_lenis__WEBPACK_IMPORTED_MODULE_0__[\"default\"]({\n  lerp: .1,\n  // 慣性の強さ\n  duration: 4,\n  // スクロールアニメーションの時間\n  easing: easeOutQuart // イージング関数\n});\nlenis.on('scroll', e => {\n  console.log(e);\n});\nfunction raf(time) {\n  lenis.raf(time);\n  requestAnimationFrame(raf);\n}\nrequestAnimationFrame(raf);\n\n//# sourceURL=webpack://three-shader-env01/./src/smooth.js?");
 
 /***/ }),
 
