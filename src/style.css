@@ -159,6 +159,40 @@ body {
   opacity: 0;
   transform: translateY(-30px);
 }
+
+.scrolldown-animation {
+  position: fixed;
+  bottom: 5vw;
+  right: 5vw;
+}
+
+.scrolldown-bar4 {
+  width: 3px;
+  height: 80px;
+  background: #fff;
+  animation: scrollDown4 2s ease infinite;
+  margin: 0 auto;
+}
+
+@keyframes scrollDown4{
+  0%{
+      transform-origin: top;
+      transform: scaleY(0);
+  }
+  45%{
+      transform-origin: top;
+      transform: scaleY(1);
+  }
+  55%{
+      transform-origin: bottom;
+      transform: scaleY(1);
+  }
+  100%{
+      transform-origin: bottom;
+      transform: scaleY(0);
+  }
+}
+
 header {
   position: fixed;
   top: 0;

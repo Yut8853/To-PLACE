@@ -16,7 +16,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
     clean: true,
-    publicPath: '/topalce/', // この行を追加
+    publicPath: '/', // この行を追加
   },
   module: {
     rules: [
