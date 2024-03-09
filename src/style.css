@@ -86,6 +86,19 @@ body {
   z-index: 1;
   background-image: url('../src/assets/images/bg/logo-bg.svg');
   background-repeat: repeat;
+  animation: moveAnimation 240s infinite linear;
+}
+
+@keyframes moveAnimation {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }
 
 
@@ -151,6 +164,13 @@ body {
   background: #3C3939;
 }
 
+@media screen and (max-width: 768px) {
+  .loader {
+    display: none;
+  }
+  
+}
+
 .gs-anim {
   will-change: transform;
 }
@@ -164,6 +184,12 @@ body {
   position: fixed;
   bottom: 5vw;
   right: 5vw;
+}
+
+.scrolldown-animation > h4 {
+  font-family: 'Corm', sans-serif;
+  margin-bottom: 5px;
+  font-size: 24px;
 }
 
 .scrolldown-bar4 {
@@ -190,6 +216,12 @@ body {
   100%{
       transform-origin: bottom;
       transform: scaleY(0);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .scrolldown-animation {
+    display: none;
   }
 }
 
