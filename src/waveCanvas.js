@@ -33,7 +33,7 @@ function init() {
   camera.lookAt(scene.position);
 
   //set crear color de fondo
-  renderer.setClearColor(0x3C3939, 1);
+  renderer.setClearColor(0x22201E, 1);
 
   const positions = new Float32Array(particlesCount * 10);
 

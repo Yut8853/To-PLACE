@@ -16,7 +16,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
     clean: true,
-    publicPath: '/toplace/', // この行を追加
+    publicPath: '/toplace/color-ver2/', // この行を追加
   },
   module: {
     rules: [
