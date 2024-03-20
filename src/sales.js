@@ -4,6 +4,7 @@ import './sales.css';
 import './start.js';
 import './light2.js'
 import './hamburger.js';
+import './smooth.js'
 
 document.addEventListener('DOMContentLoaded', function () {
     const images = document.querySelectorAll('.hover-image');
