@@ -11,6 +11,7 @@ module.exports = {
   careers: path.resolve(__dirname, './src/careers.js'),
   business: path.resolve(__dirname, './src/business.js'),
   sales: path.resolve(__dirname, './src/sales.js'),
+  policy: path.resolve(__dirname, './src/policy.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -114,6 +115,12 @@ module.exports = {
       template: './src/sales.html',
       minify: true,
       chunks: ['sales'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'policy.html',
+      template: './src/policy.html',
+      minify: true,
+      chunks: ['policy'],
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',

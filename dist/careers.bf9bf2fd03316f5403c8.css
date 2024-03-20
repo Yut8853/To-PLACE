@@ -1,0 +1,129 @@
+/*!**********************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/careers.css ***!
+  \**********************************************************************************************************/
+@charset "UTF-8";
+/* business.css */
+.business-hero, .careers-info {
+  max-width: calc(100% - 360px); /* 180px on each side */
+  margin: 144px auto 0;
+  position: relative;
+  z-index: 9;
+}
+
+.business-hero > h2 {
+  font-family: "Corm", sans-serif;
+  font-size: clamp(2.25rem, 0.825rem + 7.12vw, 9.375rem);
+}
+
+.careers-info > h2 {
+  font-family: "Noto-normal", sans-serif;
+  font-size: clamp(1.5rem, 1.4rem + 0.5vw, 2rem);
+  margin-bottom: 30px;
+}
+
+.careers-info > p {
+  font-family: "Noto-normal", sans-serif;
+  font-size: 16px;
+  line-height: 2.5;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  font-size: 16px;
+}
+
+.breadcrumb li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.breadcrumb li:not(:last-of-type)::after {
+  content: "›";
+  margin: 0 0.6em; /* 記号の左右の余白 */
+  color: #fff; /* 記号の色 */
+}
+
+.business-hero > img {
+  object-fit: cover;
+  width: 100vw;
+  margin: 50px calc(50% - 50vw) auto;
+  height: 550px;
+}
+
+@media screen and (max-width: 768px) {
+  .business-hero, .careers-info {
+    max-width: 100%;
+    margin: 100px auto;
+    padding: 0 20px;
+  }
+  .business-hero > img {
+    height: 300px;
+  }
+}
+.container-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.text-section h2 {
+  font-size: 18px;
+  font-family: "Noto-normal", sans-serif;
+  margin: 50px 0 30px 0;
+}
+
+.text-section ol {
+  font-size: 16px;
+  line-height: 2.5;
+  font-family: "Noto-normal", sans-serif;
+  margin: 30px 0;
+  list-style: decimal inside;
+}
+
+.text-section h3 {
+  font-size: 16px;
+  font-family: "Noto-normal", sans-serif;
+}
+
+.text-section p {
+  font-size: 16px;
+  line-height: 2.5;
+  font-family: "Noto-normal", sans-serif;
+  margin-bottom: 30px;
+}
+
+.image-section .img {
+  position: relative;
+  width: min(40vw, 900px);
+  padding: 3vw;
+}
+
+.image-section .img .img-container {
+  width: 100%;
+  padding-top: 20%;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-section .img .img-container img {
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+}
+
+.img-right {
+  margin-left: -130px;
+}
+
+@media screen and (max-width: 768px) {
+  .container-section {
+    flex-direction: column;
+  }
+  .text-section p {
+    line-height: 1.5;
+  }
+  .image-section {
+    display: none;
+  }
+}
