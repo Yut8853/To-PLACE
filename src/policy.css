@@ -14,6 +14,23 @@
 .wrapper p {
     font-family: 'Noto-normal', sans-serif;
     font-size: 16px;
-    line-height: 1.5;
+    line-height: 2.5;
     margin-bottom: 30px;
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        max-width: 100%;
+        padding: 0 20px;
+    }
+
+    .wrapper h2 {
+        font-size: 20px;
+    }
+
+    .wrapper p {
+        font-size: 16px;
+        line-height: 1.8;
+    }
+    
 }

@@ -308,6 +308,27 @@ header > h1 {
   transform: translate(-50%, -50%);
 }
 
+@media screen and (max-width: 768px) {
+  .canvas-bg-blur canvas {
+    display: none !important;
+  }
+
+  .canvas-bg-dist {
+    background-image: url('./assets/images/top/sp-hero.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    object-fit: cover;
+    width: 100%;
+    background-position: center;
+    z-index: 9;
+  }
+
+  .canvas-bg-dist canvas {
+    display: none !important;
+  }
+}
+
 .hero-vision {
   position: absolute;
   top: 35%;
