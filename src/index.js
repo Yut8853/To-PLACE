@@ -39,7 +39,7 @@ function onWindowResize() {
   if (!plane) return;
 
   const windowAspect = window.innerWidth / window.innerHeight;
-  const imageAspect = imageAspects[currentIndex]; // 現在の画像のアスペクト比を使用
+  const imageAspect = imageAspects[currentIndex];
 
   renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = windowAspect;
@@ -47,16 +47,19 @@ function onWindowResize() {
 
   if (material) {
     material.uniforms.uPlaneAspect.value = windowAspect;
+    material.uniforms.uImageAspect.value = imageAspect;
   }
 
+  // オブジェクトフィットcoverのような挙動を実現するスケール計算
   if (windowAspect > imageAspect) {
     plane.scale.x = windowAspect / imageAspect;
-    plane.scale.y = 1;
+    plane.scale.y = windowAspect / imageAspect;
   } else {
-    plane.scale.x = 1;
+    plane.scale.x = imageAspect / windowAspect;
     plane.scale.y = imageAspect / windowAspect;
   }
 }
+
 
 async function initializeScene(imageUrls) {
   try {
@@ -78,7 +81,7 @@ async function initializeScene(imageUrls) {
         nextImage: { value: textures[1] },
         disp: { value: dispTexture },
         dispFactor: { value: 0.0 },
-        uImageAspect: { value: window.innerWidth / window.innerHeight },
+        uImageAspect: { value: imageAspects[0] }, // 最初の画像のアスペクト比を初期値として設定
         uPlaneAspect: { value: window.innerWidth / window.innerHeight },
       },
       vertexShader: vertexShaderSource,
@@ -93,22 +96,26 @@ async function initializeScene(imageUrls) {
     window.addEventListener('resize', onWindowResize);
 
     function triggerAnimation() {
-      const nextIndex = (currentIndex + 1) % textures.length;
+      const nextIndex = (currentIndex + 1) % imageUrls.length;
+      const nextImageAspect = imageAspects[nextIndex]; // 次の画像のアスペクト比
+    
       material.uniforms.nextImage.value = textures[nextIndex];
-
+      material.uniforms.uImageAspect.value = nextImageAspect; // 次の画像に合わせてuImageAspectを更新
+    
       gsap.to(material.uniforms.dispFactor, {
         value: 1,
         duration: 1,
         ease: "power2.inOut",
         onComplete: () => {
           material.uniforms.currentImage.value = textures[nextIndex];
-          material.uniforms.nextImage.value = textures[(nextIndex + 1) % textures.length];
+          material.uniforms.nextImage.value = textures[(nextIndex + 1) % imageUrls.length];
           material.uniforms.dispFactor.value = 0;
           currentIndex = nextIndex;
           updateImage(currentIndex); // Update the image based on currentIndex
         }
       });
     }
+    
 
     setInterval(triggerAnimation, 8000);
 

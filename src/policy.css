@@ -1,0 +1,6 @@
+.wrapper {
+    max-width: calc(100% - 360px); /* 180px on each side */
+    margin: 144px auto 0;
+    position: relative;
+    z-index: 9;
+}
