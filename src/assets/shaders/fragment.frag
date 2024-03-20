@@ -22,8 +22,8 @@ void main() {
     vec2 uv = fixedUv;
 
     vec4 dispMap = texture2D(disp, uv);
-    vec2 dispValue = dispMap.rg * 2.0 - 1.0;
-    vec2 calcPosition = uv + dispValue * (1.0 - dispFactor) * 0.9;
+    vec2 dispValue = dispMap.rg * 1.0 - 1.0;
+    vec2 calcPosition = uv + dispValue * (1.0 - dispFactor) * 0.2;
 
     vec4 _currentImage = texture2D(currentImage, fixedUv);
     vec4 _nextImage = texture2D(nextImage, calcPosition);

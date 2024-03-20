@@ -51,7 +51,7 @@
 }
 
 @media screen and (max-width: 768px) {
-    .business-hero, .business-info {
+    .business-hero, .careers-info {
         max-width: 100%;
         margin: 100px auto;
         padding: 0 20px;
@@ -118,4 +118,19 @@
 
 .img-right {
     margin-left: -130px;
+}
+
+@media screen and (max-width: 768px) {
+    .container-section {
+        flex-direction: column;
+    }
+
+    .text-section p {
+        line-height: 1.5;
+    }
+    
+    .image-section {
+        display: none;
+    }
+    
 }

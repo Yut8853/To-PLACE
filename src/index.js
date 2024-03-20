@@ -23,18 +23,23 @@ const imageUrls = [
 let renderer, scene, camera, material, plane;
 let currentIndex = 0;
 const dispMapUrl = './assets/textures/fluid.jpg';
+const imageAspects = []; // 画像のアスペクト比を保存する配列
 
-async function loadTexture(url) {
+async function loadTexture(url, index) {
   return new Promise((resolve, reject) => {
-    new THREE.TextureLoader().load(url, resolve, undefined, reject);
+    new THREE.TextureLoader().load(url, texture => {
+      const aspect = texture.image.width / texture.image.height;
+      imageAspects[index] = aspect; // アスペクト比を保存
+      resolve(texture);
+    }, undefined, reject);
   });
 }
 
 function onWindowResize() {
-  if (!plane) return; // planeがundefinedまたはnullの場合、処理を中断
+  if (!plane) return;
 
   const windowAspect = window.innerWidth / window.innerHeight;
-  const imageAspect = 1920 / 1080; // 例: 1920x1080の画像の場合
+  const imageAspect = imageAspects[currentIndex]; // 現在の画像のアスペクト比を使用
 
   renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = windowAspect;
@@ -64,8 +69,8 @@ async function initializeScene(imageUrls) {
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 2;
 
-    const textures = await Promise.all(imageUrls.map(url => loadTexture(url)));
-    const dispTexture = await loadTexture(dispMapUrl);
+    const textures = await Promise.all(imageUrls.map((url, index) => loadTexture(url, index)));
+    const dispTexture = await loadTexture(dispMapUrl);  
 
     material = new THREE.ShaderMaterial({
       uniforms: {

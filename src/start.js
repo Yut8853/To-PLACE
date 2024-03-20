@@ -52,6 +52,7 @@ export function loader() {
         opacity: 1,
     })
     .to('.hero-vision-bg', {
+        delay: 1,
         duration: .5,
         xPercent: 0,
         opacity: 1,
