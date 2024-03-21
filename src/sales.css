@@ -1,3 +1,7 @@
+* {
+    font-family: 'Noto-normal', sans-serif;
+}
+
 .business-hero, .business-info {
     max-width: calc(100% - 360px); /* 180px on each side */
     margin: 144px auto 0;
@@ -52,6 +56,30 @@
         height: 300px;
     }
     
+}
+
+figure {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    filter: grayscale(100%);
+    transition: filter 0.5s ease-in-out;
+}
+
+figure:hover {
+    filter: grayscale(0%);
+}
+
+figure > img {
+    width: 100%;
+    max-width: 100%;
+    transform-origin: center;
+    transition: transform 0.5s ease-in-out;  
+}
+
+figure:hover > img {
+    transform: scale(1.1);
+
 }
 
 .pagelink {

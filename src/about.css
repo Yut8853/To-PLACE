@@ -1,5 +1,7 @@
 /* about.css */
-
+* {
+    font-family: 'Noto-normal', sans-serif;
+}
 
 .business-hero, .about-info, .about-info2 {
     max-width: calc(100% - 360px); /* 180px on each side */
