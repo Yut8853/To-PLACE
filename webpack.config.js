@@ -18,7 +18,7 @@ module.exports = {
     filename: '[name].[contenthash].js',
     clean: true,
     // publicPath: '/', 
-    publicPath: '/toplace/', 
+    publicPath: '/', 
   },
   module: {
     rules: [
