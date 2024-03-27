@@ -25,14 +25,22 @@
   <!-- Favicon -->
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
-<body>
-  <div id="loading-screen" style="position: fixed; width: 100vw; height: 100vh; background: black; z-index: 999999; display: flex; justify-content: center; align-items: center; color: white;">
+<body class="no-scroll">
+  <div id="loading-screen" style="position: fixed; width: 100vw; height: 100vh; background: black; z-index: 9999999; display: flex; justify-content: center; align-items: center; color: white;">
     <div id="loading-text">Loading... 0%</div>
 </div>
 
   <div class="container">
-    <button id="music-on">音楽ON</button>
-    <button id="music-off">音楽OFF</button>
+    <div class="btn-wrapper">
+      <h1>
+        <img src="./assets/images/logo.svg" alt="TO PLACE株式会社">
+        TO PLACE
+      </h1>
+      <div class="btn-wrapper-inner">
+        <button id="music-on">音楽ON</button>
+        <button id="music-off">音楽OFF</button>
+      </div>
+    </div>
 
     <div class="gradient-container">
       <div class="gradient-canvas" id="color-base">

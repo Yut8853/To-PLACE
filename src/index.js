@@ -22,6 +22,14 @@ const imageUrls = [
   './assets/images/hero-image-03.jpg',
 ];
 
+export function disableScroll() {
+  document.body.classList.add("no-scroll");
+}
+
+export function enableScroll() {
+  document.body.classList.remove("no-scroll");
+}
+
 let renderer, scene, camera, material, plane;
 let currentIndex = 0;
 const dispMapUrl = './assets/textures/fluid.jpg';

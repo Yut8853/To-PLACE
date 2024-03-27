@@ -24,48 +24,111 @@ html{-webkit-text-size-adjust:100%;box-sizing:border-box;-moz-tab-size:4;tab-siz
   font-display: swap;
 }
 
+.no-scroll {
+  overflow: hidden;
+}
+
 
 /* ミュージック再生画面 */
 .container {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+  overflow: hidden;
   position: relative;
-  z-index: 99999;
 }
 
-
-.container #music-on {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: #fff;
+.btn-wrapper {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+  gap: 20px;
   position: absolute;
-  top: 50%;
-  right: 40%;
-  z-index: 999999;
 }
 
-.container #music-off {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: #fff;
+.btn-wrapper > h1 {
+  font-family: 'Aboreto', sans-serif;
+  font-size: 36px;
+  color: #fff;
+  background-color: transparent;
   display: flex;
-  justify-content: center;
+  gap: 10px;
   align-items: center;
-  cursor: pointer;
-  position: absolute;
+  justify-content: center;
+  
   top: 50%;
-  left: 40%;
-  z-index: 999999;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999998;
+}
+
+.btn-wrapper-inner {
+  display: flex;
+  gap: 20px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999998;
+}
+
+#music-on {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  text-align: center;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.6);
+  transition: background 0.2s, color 0.2s;
+}
+
+#music-on:before {
+  color: white;
+  font-size: 40px;
+  line-height: 90px;
+}
+
+#music-on:after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  padding: 7px;
+  box-shadow: 0 0 0 4px #fff;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  opacity: 0;
+  transition: transform 1.2s, opacity 1.2s;
+  transform: scale(1.8);
+}
+
+#music-on:hover {
+  background: white;
+  color: #41ab6b;
+  border: 2px solid #41ab6b;
+  transition: .6s;
+  scale: 1.1;
+}
+
+#music-off {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.2s, color 0.2s;
+}
+
+#music-off:hover {
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px solid #fff;
+  transition: .6s;
+  scale: 1.1;
+
 }
 
 .gradient-container {
@@ -73,7 +136,7 @@ html{-webkit-text-size-adjust:100%;box-sizing:border-box;-moz-tab-size:4;tab-siz
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: 99999;
+  z-index: 999999;
 }
 
 .gradient-canvas {
@@ -85,6 +148,7 @@ html{-webkit-text-size-adjust:100%;box-sizing:border-box;-moz-tab-size:4;tab-siz
   filter: blur(50px);
   transition-property: all;
   transition-duration: 6s;
+  overflow: hidden;
 }
 
 .blobs-container {
@@ -278,7 +342,7 @@ body {
   top: 0;
   left: 0;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 99999;
   transition: .1s;
   display: flex;
   justify-content: center;
@@ -394,14 +458,14 @@ header > h1 {
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: -50;
+  z-index: -1;
 }
 
 .canvas-bg-dist {
   position: relative;
   width: 100vw;
   height: 100vh;
-  z-index: 1;
+  z-index: 9999;
 }
 
 .canvas-bg-dist > canvas {
@@ -424,7 +488,7 @@ header > h1 {
     object-fit: cover;
     width: 100%;
     background-position: center;
-    z-index: 9;
+    z-index: 9999;
   }
 
   .canvas-bg-dist canvas {
@@ -534,7 +598,6 @@ header > h1 {
 .menu-bg > nav > ul {
   display: flex;
   flex-direction: column;
-  font-size: clamp(1.5rem, -0.075rem + 7.88vw, 9.375rem);
   color: #fff;
 }
 
@@ -547,6 +610,7 @@ header > h1 {
   text-decoration: none;
   color: #22201E;
   width: 100%;
+  font-size: clamp(1.5rem, -0.075rem + 7.88vw, 9.375rem);
 }
 
 [class*="text-stroke-fill-"]:before, [class*="text-fill-"]:before {

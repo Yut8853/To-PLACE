@@ -62,8 +62,4 @@ export function loader() {
 
 }
 
-window.addEventListener('DOMContentLoaded', ()=> {
-    setTimeout(() => {
-        loader();
-    }, 100);
-})
+
