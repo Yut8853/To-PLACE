@@ -28,12 +28,15 @@ html{-webkit-text-size-adjust:100%;box-sizing:border-box;-moz-tab-size:4;tab-siz
 /* ミュージック再生画面 */
 .container {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 99999;
 }
+
 
 .container #music-on {
   width: 100px;
@@ -47,7 +50,7 @@ html{-webkit-text-size-adjust:100%;box-sizing:border-box;-moz-tab-size:4;tab-siz
   position: absolute;
   top: 50%;
   right: 40%;
-  z-index: 99999;
+  z-index: 999999;
 }
 
 .container #music-off {
@@ -62,7 +65,7 @@ html{-webkit-text-size-adjust:100%;box-sizing:border-box;-moz-tab-size:4;tab-siz
   position: absolute;
   top: 50%;
   left: 40%;
-  z-index: 99999;
+  z-index: 999999;
 }
 
 .gradient-container {
@@ -85,7 +88,7 @@ html{-webkit-text-size-adjust:100%;box-sizing:border-box;-moz-tab-size:4;tab-siz
 }
 
 .blobs-container {
-  position: relavtive;
+  position: relative;
   width: 100%;
   height: 100%;
 }
@@ -486,17 +489,17 @@ header > h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1; /* 必要に応じて調整 */
+  z-index: 9999; /* 必要に応じて調整 */
 }
 
 .overlay-white {
   background: #fff;
-  z-index: 2; /* 白いオーバーレイが最前面に来るように */
+  z-index: 10000; /* 白いオーバーレイが最前面に来るように */
 }
 
 .overlay-white2 {
   background: #fff;
-  z-index: 2; /* 白いオーバーレイが最前面に来るように */
+  z-index: 10000; /* 白いオーバーレイが最前面に来るように */
 }
 
 .overlay-red {

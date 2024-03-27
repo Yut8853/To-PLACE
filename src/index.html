@@ -26,17 +26,21 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
+  <div id="loading-screen" style="position: fixed; width: 100vw; height: 100vh; background: black; z-index: 999999; display: flex; justify-content: center; align-items: center; color: white;">
+    <div id="loading-text">Loading... 0%</div>
+</div>
+
   <div class="container">
     <button id="music-on">音楽ON</button>
-<button id="music-off">音楽OFF</button>
+    <button id="music-off">音楽OFF</button>
 
     <div class="gradient-container">
       <div class="gradient-canvas" id="color-base">
         <div class="blobs-container">
-          <div class="blob" id="color-0">
-          <div class="blob" id="color-1">
-          <div class="blob" id="color-2">
-          <div class="blob" id="color-3">
+          <div class="blob" id="color-0"></div>
+          <div class="blob" id="color-1"></div>
+          <div class="blob" id="color-2"></div>
+          <div class="blob" id="color-3"></div>
         </div>
       </div>
     </div>

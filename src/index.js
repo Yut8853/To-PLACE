@@ -26,12 +26,44 @@ let renderer, scene, camera, material, plane;
 let currentIndex = 0;
 const dispMapUrl = './assets/textures/fluid.jpg';
 const imageAspects = []; // 画像のアスペクト比を保存する配列
+let loadedResources = 0; // 読み込み完了したリソースの数
+const totalResources = imageUrls.length + 1; // 全リソース数 (画像 + dispMap)
+let currentPercent = 0; // 現在の読み込みパーセンテージ
+let targetPercent = 0; // 目標パーセンテージ
+
+// ローディング進行状況のテキストを更新する関数
+function updateLoadingScreen(loaded, total) {
+  targetPercent = (loaded / total) * 100;
+  animateLoadingText(); // カウントアップを開始または続行
+}
+
+// ゆっくりと不規則にカウントアップするアニメーション
+function animateLoadingText() {
+  if (currentPercent < targetPercent) {
+    currentPercent += Math.random() * 5; // 0から5%のランダムな値を加算
+    currentPercent = Math.min(currentPercent, targetPercent); // targetPercentを超えないように
+    document.getElementById('loading-text').innerText = `Loading... ${Math.floor(currentPercent)}%`;
+    
+    requestAnimationFrame(animateLoadingText); // 次のフレームで再度呼び出し
+  } else if (loadedResources >= totalResources) {
+    // 全リソースの読み込みが完了したらローディング画面を非表示にする
+    gsap.to('#loading-screen', {
+      opacity: 0,
+      duration: 0.5,
+      onComplete: () => {
+        document.getElementById('loading-screen').style.display = 'none';
+      }
+    });
+  }
+}
 
 async function loadTexture(url, index) {
   return new Promise((resolve, reject) => {
     new THREE.TextureLoader().load(url, texture => {
       const aspect = texture.image.width / texture.image.height;
       imageAspects[index] = aspect; // アスペクト比を保存
+      loadedResources++; // 読み込み完了したリソースをカウント
+      updateLoadingScreen(loadedResources, totalResources); // ローディング画面を更新
       resolve(texture);
     }, undefined, reject);
   });
@@ -68,14 +100,15 @@ async function initializeScene(imageUrls) {
     renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     const container = document.querySelector('.canvas-bg-dist');
-    container.appendChild(renderer.domElement); // Ensure this matches your actual HTML structure
+    container.appendChild(renderer.domElement);
 
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 2;
 
+    // 画像テクスチャを読み込む
     const textures = await Promise.all(imageUrls.map((url, index) => loadTexture(url, index)));
-    const dispTexture = await loadTexture(dispMapUrl);  
+    const dispTexture = await loadTexture(dispMapUrl);
 
     material = new THREE.ShaderMaterial({
       uniforms: {
@@ -134,4 +167,6 @@ async function initializeScene(imageUrls) {
   }
 }
 
-initializeScene(imageUrls).catch(error => console.error(error));
+document.addEventListener('DOMContentLoaded', () => {
+  initializeScene(imageUrls).catch(error => console.error(error));
+});
