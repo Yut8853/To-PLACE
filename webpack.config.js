@@ -2,7 +2,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 const path = require('path');
-const { start } = require('repl');
 
 module.exports = {
   mode: 'production',
@@ -107,7 +106,7 @@ module.exports = {
       filename: 'index.html',
       template: './src/index.html',
       minify: true,
-      chunks: ['main', 'carousel', 'cookie', 'video', 'hamburger', 'light', 'music', 'smooth', 'start', 'waveCanvas', 'secondCanvas','scrollTrigger'],
+      chunks: ['main','video', 'carousel', 'cookie', 'hamburger', 'light', 'music', 'smooth', 'start', 'waveCanvas','scrollTrigger'],
     }),
     new HtmlWebpackPlugin({
       filename: 'about.html',
@@ -150,10 +149,28 @@ module.exports = {
       ],
     }),
   ],
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        minSize: 30000,
+        maxSize: 500000,
+        minChunks: 1,
+        maxAsyncRequests: 5,
+        maxInitialRequests: 3,
+        automaticNameDelimiter: '~',
+        name: false,
+        cacheGroups: {
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10
+          },
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true
+          }
+        }
+      }  
   },
   performance: {
     hints: false,

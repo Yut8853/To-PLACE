@@ -64,14 +64,3 @@ window.addEventListener('DOMContentLoaded', ()=> {
     }, 100);
 })
 
-const element = document.querySelector('.canvas-bg-dist');
-if (element) {
-    // 要素が存在する場合にのみ実行するコード
-    element.appendChild(anotherElement);
-}
-const waveContent = document.querySelector(".wave-content");
-if (waveContent) {
-    waveContent.appendChild(a.domElement);
-} else {
-    console.error("'.wave-content' element not found");
-}
