@@ -2,11 +2,28 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 const path = require('path');
+const { start } = require('repl');
 
 module.exports = {
   mode: 'production',
   entry: {
   main:  path.resolve(__dirname, './src/index.js'),
+  blob:  path.resolve(__dirname, './src/blob.js'),
+  carousel:  path.resolve(__dirname, './src/carousel.js'),
+  cookie:  path.resolve(__dirname, './src/cookie.js'),
+  video:  path.resolve(__dirname, './src/video.js'),
+  hamburger:  path.resolve(__dirname, './src/hamburger.js'),
+  light:  path.resolve(__dirname, './src/light.js'),
+  light2:  path.resolve(__dirname, './src/light2.js'),
+  music:  path.resolve(__dirname, './src/music.js'),
+  smooth:  path.resolve(__dirname, './src/smooth.js'),
+  policy:  path.resolve(__dirname, './src/policy.js'),
+  start:  path.resolve(__dirname, './src/start.js'),
+  start2:  path.resolve(__dirname, './src/start2.js'),
+  waveCanvas:  path.resolve(__dirname, './src/waveCanvas.js'),
+  secondCanvas:  path.resolve(__dirname, './src/secondCanvas.js'),
+  scrollTrigger:  path.resolve(__dirname, './src/scrollTrigger.js'),
+
   about: path.resolve(__dirname, './src/about.js'),
   careers: path.resolve(__dirname, './src/careers.js'),
   business: path.resolve(__dirname, './src/business.js'),
@@ -90,37 +107,37 @@ module.exports = {
       filename: 'index.html',
       template: './src/index.html',
       minify: true,
-      chunks: ['main'],
+      chunks: ['main', 'carousel', 'cookie', 'video', 'hamburger', 'light', 'music', 'smooth', 'start', 'waveCanvas', 'secondCanvas','scrollTrigger'],
     }),
     new HtmlWebpackPlugin({
       filename: 'about.html',
       template: './src/about.html',
       minify: true,
-      chunks: ['about'],
+      chunks: ['about', 'hamburger', 'light', 'music', 'smooth', 'start'],
     }),
     new HtmlWebpackPlugin({
       filename: 'careers.html',
       template: './src/careers.html',
       minify: true,
-      chunks: ['careers'],
+      chunks: ['careers', 'hamburger', 'light', 'music', 'smooth', 'start'],
     }),
     new HtmlWebpackPlugin({
       filename: 'business.html',
       template: './src/business.html',
       minify: true,
-      chunks: ['business'],
+      chunks: ['business', 'hamburger', 'light', 'music', 'smooth', 'start'],
     }),
     new HtmlWebpackPlugin({
       filename: 'sales.html',
       template: './src/sales.html',
       minify: true,
-      chunks: ['sales'],
+      chunks: ['sales', 'hamburger', 'light2', 'music', 'smooth', 'start'],
     }),
     new HtmlWebpackPlugin({
       filename: 'policy.html',
       template: './src/policy.html',
       minify: true,
-      chunks: ['policy'],
+      chunks: ['policy', 'hamburger', 'light', 'music', 'smooth', 'start'],
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',

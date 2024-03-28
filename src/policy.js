@@ -6,7 +6,7 @@ import './light.js'
 import './hamburger.js';
 import './smooth.js'
 import './music.js'
-import music from './assets/videos/143_BPM120.mp3';
+import music from './assets/videos/loops_7.wav';
 
 
 document.addEventListener('DOMContentLoaded', () => {

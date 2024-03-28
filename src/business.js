@@ -1,12 +1,12 @@
 import './reset.css';
 import './style.css';
 import './business.css';
-import './start2.js';
 import './light.js'
 import './hamburger.js';
 import './smooth.js'
 import './music.js'
-import music from './assets/videos/143_BPM120.mp3';
+import gsap from 'gsap';
+import music from './assets/videos/loops_7.wav';
 
 console.log('business.js')
 
@@ -32,11 +32,46 @@ document.addEventListener('DOMContentLoaded', () => {
         // 再生位置を定期的に更新
         setInterval(() => {
             localStorage.setItem('currentPosition', audio.currentTime.toString());
-        }, 10000); // 1秒ごとに更新
+        }, 100); // 1秒ごとに更新
     }
 });
 
+export function loader2() {
+    let loadItem = document.querySelectorAll('.loader__bg');
+    let header = document.querySelector('header');
+    
+    const tl = gsap.timeline()
+    gsap.set(loadItem,{
+        transformOrigin: '100% 100%',
+        scaleX: 1
+    }),
+    tl.to(loadItem,{
+        scaleX: 0,
+        transformOrigin: '0% 0%',
+        stagger: 0.07,
+        ease: 'power4.inOut'
+    })
+    tl.to(header, {
+        y: 0,
+        duration: 1,
+        ease: 'power4.inOut'
+    })
+}
 
+window.addEventListener('DOMContentLoaded', ()=> {
     setTimeout(() => {
         loader2();
     }, 100);
+})
+
+const element = document.querySelector('.canvas-bg-dist');
+if (element) {
+    // 要素が存在する場合にのみ実行するコード
+    element.appendChild(anotherElement);
+}
+const waveContent = document.querySelector(".wave-content");
+if (waveContent) {
+    waveContent.appendChild(a.domElement);
+} else {
+    console.error("'.wave-content' element not found");
+}

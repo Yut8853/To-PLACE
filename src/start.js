@@ -2,6 +2,7 @@ import gsap from 'gsap';
 
 export function loader() {
     let loadItem = document.querySelectorAll('.loader__bg');
+    let header = document.querySelector('header');
     
     const tl = gsap.timeline()
     gsap.set(loadItem,{
@@ -59,7 +60,18 @@ export function loader() {
         width: '100%',
         ease: "cubic-bezier(0.961, 0.03, 0.961)",
     })
-
+    .to(header, {
+        duration: 1,
+        y: 0,
+        opacity: 1,
+        ease: 'power4.inOut',
+    })
 }
+
+window.addEventListener('DOMContentLoaded', ()=> {
+    setTimeout(() => {
+        loader();
+    }, 100);
+})
 
 

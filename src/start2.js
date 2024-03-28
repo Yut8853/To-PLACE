@@ -14,7 +14,6 @@ export function loader2() {
         stagger: 0.07,
         ease: 'power4.inOut'
     })
-
 }
 
 

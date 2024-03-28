@@ -15,6 +15,7 @@ import './scrollTrigger.js';
 import './video.js';
 import './smooth.js'
 import './cookie.js';
+import './secondCanvas.js'
 
 const imageUrls = [
   './assets/images/hero-image-01.jpg',
