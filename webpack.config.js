@@ -69,12 +69,14 @@
           {
             test: /\.js$/,
             exclude: /node_modules/,
-            use: {
-              loader: 'babel-loader',
-              options: {
-                sourceMap: !isProduction,
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  sourceMap: true, // このオプションは 'use' 内で 'loader' の設定と一緒に定義されるべきです
+                },
               },
-            },
+            ],
           },
           {
             test: /\.(png|jpe?g|gif|svg|woff2?|eot|ttf|otf)$/,
@@ -114,11 +116,13 @@
           {
             test: /\.(glsl|vs|fs|vert|frag)$/,
             use: [
-              'raw-loader', // GLSLファイルを文字列として読み込む
+              {
+                loader: 'raw-loader',
+                options: {
+                  sourceMap: !isProduction,
+                },
+              },
             ],
-            options: {
-              sourceMap: true,
-            },
           },
         ],
       },
