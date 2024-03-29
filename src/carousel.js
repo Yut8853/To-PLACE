@@ -115,5 +115,5 @@ One raf to rule them all
 --------------------*/
 requestAnimationFrame(function rafLoop() {
   requestAnimationFrame(rafLoop);
-  scroll.refresh();
+  // scroll.refresh();
 });

@@ -1,4 +1,5 @@
     import gsap from 'gsap';
+    import { manageInitialAnimation } from './index.js';
     import { musicOffButton, musicOnButton } from './music.js'
 
     export function loader() {
@@ -68,12 +69,22 @@
             ease: 'power4.inOut',
         })
     }
-// 必要に応じて、ページ読み込み時にもアニメーションを初期化
-window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(loader, 100);
-    // musicBtnOn と musicBtnOff ボタンにイベントリスナーを設定
-    musicOnButton.addEventListener('click', loader);
-    musicOffButton.addEventListener('click', loader);
-});
+    document.addEventListener('DOMContentLoaded', () => {
+        manageInitialAnimation(); // 初回訪問のチェックとアニメーションの制御
+        setTimeout(() => {
+          // 対象の要素が存在することを確認してからloader関数を実行
+          if (document.querySelector('.loader__bg')) {
+            loader();
+          }
+        }, 100);
+      
+        // musicOnButtonとmusicOffButtonが存在することを確認してからイベントリスナーを設定
+        if (musicOnButton) {
+          musicOnButton.addEventListener('click', loader);
+        }
+        if (musicOffButton) {
+          musicOffButton.addEventListener('click', loader);
+        }
+      });
 
 

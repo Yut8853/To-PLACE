@@ -48,7 +48,7 @@ function updateLoadingScreen(loaded, total) {
 
 // ゆっくりと不規則にカウントアップするアニメーション
 function animateLoadingText() {
-  if (currentPercent < targetPercent) {
+  if (currentPercent < targetPercent && window.location.pathname === '/') {
     currentPercent += Math.random() * 5; // 0から5%のランダムな値を加算
     currentPercent = Math.min(currentPercent, targetPercent); // targetPercentを超えないように
     document.getElementById('loading-text').innerText = `Loading... ${Math.floor(currentPercent)}%`;
@@ -60,7 +60,12 @@ function animateLoadingText() {
       opacity: 0,
       duration: 0.5,
       onComplete: () => {
-        document.getElementById('loading-screen').style.display = 'none';
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+          loadingScreen.style.display = 'none';
+        } else {
+          console.log('loading-screen が見つかりません。');
+        }
       }
     });
   }
@@ -179,3 +184,39 @@ async function initializeScene(imageUrls) {
 document.addEventListener('DOMContentLoaded', () => {
   initializeScene(imageUrls).catch(error => console.error(error));
 });
+
+// 要素の表示/非表示を切り替える関数
+const toggleVisibility = (selector, isVisible) => {
+  const elements = document.querySelectorAll(selector);
+  elements.forEach(element => {
+    if (isVisible) {
+      element.classList.remove('hidden');
+    } else {
+      element.classList.add('hidden');
+    }
+  });
+};
+
+// 初回訪問のチェックとアニメーションの制御
+export const manageInitialAnimation = () => {
+  const animationShown = localStorage.getItem('animationShown');
+  if (!animationShown) {
+    // 初回訪問時にのみ表示する要素
+    toggleVisibility('#loading-screen', true);
+    toggleVisibility('.container', true);
+    toggleVisibility('.gradient-container', true);
+
+    window.onload = () => {
+      toggleVisibility('#loading-screen', false);
+    };
+
+    localStorage.setItem('animationShown', 'true');
+  } else {
+    // 2回目以降の訪問時には非表示にする要素
+    toggleVisibility('#loading-screen', false);
+    toggleVisibility('.gradient-container', false);
+    toggleVisibility('.container', false);
+  }
+};
+
+document.addEventListener('DOMContentLoaded', manageInitialAnimation);
