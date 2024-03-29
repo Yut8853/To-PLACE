@@ -1,49 +1,54 @@
-import { animateBlobs } from './blob.js';
-import { heyMelody } from './blob.js';
-import { disableScroll, enableScroll } from './index.js';
-import { loader } from './start.js';
-import music from './assets/videos/loops_7.wav';
+    import { animateBlobs } from './blob.js';
+    import { heyMelody } from './blob.js';
+    import { disableScroll, enableScroll } from './index.js';
+    import { loader } from './start.js';
+    import music from './assets/videos/loops_7.wav';
 
-export let musicOnButton = document.getElementById('music-on');
-export let musicOffButton = document.getElementById('music-off');
-let audio = new Audio(music);
-audio.loop = true;
-audio.volume = 0.2;
+    let musicOnButton = document.querySelector('#music-on');
+    let musicOffButton = document.querySelector('#music-off');
 
-// 初期のブロブ色を設定
-animateBlobs();
-heyMelody();
-disableScroll();
+    // DOMContentLoaded イベントリスナー内で変数を初期化する
+    document.addEventListener('DOMContentLoaded', () => {
 
-const isPlaying = localStorage.getItem('isPlaying') === 'true';
-if (isPlaying) {
-    audio.play();
-}
+        let audio = new Audio(music); // 音楽ファイルを読み込む
 
-// 音楽ONボタンの処理
-    musicOnButton.addEventListener('click', () => {
-    audio.play();
-    // 音楽再生画面を非表示にする
-    document.querySelector('.container').style.display = 'none';
-    setInterval(() => {
-        // audio.currentTimeで現在の再生位置（秒数）を取得し、localStorageに保存
-        localStorage.setItem('currentPosition', audio.currentTime.toString());
-    }, 10000); // 例えば1秒ごとに更新
+        // 初期のブロブ色を設定
+        animateBlobs();
+        heyMelody();
+        disableScroll();
 
-    loader();
-    enableScroll()
-});
+        // localStorage から再生状態を取得し、再生中なら音楽を再生
+        const isPlaying = localStorage.getItem('isPlaying') === 'true';
+        if (isPlaying) {
+            audio.play();
+        }
 
-// 音楽OFFボタンの処理
-    musicOffButton.addEventListener('click', () => {
-    if (!audio.paused) {
-        audio.pause();
-        audio.currentTime = 0; // 再生位置を最初に戻す
-    }
-    // 音楽再生画面を非表示にする
-    document.querySelector('.container').style.display = 'none';
-    localStorage.setItem('isPlaying', 'false');
+        // 音楽ONボタンのクリックイベントリスナーを追加
+        musicOnButton.addEventListener('click', () => {
+            audio.play(); // 音楽を再生
+            document.querySelector('.container').style.display = 'none'; // 再生画面を非表示にする
 
-    loader();
-    enableScroll()
-});
+            // 10秒ごとに現在の再生位置を localStorage に保存
+            setInterval(() => {
+                localStorage.setItem('currentPosition', audio.currentTime.toString());
+            }, 10000);
+
+            loader(); // ローダーを表示
+            enableScroll(); // スクロールを有効にする
+        });
+
+        // 音楽OFFボタンのクリックイベントリスナーを追加
+        musicOffButton.addEventListener('click', () => {
+            if (!audio.paused) {
+                audio.pause(); // 音楽を一時停止
+                audio.currentTime = 0; // 再生位置を初期化
+            }
+            document.querySelector('.container').style.display = 'none'; // 再生画面を非表示にする
+            localStorage.setItem('isPlaying', 'false'); // 再生状態を localStorage に保存
+
+            loader(); // ローダーを表示
+            enableScroll(); // スクロールを有効にする
+        });
+    });
+
+    export { musicOnButton, musicOffButton };

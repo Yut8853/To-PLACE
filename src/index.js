@@ -4,8 +4,8 @@ import * as THREE from 'three';
 import { gsap } from 'gsap';
 import vertexShaderSource from './assets/shaders/vertex.vert';
 import fragmentShaderSource from './assets/shaders/fragment.frag';
-import './music.js'
 import './start.js';
+import './music.js'
 import { setupScene, updateImage } from './secondCanvas.js';
 import './waveCanvas.js';
 import './hamburger.js';
@@ -18,9 +18,9 @@ import './cookie.js';
 import './secondCanvas.js'
 
 const imageUrls = [
-  './assets/images/hero-image-01.jpg',
-  './assets/images/hero-image-02.jpg',
-  './assets/images/hero-image-03.jpg',
+  './assets/images/top/hero-image-01.webp',
+  './assets/images/top/hero-image-02.webp',
+  './assets/images/top/hero-image-03.webp',
 ];
 
 export function disableScroll() {

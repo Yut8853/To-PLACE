@@ -21,11 +21,15 @@ const waveFrequencyY = 0.2;
 const waveAmplitude = 155;
 const waveSpeed = 0.05;
 
-function init() {
+function wave() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   const container = document.querySelector('.wave-content');
-  container.appendChild(renderer.domElement);
+  if (container) {
+    container.appendChild(renderer.domElement);
+  } else {
+    console.error('Container element not found.');
+  }
 
   camera.position.x = 350;
   camera.position.y = 150;
@@ -86,4 +90,4 @@ function render() {
   count += waveSpeed;
 }
 
-init();
+wave();
