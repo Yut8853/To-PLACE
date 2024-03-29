@@ -2,7 +2,7 @@
 import './reset.css';
 import './style.css';
 import './about.css';
-import './start2.js';
+import './start.js';
 import './light.js'
 import './hamburger.js';
 import './smooth.js'

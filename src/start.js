@@ -4,7 +4,6 @@
 
     export function loader() {
         let loadItem = document.querySelectorAll('.loader__bg');
-        let header = document.querySelector('header');
         
         const tl = gsap.timeline()
         gsap.set(loadItem,{
@@ -61,12 +60,6 @@
             opacity: 1,
             width: '100%',
             ease: "cubic-bezier(0.961, 0.03, 0.961)",
-        })
-        .to(header, {
-            duration: 1,
-            y: 0,
-            opacity: 1,
-            ease: 'power4.inOut',
         })
     }
     document.addEventListener('DOMContentLoaded', () => {
