@@ -1,25 +1,20 @@
     import gsap from 'gsap';
+    import { disableScroll, enableScroll } from './index.js';
     import { manageInitialAnimation } from './index.js';
-    import { musicOffButton, musicOnButton } from './music.js'
+    import { audio } from './music.js'
 
     export function loader() {
         let loadItem = document.querySelectorAll('.loader__bg'); // loadItemの定義を追加
-
-        const tl = gsap.timeline({
-            onComplete: () => {
-                // アニメーションが完了した後に実行する処理
-                document.querySelector('.loading-screen').style.display = 'none'; // 例: ローディング画面を非表示にする
-                // または
-                // document.querySelector('.loading-screen').remove(); // ローディング画面をDOMから削除する
-            }
-        });
-        
-        gsap.set(loadItem, {
+    
+        // アニメーションの定義を開始
+        const tl = gsap.timeline();
+    
+        // アニメーションの初期状態をTimeline内で設定
+        tl.set(loadItem, {
             transformOrigin: '100% 100%',
             scaleX: 1
-        });
-
-        tl.to(loadItem, {
+        })
+        .to(loadItem, {
             scaleX: 0,
             transformOrigin: '0% 0%',
             stagger: 0.07,
@@ -69,38 +64,34 @@
             opacity: 1,
             width: '100%',
             ease: "cubic-bezier(0.961, 0.03, 0.961)",
-        })
+        });
     }
+    
     document.addEventListener('DOMContentLoaded', () => {
         manageInitialAnimation(); // 初回訪問のチェックとアニメーションの制御
-        setTimeout(() => {
-          // 対象の要素が存在することを確認してからloader関数を実行
-          if (document.querySelector('.loader__bg')) {
-            loader();
-          }
-        }, 100);
-      
-        // musicOnButtonとmusicOffButtonが存在することを確認してからイベントリスナーを設定
-// 音楽ONボタンのイベントリスナー
-if (musicOnButton) {
-    musicOnButton.addEventListener('click', () => {
-        audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
-        localStorage.setItem('isPlaying', 'true');
-        disableScroll();
-    });
-}
-
-// 音楽OFFボタンのイベントリスナー
-if (musicOffButton) {
-    musicOffButton.addEventListener('click', () => {
-        if (!audio.paused) {
+    
+        const musicOnButton = document.getElementById('music-on');
+        const musicOffButton = document.getElementById('music-off');
+        
+        const hideMusicSelectionAndStartAnimation = () => {
+            document.querySelector('.container').style.display = 'none'; // 音楽選択画面を非表示に
+            loader(); // 指定されたGSAPアニメーションを実行
+        };
+        
+        musicOnButton.addEventListener('click', () => {
+            audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
+            localStorage.setItem('isPlaying', 'true');
+            disableScroll();
+            hideMusicSelectionAndStartAnimation();
+        });
+        
+        musicOffButton.addEventListener('click', () => {
             audio.pause();
-        }
-        audio.currentTime = 0;
-        localStorage.setItem('isPlaying', 'false');
-        enableScroll();
+            audio.currentTime = 0;
+            localStorage.setItem('isPlaying', 'false');
+            enableScroll();
+            hideMusicSelectionAndStartAnimation();
+        });
     });
-}
-      });
 
 

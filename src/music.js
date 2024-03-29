@@ -8,7 +8,7 @@
     let musicOnButton = null;
     let musicOffButton = null;
 
-    let audio = new Audio(music); // 音楽ファイルを読み込む
+    export let audio = new Audio(music); // 音楽ファイルを読み込む
     
     document.addEventListener('DOMContentLoaded', () => {
         manageInitialAnimation(); // 初回訪問のチェックとアニメーションの制御

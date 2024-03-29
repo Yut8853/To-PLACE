@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 import vertexShaderSource from './assets/shaders/vertex.vert';
 import fragmentShaderSource from './assets/shaders/fragment.frag';
 import './start.js';
-import './music.js'
+import { musicOffButton, musicOnButton } from './music.js'
 import { setupScene, updateImage } from './secondCanvas.js';
 import './waveCanvas.js';
 import './hamburger.js';
@@ -203,19 +203,22 @@ const toggleVisibility = (selector, isVisible) => {
   });
 };
 
+// 初回訪問時に表示するアニメーションをトリガーする関数
+export const showInitialAnimation = () => {
+  toggleVisibility('.loading-screen', true);
+  toggleVisibility('.container', true);
+  toggleVisibility('.gradient-container', true);
+
+  window.onload = () => {
+    toggleVisibility('.loading-screen', false);
+  };
+};
+
 // 初回訪問のチェックとアニメーションの制御
 export const manageInitialAnimation = () => {
   const animationShown = localStorage.getItem('animationShown');
   if (!animationShown) {
-    // 初回訪問時にのみ表示する要素
-    toggleVisibility('.loading-screen', true);
-    toggleVisibility('.container', true);
-    toggleVisibility('.gradient-container', true);
-
-    window.onload = () => {
-      toggleVisibility('.loading-screen', false);
-    };
-
+    showInitialAnimation();
     localStorage.setItem('animationShown', 'true');
   } else {
     // 2回目以降の訪問時には非表示にする要素
@@ -224,6 +227,17 @@ export const manageInitialAnimation = () => {
     toggleVisibility('.container', false);
   }
 };
+
+// ボタンクリック時にアニメーションを表示する
+if (musicOnButton) {
+    musicOnButton.addEventListener('click', () => {
+        audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
+        localStorage.setItem('isPlaying', 'true');
+        disableScroll();
+        showInitialAnimation(); // ボタンクリックでアニメーションを表示
+    });
+}
+
 
 document.addEventListener('DOMContentLoaded', manageInitialAnimation);
 
