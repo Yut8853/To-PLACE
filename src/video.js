@@ -22,9 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // ビデオ03の要素を作成してページに挿入
         const videoElement3 = createVideoElement(video03);
         videoWrapper.appendChild(videoElement3);
-  } else {
-    console.error('.sticky-image01 element not found');
-  }
+  } 
 });
 
 function createVideoElement(videoSrc) {

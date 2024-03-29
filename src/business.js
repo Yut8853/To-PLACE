@@ -8,3 +8,7 @@ import './smooth.js'
 
 console.log('business.js')
 
+if (document.body.classList.contains('index-page')) {
+    // index.htmlの場合にのみ実行するコード
+    initializeScene(imageUrls);
+}

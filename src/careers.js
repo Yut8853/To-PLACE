@@ -21,6 +21,9 @@ gsap.timeline({
       scrub: true // スクロールに応じて遅れて動くように
     }
   })
-  .fromTo(".img-container img", {y: 0}, {y: -200}); // 画像を垂直方向に200px移動させる
+.fromTo(".img-container img", {y: 0}, {y: -200}); // 画像を垂直方向に200px移動させる
 
- 
+if (document.body.classList.contains('index-page')) {
+  // index.htmlの場合にのみ実行するコード
+  initializeScene(imageUrls);
+} 

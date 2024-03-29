@@ -8,19 +8,22 @@ const shuffle = (arr) => {
 const assignBlobColors = (arr) => {
     [0, 1, 2, 3].forEach((i) => {
         const node = document.getElementById(`color-${i}`);
-        node.style.backgroundColor = arr[i];
+        if (node) { // 存在チェックを追加
+            node.style.backgroundColor = arr[i];
+        }
     });
 };
 
-let can = document.getElementById("color-base");
 let colors = ["#22201E", "#1A1A1A", "#333333", "#4d4d4d", "#aaaaaa"];
 
 export const heyMelody = () => {
-    const baseColor = colors[Math.floor(Math.random() * colors.length)];
-    const blobColors = shuffle(colors.filter((color) => color !== baseColor));
-  
-    can.style.background = baseColor;
-    assignBlobColors(blobColors);
+    const can = document.getElementById("color-base"); // `can` の取得を関数内に移動
+    if (can) { // `can` の存在チェック
+        const baseColor = colors[Math.floor(Math.random() * colors.length)];
+        can.style.background = baseColor; // 背景色の設定
+        const blobColors = shuffle(colors.filter((color) => color !== baseColor));
+        assignBlobColors(blobColors);
+    }
 };
 
 export const animateBlobs = () => {
@@ -44,4 +47,8 @@ export const animateBlobs = () => {
       });
     }
   };
+
+  document.addEventListener('DOMContentLoaded', (event) => {
+    heyMelody();
+});
 

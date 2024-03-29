@@ -260,6 +260,7 @@ body {
   background-image: url('../src/assets/images/bg/logo-bg.svg');
   background-repeat: repeat;
   animation: moveAnimation 240s infinite linear;
+  scroll-behavior: auto;
 }
 
 @keyframes moveAnimation {
@@ -486,7 +487,7 @@ header > h1 {
   }
 
   .canvas-bg-dist {
-    background-image: url('./assets/images/top/sp-hero.jpg');
+    background-image: url('./assets/images/top/sp-hero.webp');
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;

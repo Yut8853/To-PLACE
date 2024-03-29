@@ -15,32 +15,35 @@ const particlesCount = amountX * amountY;
 let particles = 0;
 let count = 0;
 
-// Additional parameters for dynamic waves
 const waveFrequencyX = 0.35;
 const waveFrequencyY = 0.2;
 const waveAmplitude = 155;
 const waveSpeed = 0.05;
 
-function wave() {
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
+document.addEventListener('DOMContentLoaded', (event) => {
   const container = document.querySelector('.wave-content');
-  if (container) {
-    container.appendChild(renderer.domElement);
-  } else {
-    console.error('Container element not found.');
+  if (container !== null) {
+      wave(); // .wave-content が存在する時のみ wave 関数を実行
+  }
+});
+
+function wave() {
+  const container = document.querySelector('.wave-content');
+  if (container === null) {
+      console.log('waveCanvas.js is not executed on this page.');
+      return; // コンテナが存在しない場合はここで処理を中断
   }
 
-  camera.position.x = 350;
-  camera.position.y = 150;
-  camera.position.z = 250;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // ピクセル比の設定を適切に制限
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  container.appendChild(renderer.domElement); // レンダラーのDOM要素をコンテナに追加
+
+  camera.position.set(350, 150, 250);
   camera.lookAt(scene.position);
 
-  //set crear color de fondo
   renderer.setClearColor(0x22201E, 1);
 
-  const positions = new Float32Array(particlesCount * 10);
-
+  const positions = new Float32Array(particlesCount * 3);
   let i = 0;
   for (let ix = 0; ix < amountX; ix++) {
     for (let iy = 0; iy < amountY; iy++) {
@@ -55,17 +58,14 @@ function wave() {
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
 
-  particles = new THREE.Points(geometry); // add material here
-
+  particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0xffffff }));
   scene.add(particles);
 
-  renderer.render(scene, camera);
-  animate();
+  animate(); // アニメーションループを開始
 }
 
 function animate() {
   requestAnimationFrame(animate);
-
   render();
 }
 
@@ -90,4 +90,4 @@ function render() {
   count += waveSpeed;
 }
 
-wave();
+
