@@ -27,11 +27,12 @@
   overflow: hidden;
 }
 
-.hidden {
-  display: none !important;
+.loading-text {
+  font-family: 'Corm', sans-serif;
+  font-size: 48px;
+  color: #fff;
+  padding: 20px;
 }
-
-
 /* ミュージック再生画面 */
 .container {
   width: 100vw;

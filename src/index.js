@@ -46,30 +46,40 @@ function updateLoadingScreen(loaded, total) {
   animateLoadingText(); // カウントアップを開始または続行
 }
 
-// ゆっくりと不規則にカウントアップするアニメーション
 function animateLoadingText() {
-  if (currentPercent < targetPercent && window.location.pathname === '/') {
-    currentPercent += Math.random() * 5; // 0から5%のランダムな値を加算
-    currentPercent = Math.min(currentPercent, targetPercent); // targetPercentを超えないように
-    document.querySelector('.loading-text').innerText = `Loading... ${Math.floor(currentPercent)}%`;
-    
-    requestAnimationFrame(animateLoadingText); // 次のフレームで再度呼び出し
-  } else if (loadedResources >= totalResources) {
-    // 全リソースの読み込みが完了したらローディング画面を非表示にする
-    gsap.to('.loading-screen', {
-      opacity: 0,
-      duration: 0.5,
-      onComplete: () => {
-        const loadingScreen = document.querySelector('.loading-screen');
-        if (loadingScreen) {
-          loadingScreen.style.display = 'none';
-        } else {
-          console.log('loading-screen が見つかりません。');
+  // 現在のページがホームページで、かつロードが完了していない場合のみアニメーションを続行
+  if (window.location.pathname === '/') {
+    if (currentPercent < targetPercent) {
+      // パーセンテージをランダムに増加させる
+      currentPercent += Math.random() * 5; // 0から5%のランダムな値を加算
+      currentPercent = Math.min(currentPercent, targetPercent); // targetPercentを超えないように
+      document.querySelector('.loading-text').innerText = `${Math.floor(currentPercent)}%`;
+      requestAnimationFrame(animateLoadingText); // 次のフレームで再度呼び出し
+    } else if (loadedResources >= totalResources) {
+      // 全リソースの読み込みが完了したらローディング画面をフェードアウト
+      gsap.to('.loading-screen', {
+        opacity: 0,
+        duration: 0.5,
+        onComplete: () => {
+          const loadingScreen = document.querySelector('.loading-screen');
+          if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+            // ローディングが完了したので、不要になったhiddenクラスを削除
+            loadingScreen.classList.remove('hidden');
+          } else {
+            console.error('loading-screen が見つかりません。');
+          }
         }
-      }
-    });
+      });
+    }
   }
 }
+
+// ローディングプロセスのシミュレーション
+document.addEventListener('DOMContentLoaded', () => {
+  loadedResources = 1; // この行はローディングプロセスが完了したことを示します。
+  animateLoadingText(); // ローディングアニメーションを開始
+});
 
 async function loadTexture(url, index) {
   return new Promise((resolve, reject) => {

@@ -3,14 +3,23 @@
     import { musicOffButton, musicOnButton } from './music.js'
 
     export function loader() {
-        let loadItem = document.querySelectorAll('.loader__bg');
+        let loadItem = document.querySelectorAll('.loader__bg'); // loadItemの定義を追加
+
+        const tl = gsap.timeline({
+            onComplete: () => {
+                // アニメーションが完了した後に実行する処理
+                document.querySelector('.loading-screen').style.display = 'none'; // 例: ローディング画面を非表示にする
+                // または
+                // document.querySelector('.loading-screen').remove(); // ローディング画面をDOMから削除する
+            }
+        });
         
-        const tl = gsap.timeline()
-        gsap.set(loadItem,{
+        gsap.set(loadItem, {
             transformOrigin: '100% 100%',
             scaleX: 1
-        })
-        tl.to(loadItem,{
+        });
+
+        tl.to(loadItem, {
             scaleX: 0,
             transformOrigin: '0% 0%',
             stagger: 0.07,
@@ -72,12 +81,26 @@
         }, 100);
       
         // musicOnButtonとmusicOffButtonが存在することを確認してからイベントリスナーを設定
-        if (musicOnButton) {
-          musicOnButton.addEventListener('click', loader);
+// 音楽ONボタンのイベントリスナー
+if (musicOnButton) {
+    musicOnButton.addEventListener('click', () => {
+        audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
+        localStorage.setItem('isPlaying', 'true');
+        disableScroll();
+    });
+}
+
+// 音楽OFFボタンのイベントリスナー
+if (musicOffButton) {
+    musicOffButton.addEventListener('click', () => {
+        if (!audio.paused) {
+            audio.pause();
         }
-        if (musicOffButton) {
-          musicOffButton.addEventListener('click', loader);
-        }
+        audio.currentTime = 0;
+        localStorage.setItem('isPlaying', 'false');
+        enableScroll();
+    });
+}
       });
 
 
