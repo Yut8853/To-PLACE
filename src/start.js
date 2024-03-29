@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { musicOffButton, musicOnButton } from './music.js'
 
 export function loader() {
     let loadItem = document.querySelectorAll('.loader__bg');
@@ -8,7 +9,7 @@ export function loader() {
     gsap.set(loadItem,{
         transformOrigin: '100% 100%',
         scaleX: 1
-    }),
+    })
     tl.to(loadItem,{
         scaleX: 0,
         transformOrigin: '0% 0%',
@@ -67,11 +68,13 @@ export function loader() {
         ease: 'power4.inOut',
     })
 }
+// musicBtnOn と musicBtnOff ボタンにイベントリスナーを設定
+musicOnButton.addEventListener('click', loader);
+musicOffButton.addEventListener('click', loader);
 
-window.addEventListener('DOMContentLoaded', ()=> {
-    setTimeout(() => {
-        loader();
-    }, 100);
-})
+// 必要に応じて、ページ読み込み時にもアニメーションを初期化
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(loader, 100);
+});
 
 

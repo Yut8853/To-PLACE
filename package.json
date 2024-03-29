@@ -4,11 +4,9 @@
   "description": "Three.js のシェーダー開発するための開発環境です。\r リポジトリからソースをダウンロードして、VSCode に張り付けてください。",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode=development",
-    "test": "webpack --stats-error-details",
-    "build": "webpack --mode=production --stats verbose",
-    "watch": "webpack --watch",
-    "start": "webpack serve"
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
+    "start": "webpack serve "
   },
   "keywords": [],
   "author": "",

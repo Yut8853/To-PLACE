@@ -9,7 +9,7 @@ gsap.fromTo('.parallax-right', {
     x: '-3603.18px',
     scrollTrigger: {
       trigger: '.video-section', // Changed to the actual class of the scroll container
-      start: 'top center-=300',
+      start: 'top 80%',
       end: 'bottom top',
       scrub: .1, // You can adjust the scrub speed if needed
     }
@@ -22,7 +22,7 @@ gsap.fromTo('.parallax-left', {
     x: '3603.18px', // Move to the opposite direction
     scrollTrigger: {
       trigger: '.video-section', // Ensuring consistency with the trigger element
-      start: 'top center-=300',
+      start: 'top 80%',
       end: 'bottom top',
       scrub: 1, // Adjusting the scrub speed for a different effect
     }
@@ -37,9 +37,10 @@ textElements.forEach(text => {
     scrollTrigger: {
       trigger: text,
       start: 'center 80%',
-      end: 'center 20%',
+      end: 'center 30%',
       scrub: true,
       once: true,
+      markers: true,
     },
   });
 });

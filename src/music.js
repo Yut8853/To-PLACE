@@ -4,8 +4,8 @@ import { disableScroll, enableScroll } from './index.js';
 import { loader } from './start.js';
 import music from './assets/videos/loops_7.wav';
 
-const musicOnButton = document.getElementById('music-on');
-const musicOffButton = document.getElementById('music-off');
+export let musicOnButton = document.getElementById('music-on');
+export let musicOffButton = document.getElementById('music-off');
 let audio = new Audio(music);
 audio.loop = true;
 audio.volume = 0.2;
@@ -21,7 +21,7 @@ if (isPlaying) {
 }
 
 // 音楽ONボタンの処理
-musicOnButton.addEventListener('click', () => {
+    musicOnButton.addEventListener('click', () => {
     audio.play();
     // 音楽再生画面を非表示にする
     document.querySelector('.container').style.display = 'none';
@@ -35,7 +35,7 @@ musicOnButton.addEventListener('click', () => {
 });
 
 // 音楽OFFボタンの処理
-musicOffButton.addEventListener('click', () => {
+    musicOffButton.addEventListener('click', () => {
     if (!audio.paused) {
         audio.pause();
         audio.currentTime = 0; // 再生位置を最初に戻す
