@@ -73,7 +73,7 @@
               {
                 loader: 'babel-loader',
                 options: {
-                  sourceMap: true, // このオプションは 'use' 内で 'loader' の設定と一緒に定義されるべきです
+                  sourceMap: !isProduction,
                 },
               },
             ],
