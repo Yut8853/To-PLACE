@@ -108,9 +108,6 @@
             generator: {
               filename: 'assets/[type]/[name].[hash][ext]',
             },
-            options: {
-              sourceMap: true,
-            },
           },
           // GLSL shaders loader
           {
