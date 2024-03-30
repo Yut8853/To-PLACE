@@ -36,8 +36,8 @@ textElements.forEach(text => {
     ease: 'power1.inOut',
     scrollTrigger: {
       trigger: text,
-      start: 'center 80%',
-      end: 'center 30%',
+      start: 'top bottom', // 要素の上端がビューポートの下端に達した時点で発火
+      end: 'top 70%',
       scrub: true,
       once: true,
       markers: true,

@@ -9,16 +9,24 @@ export const musicOnButton = document.getElementById('music-on');
 export const musicOffButton = document.getElementById('music-off');
 export const soundIcon = document.querySelector('.sound-icon');
 const blob = document.querySelector('.gradient-container')
-let soundIconEvent = document.querySelector('.sound-icon');
 
 // サウンドボタンの切り替え
-soundIconEvent.addEventListener('click', () => {
-    if (audio.paused) {
-        playMusic();
-    } else {
-        stopMusic();
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM要素に対する操作をここに配置
+    let soundIconEvent = document.querySelector('.sound-icon');
+    if (soundIconEvent) {
+        soundIconEvent.addEventListener('click', () => {
+            if (audio.paused) {
+                playMusic();
+            } else {
+                stopMusic();
+            }
+        });
     }
 });
+
 
 
 // 音楽を再生する関数

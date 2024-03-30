@@ -268,4 +268,11 @@ document.addEventListener('DOMContentLoaded', manageInitialAnimation);
 if (document.body.classList.contains('index-page')) {
   // index.htmlの場合にのみ実行するコード
   initializeScene(imageUrls);
+// TOPページでのみ music.js を動的にインポート
+if (document.body.classList.contains('top-page')) {
+  import('./music.js').then(module => {
+    // music.js のメソッドを実行
+    module.doSomething();
+  });
+}
 }

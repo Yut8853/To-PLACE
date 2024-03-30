@@ -1,13 +1,17 @@
 import './reset.css';
 import './style.css';
 import './business.css';
-import { triggerAnimation } from './start.js';
+import './start.js';
 import './light.js'
 import './hamburger.js';
 import './smooth.js'
+import './music.js'
 
-
-if (document.body.classList.contains('index-page')) {
-    // index.htmlの場合にのみ実行するコード
-    initializeScene(imageUrls);
+// TOPページでのみ music.js を動的にインポート
+if (document.body.classList.contains('top-page')) {
+    import('./music.js').then(module => {
+      // music.js のメソッドを実行
+      module.doSomething();
+    });
 }
+

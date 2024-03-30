@@ -29,9 +29,11 @@
 
 .loading-text {
   font-family: 'Corm', sans-serif;
-  font-size: 48px;
+  font-size: clamp(1rem, -0.675rem + 8.38vw, 9.375rem);
   color: #fff;
-  padding: 20px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
 }
 /* ミュージック再生画面 */
 .container {

@@ -91,10 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(document.getElementById('music-on')); // これが null を返すか確認
     console.log(document.getElementById('music-off')); // これが null を返すか確認
     
-    if (document.getElementById('music-on') && document.getElementById('music-off')) {
+    if (document.body.classList.contains('ページ固有のクラス')) {
+        // ボタンに関連する処理
         setUpMusic();
     } else {
-        console.error('ボタンが見つかりません。HTML要素のIDを確認してください。');
+        console.log('このページではボタン関連の処理は実行されません。');
     }
 });
 
