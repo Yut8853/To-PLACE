@@ -18,7 +18,7 @@
       output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].[contenthash].js',
-        clean: true,
+        clean: false,
         // publicPath: '/toplace/', 
         publicPath: '/', 
       },

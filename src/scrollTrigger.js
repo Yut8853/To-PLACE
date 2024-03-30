@@ -33,7 +33,7 @@ const textElements = gsap.utils.toArray('.text-effect');
 textElements.forEach(text => {
   gsap.to(text, {
     backgroundSize: '100%',
-    ease: 'none',
+    ease: 'power1.inOut',
     scrollTrigger: {
       trigger: text,
       start: 'center 80%',

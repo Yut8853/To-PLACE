@@ -4,8 +4,8 @@ import * as THREE from 'three';
 import { gsap } from 'gsap';
 import vertexShaderSource from './assets/shaders/vertex.vert';
 import fragmentShaderSource from './assets/shaders/fragment.frag';
+import { musicOnButton, musicOffButton, audio, } from './music.js';
 import './start.js';
-import { musicOffButton, musicOnButton } from './music.js'
 import { setupScene, updateImage } from './secondCanvas.js';
 import './waveCanvas.js';
 import './hamburger.js';
@@ -24,11 +24,17 @@ const imageUrls = [
 ];
 
 export function disableScroll() {
-  document.body.classList.add("no-scroll");
+  // スクロールを無効にするためのリスナーを追加
+  window.addEventListener('scroll', preventWindowScroll, { passive: false });
 }
 
 export function enableScroll() {
-  document.body.classList.remove("no-scroll");
+  // スクロールを再び有効にするためにリスナーを削除
+  window.removeEventListener('scroll', preventWindowScroll);
+}
+
+function preventWindowScroll(e) {
+  e.preventDefault();
 }
 
 let renderer, scene, camera, material, plane;
@@ -38,7 +44,7 @@ const imageAspects = []; // 画像のアスペクト比を保存する配列
 let loadedResources = 0; // 読み込み完了したリソースの数
 const totalResources = imageUrls.length + 1; // 全リソース数 (画像 + dispMap)
 let currentPercent = 0; // 現在の読み込みパーセンテージ
-let targetPercent = 0; // 目標パーセンテージ
+let targetPercent = 100; // 目標パーセンテージ
 
 // ローディング進行状況のテキストを更新する関数
 function updateLoadingScreen(loaded, total) {
@@ -47,33 +53,42 @@ function updateLoadingScreen(loaded, total) {
 }
 
 function animateLoadingText() {
-  // 現在のページがホームページで、かつロードが完了していない場合のみアニメーションを続行
-  if (window.location.pathname === '/') {
-    if (currentPercent < targetPercent) {
-      // パーセンテージをランダムに増加させる
-      currentPercent += Math.random() * 5; // 0から5%のランダムな値を加算
-      currentPercent = Math.min(currentPercent, targetPercent); // targetPercentを超えないように
-      document.querySelector('.loading-text').innerText = `${Math.floor(currentPercent)}%`;
-      requestAnimationFrame(animateLoadingText); // 次のフレームで再度呼び出し
-    } else if (loadedResources >= totalResources) {
-      // 全リソースの読み込みが完了したらローディング画面をフェードアウト
-      gsap.to('.loading-screen', {
-        opacity: 0,
-        duration: 0.5,
-        onComplete: () => {
-          const loadingScreen = document.querySelector('.loading-screen');
-          if (loadingScreen) {
-            loadingScreen.style.display = 'none';
-            // ローディングが完了したので、不要になったhiddenクラスを削除
-            loadingScreen.classList.remove('hidden');
-          } else {
-            console.error('loading-screen が見つかりません。');
-          }
-        }
-      });
+  if (window.location.pathname === '/' && currentPercent < 100) {
+    // ランダムな値を加算する前に、超過しないように調整
+    const increment = Math.random();
+    const nextPercent = currentPercent + increment;
+    currentPercent = (nextPercent > 100) ? 100 : nextPercent;
+    
+    document.querySelector('.loading-text').innerText = `${Math.floor(currentPercent)}%`;
+
+    if (currentPercent < 100) {
+      requestAnimationFrame(animateLoadingText);
+    } else {
+      // パーセンテージが100%に達したら、ローディング画面をフェードアウトする処理をここに移動
+      completeLoading();
     }
   }
 }
+
+function completeLoading() {
+  if (loadedResources >= totalResources) {
+    // 全リソースの読み込みが完了したらローディング画面をフェードアウト
+    gsap.to('.loading-screen', {
+      opacity: 0,
+      duration: 0.5,
+      onComplete: () => {
+        const loadingScreen = document.querySelector('.loading-screen');
+        if (loadingScreen) {
+          loadingScreen.style.display = 'none';
+          loadingScreen.classList.remove('hidden');
+        } else {
+          console.error('loading-screen が見つかりません。');
+        }
+      }
+    });
+  }
+}
+
 
 // ローディングプロセスのシミュレーション
 document.addEventListener('DOMContentLoaded', () => {
@@ -174,7 +189,6 @@ async function initializeScene(imageUrls) {
         }
       });
     }
-    
 
     setInterval(triggerAnimation, 8000);
 
@@ -226,19 +240,29 @@ export const manageInitialAnimation = () => {
     toggleVisibility('.gradient-container', false);
     toggleVisibility('.container', false);
   }
-};
 
-// ボタンクリック時にアニメーションを表示する
 if (musicOnButton) {
-    musicOnButton.addEventListener('click', () => {
-        audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
-        localStorage.setItem('isPlaying', 'true');
-        disableScroll();
-        showInitialAnimation(); // ボタンクリックでアニメーションを表示
-    });
+  musicOnButton.addEventListener('click', () => {
+      audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
+      localStorage.setItem('isPlaying', 'true');
+      disableScroll();
+      document.querySelector('.container').style.display = 'none';
+      document.querySelector('.gradient-container').style.display = 'none';
+  });
+}
+
+if (musicOffButton) {
+  musicOffButton.addEventListener('click', () => {
+      audio.pause();
+      localStorage.setItem('isPlaying', 'false');
+      enableScroll();
+      document.querySelector('.container').style.display = 'none';
+      document.querySelector('.gradient-container').style.display = 'none';
+  });
 }
 
 
+}
 document.addEventListener('DOMContentLoaded', manageInitialAnimation);
 
 if (document.body.classList.contains('index-page')) {

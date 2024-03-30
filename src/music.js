@@ -1,61 +1,38 @@
-    import { animateBlobs } from './blob.js';
-    import { heyMelody } from './blob.js';
-    import { manageInitialAnimation } from './index.js';
-    import { disableScroll, enableScroll } from './index.js';
-    import { loader } from './start.js';
-    import music from './assets/videos/loops_7.wav';
+import musicSrc from './assets/videos/loops_7.wav';
+import './blob.js'
 
-    let musicOnButton = null;
-    let musicOffButton = null;
+let audio = new Audio(musicSrc);
+audio.loop = true;
+audio.volume = 0.5;
 
-    export let audio = new Audio(music); // 音楽ファイルを読み込む
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        manageInitialAnimation(); // 初回訪問のチェックとアニメーションの制御
-    
-        musicOnButton = document.querySelector('#music-on');
-        musicOffButton = document.querySelector('#music-off');
-    
-        // 音楽の再生状態を localStorage から読み込む
-        // 自動再生を試みずに、ユーザー操作を待つ
-        const isPlaying = localStorage.getItem('isPlaying') === 'true';
-        if (isPlaying) {
-            disableScroll();
-        } else {
-            enableScroll();
-        }
-    
-        // 音楽ONボタンのイベントリスナー
-        musicOnButton.addEventListener('click', () => {
-            audio.play().then(() => {
-                localStorage.setItem('isPlaying', 'true');
-                disableScroll();
-                // 音楽が再生された後、次のアニメーションに進む
-                loader();
-            }).catch(error => {
-                console.error('音声の再生に失敗しました:', error);
-            });
-        });
-    
-        // 音楽OFFボタンのイベントリスナー
-        musicOffButton.addEventListener('click', () => {
-            audio.pause();
-            audio.currentTime = 0;
-            localStorage.setItem('isPlaying', 'false');
-            enableScroll();
-        });
-    
-        // 初期のブロブアニメーションを設定
-        animateBlobs();
-        heyMelody();
-    });
-    
+export const musicOnButton = document.getElementById('music-on');
+export const musicOffButton = document.getElementById('music-off');
+export const soundIcon = document.querySelector('.sound-icon');
+const blob = document.querySelector('.gradient-container')
+let soundIconEvent = document.querySelector('.sound-icon');
 
-// ページの読み込みが完了したら loader 関数を実行
-window.addEventListener('DOMContentLoaded', ()=> {
-    setTimeout(() => {
-        loader();
-    }, 100);
-})
+// サウンドボタンの切り替え
+soundIconEvent.addEventListener('click', () => {
+    if (audio.paused) {
+        playMusic();
+    } else {
+        stopMusic();
+    }
+});
 
-export { musicOnButton, musicOffButton };
+
+// 音楽を再生する関数
+
+function playMusic() {
+    audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
+    soundIcon.classList.add('playing');
+}
+
+// 音楽を停止する関数
+function stopMusic() {
+    audio.pause();
+    audio.currentTime = 0;
+    soundIcon.classList.remove('playing');
+}
+
+export { playMusic, stopMusic, audio};

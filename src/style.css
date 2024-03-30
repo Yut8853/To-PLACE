@@ -138,8 +138,25 @@
 @media screen and (max-width: 768px) {
   .btn-wrapper {
     flex-direction: column;
+    align-items: center;
+    justify-self: center;
+    gap: 3rem;
+  }
+
+  .btn-wrapper > h1 {
+    transform: none;
+    top: 0;
+    left: 0;
+  }
+
+  .btn-wrapper-inner {
+    transform: none;
+    position: static;
+    justify-content: center;
+    align-items: center;
   }
 }
+
 
 .gradient-container {
   position: relative;
@@ -446,6 +463,12 @@ header > h1 {
   gap: 5px;
 }
 
+.menu-wrapper {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
 .menu-btn {
     all:unset;
     width: 50px;
@@ -453,6 +476,110 @@ header > h1 {
     border-radius: 50%;
     background: #fff;
     cursor: pointer;
+}
+
+/* サウンドアニメーション */
+
+.sound-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sound-wave {
+  width: 29px;
+  height: 23px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* 音楽が再生されている時のアニメーション */
+.playing .sound-wave .bar {
+  animation: sound 800ms linear infinite alternate;
+}
+
+/* デフォルトのbarスタイル */
+.sound-wave .bar {
+  display: block;
+  width: 2px;
+  height: 23px;
+  background: #ffffff;
+  margin-right: 1px;
+  opacity: 0.35;
+}
+
+/* 各barに適用するアニメーションと、ホバー時の挙動 */
+@keyframes sound {
+  0% {
+    opacity: 0.35;
+    height: 3px;
+  }
+  100% {
+    opacity: 1;
+    height: 23px;
+  }
+}
+
+.sound-wave .bar:nth-child(1) {
+  height: 1px;
+  animation-duration: 474ms;
+}
+
+.sound-wave .bar:nth-child(2) {
+  height: 5px;
+  animation-duration: 433ms;
+}
+
+.sound-wave .bar:nth-child(3) {
+  height: 9px;
+  animation-duration: 407ms;
+}
+
+.sound-wave .bar:nth-child(4) {
+  height: 13px;
+  animation-duration: 458ms;
+}
+
+.sound-wave .bar:nth-child(5) {
+  height: 15px;
+  animation-duration: 400ms;
+}
+
+.sound-wave .bar:nth-child(6) {
+  height: 16px;
+  animation-duration: 427ms;
+}
+
+.sound-wave .bar:nth-child(7) {
+  height: 17px;
+  animation-duration: 441ms;
+}
+
+.sound-wave .bar:nth-child(8) {
+  height: 18px;
+  animation-duration: 419ms;
+}
+
+.sound-wave .bar:nth-child(9) {
+  height: 20px;
+  animation-duration: 487ms;
+}
+
+.sound-wave .bar:nth-child(10) {
+  height: 23px;
+  animation-duration: 442ms;
+}
+
+.sound-icon:hover .bar {
+  height: 20px;
+  animation-iteration-count: 1;
+  animation-fill-mode: backwards;
+}
+
+/* 音楽が停止している時はホバー時に限りアニメーションを適用 */
+.sound-icon:not(.playing):hover .bar {
+  animation: sound 800ms linear infinite alternate;
 }
 
 .slider-content {

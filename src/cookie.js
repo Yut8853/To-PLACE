@@ -4,6 +4,7 @@
   // Cookieの同意要素と同意ボタンを取得
   const cookieConsent = document.querySelector('.cookie-consent');
   const agreeButton = document.querySelector('.cookie-agree');
+  const currentDate = new Date();
 
   // ローカルストレージからフラグを取得し、同意済みかどうかを確認
   const consentFlag = localStorage.getItem('popupFlag');
