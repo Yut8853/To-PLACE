@@ -1,10 +1,10 @@
 import './reset.css';
 import './style.css';
 import './careers.css'
-import './start.js';
 import './light.js'
 import './hamburger.js';
 import './smooth.js'
+import './under-start.js'
 
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';

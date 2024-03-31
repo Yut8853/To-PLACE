@@ -4,8 +4,6 @@ import * as THREE from 'three';
 import { gsap } from 'gsap';
 import vertexShaderSource from './assets/shaders/vertex.vert';
 import fragmentShaderSource from './assets/shaders/fragment.frag';
-import { musicOnButton, musicOffButton, audio, } from './music.js';
-import './start.js';
 import { setupScene, updateImage } from './secondCanvas.js';
 import './waveCanvas.js';
 import './hamburger.js';
@@ -16,35 +14,63 @@ import './video.js';
 import './smooth.js'
 import './cookie.js';
 import './secondCanvas.js'
+import { disableScroll, enableScroll } from './scrollControl.js';
+import { playMusic, stopMusic,audio } from './music.js';
+import { triggerAnimation, setUpMusic, musicOnButton, musicOffButton } from './musicControl.js';
 
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded event triggered');
+    if (document.body.classList.contains('top-page')) {
+      setUpMusic(manageInitialAnimation)
+      initializeScene(imageUrls);
+  
+      Promise.all([
+        import('./music.js')
+        .then(({ initializeMusic }) => {
+          initializeMusic();
+          console.log('initial')
+        })
+        .catch(error => {
+          console.error('Failed to load music module', error);
+        }),
+        import('./scrollControl.js')
+        .then(({ disableScroll, enableScroll }) => {
+          disableScroll();
+          enableScroll();
+        })
+        .catch(error => {
+          console.error('Failed to load scrollControl module', error);
+        })
+      ]);
+    } 
+  });
 const imageUrls = [
   './assets/images/top/hero-image-01.webp',
   './assets/images/top/hero-image-02.webp',
   './assets/images/top/hero-image-03.webp',
 ];
 
-export function disableScroll() {
-  // スクロールを無効にするためのリスナーを追加
-  window.addEventListener('scroll', preventWindowScroll, { passive: false });
-}
-
-export function enableScroll() {
-  // スクロールを再び有効にするためにリスナーを削除
-  window.removeEventListener('scroll', preventWindowScroll);
-}
-
-function preventWindowScroll(e) {
-  e.preventDefault();
-}
-
 let renderer, scene, camera, material, plane;
 let currentIndex = 0;
 const dispMapUrl = './assets/textures/fluid.jpg';
 const imageAspects = []; // 画像のアスペクト比を保存する配列
 let loadedResources = 0; // 読み込み完了したリソースの数
-const totalResources = imageUrls.length + 1; // 全リソース数 (画像 + dispMap)
+let totalResources = imageUrls.length + 1; // 全リソース数 (画像 + dispMap)
 let currentPercent = 0; // 現在の読み込みパーセンテージ
 let targetPercent = 100; // 目標パーセンテージ
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadedResources = 0; // リソースの初期値を設定
+  totalResources = imageUrls.length + 1; // 仮の総リソース数、実際のリソース数に置き換えてください
+  // リソース読み込みをシミュレート
+  for (let i = 0; i < totalResources; i++) {
+    setTimeout(() => {
+      loadedResources++;
+      updateLoadingScreen(loadedResources, totalResources);
+    }, i * 100); // 仮のロード時間
+  }
+});
+
 
 // ローディング進行状況のテキストを更新する関数
 function updateLoadingScreen(loaded, total) {
@@ -53,34 +79,41 @@ function updateLoadingScreen(loaded, total) {
 }
 
 function animateLoadingText() {
-  if (window.location.pathname === '/' && currentPercent < 100) {
-    // ランダムな値を加算する前に、超過しないように調整
-    const increment = Math.random();
-    const nextPercent = currentPercent + increment;
-    currentPercent = (nextPercent > 100) ? 100 : nextPercent;
-    
-    document.querySelector('.loading-text').innerText = `${Math.floor(currentPercent)}%`;
-
-    if (currentPercent < 100) {
-      requestAnimationFrame(animateLoadingText);
-    } else {
-      // パーセンテージが100%に達したら、ローディング画面をフェードアウトする処理をここに移動
-      completeLoading();
+  if (currentPercent < targetPercent) {
+    currentPercent += 1;
+    if (currentPercent >= 100) { // >= 100 を明示的にチェック
+      currentPercent = 100; // 念のため、100に設定
+      completeLoading(); // 直ちにcompleteLoadingを呼び出す
+      return; // ここで処理を終了
     }
+    document.querySelector('.loading-text').innerText = `${Math.floor(currentPercent)}%`;
+    requestAnimationFrame(animateLoadingText);
+  } else if (currentPercent >= 100) {
+    completeLoading(); // この分岐はおそらく不要になるが、念のため残す
   }
 }
 
+
+let loadingCompleted = false;
 function completeLoading() {
-  if (loadedResources >= totalResources) {
-    // 全リソースの読み込みが完了したらローディング画面をフェードアウト
+  if(!loadingCompleted) {
+    loadingCompleted = true;
     gsap.to('.loading-screen', {
       opacity: 0,
       duration: 0.5,
       onComplete: () => {
         const loadingScreen = document.querySelector('.loading-screen');
         if (loadingScreen) {
-          loadingScreen.style.display = 'none';
-          loadingScreen.classList.remove('hidden');
+          loadingScreen.style.display = 'none'; // ローディング画面を非表示にする
+          // 例: 音楽コントロールのセットアップを行う
+          setUpMusic({
+            playMusic: playMusic,
+            stopMusic: stopMusic,
+            disableScroll: disableScroll,
+            enableScroll: enableScroll,
+            triggerAnimation: triggerAnimation
+          });
+          
         } else {
           console.error('loading-screen が見つかりません。');
         }
@@ -88,7 +121,6 @@ function completeLoading() {
     });
   }
 }
-
 
 // ローディングプロセスのシミュレーション
 document.addEventListener('DOMContentLoaded', () => {
@@ -135,6 +167,7 @@ function onWindowResize() {
 
 
 async function initializeScene(imageUrls) {
+  console.log('initializeScene called')
   try {
     renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -188,6 +221,7 @@ async function initializeScene(imageUrls) {
           updateImage(currentIndex); // Update the image based on currentIndex
         }
       });
+      console.log('initializeScene 完了')
     }
 
     setInterval(triggerAnimation, 8000);
@@ -241,38 +275,33 @@ export const manageInitialAnimation = () => {
     toggleVisibility('.container', false);
   }
 
-if (musicOnButton) {
-  musicOnButton.addEventListener('click', () => {
-      audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
-      localStorage.setItem('isPlaying', 'true');
-      disableScroll();
-      document.querySelector('.container').style.display = 'none';
-      document.querySelector('.gradient-container').style.display = 'none';
-  });
+  if (musicOnButton) {
+    musicOnButton.addEventListener('click', () => {
+        audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
+        localStorage.setItem('isPlaying', 'true');
+        disableScroll();
+        document.querySelector('.container').style.display = 'none';
+        document.querySelector('.gradient-container').style.display = 'none';
+    });
+  }
+
+  if (musicOffButton) {
+    musicOffButton.addEventListener('click', () => {
+        audio.pause();
+        localStorage.setItem('isPlaying', 'false');
+        enableScroll();
+        document.querySelector('.container').style.display = 'none';
+        document.querySelector('.gradient-container').style.display = 'none';
+    });
+  }
 }
 
-if (musicOffButton) {
-  musicOffButton.addEventListener('click', () => {
-      audio.pause();
-      localStorage.setItem('isPlaying', 'false');
-      enableScroll();
-      document.querySelector('.container').style.display = 'none';
-      document.querySelector('.gradient-container').style.display = 'none';
-  });
-}
+  
 
 
-}
-document.addEventListener('DOMContentLoaded', manageInitialAnimation);
 
-if (document.body.classList.contains('index-page')) {
-  // index.htmlの場合にのみ実行するコード
-  initializeScene(imageUrls);
-// TOPページでのみ music.js を動的にインポート
-if (document.body.classList.contains('top-page')) {
-  import('./music.js').then(module => {
-    // music.js のメソッドを実行
-    module.doSomething();
-  });
-}
-}
+
+
+
+
+

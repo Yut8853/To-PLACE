@@ -1,26 +1,36 @@
 import gsap from 'gsap';
-import { musicOnButton, musicOffButton, playMusic, stopMusic } from './music.js';
-import { disableScroll, enableScroll } from './index.js';
+import './blob.js';
+import { playMusic, stopMusic } from './music.js';
+import { disableScroll, enableScroll } from './scrollControl.js';
 
-function setUpMusic() {
-    musicOnButton.addEventListener('click', () => {
-        playMusic();
-        localStorage.setItem('isPlaying', 'true');
-        disableScroll();
-        triggerAnimation(); // アニメーションをトリガー
-    });
-    
-    musicOffButton.addEventListener('click', () => {
-        stopMusic();
-        localStorage.setItem('isPlaying', 'false');
-        enableScroll();
-        triggerAnimation(); // アニメーションをトリガー
-    });
+export let musicOnButton, musicOffButton;
+
+export function setUpMusic(callback) {
+    console.log('setUpMusic is called');
+
+  musicOnButton = document.getElementById('music-on');
+  musicOffButton = document.getElementById('music-off');
+
+  musicOnButton.addEventListener('click', () => {
+    playMusic();
+    localStorage.setItem('isPlaying', 'true');
+    disableScroll();
+    triggerAnimation(); // アニメーションをトリガー
+  });
+  
+  musicOffButton.addEventListener('click', () => {
+    stopMusic();
+    localStorage.setItem('isPlaying', 'false');
+    enableScroll();
+    triggerAnimation(); // アニメーションをトリガー
+  });
+  if (callback && typeof callback === 'function') {
+    callback();
+  }
 }
 
-const loadItem = document.querySelectorAll('.loader__bg');
-
-function triggerAnimation() {
+export function triggerAnimation() {
+    const loadItem = document.querySelectorAll('.loader__bg');
     
     const tl = gsap.timeline({
         onComplete: () => {
@@ -86,18 +96,4 @@ function triggerAnimation() {
         ease: "cubic-bezier(0.961, 0.03, 0.961)",
     });
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    console.log(document.getElementById('music-on')); // これが null を返すか確認
-    console.log(document.getElementById('music-off')); // これが null を返すか確認
-    
-    if (document.body.classList.contains('ページ固有のクラス')) {
-        // ボタンに関連する処理
-        setUpMusic();
-    } else {
-        console.log('このページではボタン関連の処理は実行されません。');
-    }
-});
-
-
 

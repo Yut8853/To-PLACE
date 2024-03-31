@@ -1,11 +1,10 @@
 import './reset.css';
 import './style.css';
 import './business.css';
-import './start.js';
 import './light.js'
 import './hamburger.js';
 import './smooth.js'
-import './music.js'
+import './under-start.js'
 
 // TOPページでのみ music.js を動的にインポート
 if (document.body.classList.contains('top-page')) {

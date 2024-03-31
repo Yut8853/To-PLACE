@@ -1,46 +1,50 @@
 import musicSrc from './assets/videos/loops_7.wav';
-import './blob.js'
 
-let audio = new Audio(musicSrc);
+export let audio = new Audio(musicSrc);
 audio.loop = true;
-audio.volume = 0.5;
-
-export const musicOnButton = document.getElementById('music-on');
-export const musicOffButton = document.getElementById('music-off');
-export const soundIcon = document.querySelector('.sound-icon');
-const blob = document.querySelector('.gradient-container')
-
-// サウンドボタンの切り替え
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    // DOM要素に対する操作をここに配置
-    let soundIconEvent = document.querySelector('.sound-icon');
-    if (soundIconEvent) {
-        soundIconEvent.addEventListener('click', () => {
-            if (audio.paused) {
-                playMusic();
-            } else {
-                stopMusic();
-            }
-        });
-    }
-});
-
-
+audio.volume = 0.05;
+let isPlaying = false; // 再生状態を管理するフラグ
 
 // 音楽を再生する関数
-
-function playMusic() {
+export function playMusic() {
     audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
-    soundIcon.classList.add('playing');
+    isPlaying = true;
 }
 
 // 音楽を停止する関数
-function stopMusic() {
+export function stopMusic() {
     audio.pause();
     audio.currentTime = 0;
-    soundIcon.classList.remove('playing');
+    isPlaying = false;
 }
 
-export { playMusic, stopMusic, audio};
+// サウンドアイコンをクリックした時の処理
+function toggleMusic() {
+    if (isPlaying) {
+        stopMusic();
+    } else {
+        playMusic();
+    }
+    updateIcon(); // アイコンの状態を更新
+}
+
+// アイコンの状態に応じてクラスを追加または削除する関数
+function updateIcon() {
+    const soundIcon = document.querySelector('.sound-icon');
+    if (soundIcon) {
+        if (isPlaying) {
+            soundIcon.classList.add('playing');
+        } else {
+            soundIcon.classList.remove('playing');
+        }
+    }
+}
+
+// DOMContentLoaded イベントリスナーの設定など、初期化処理を行う関数
+export function initializeMusic() {
+    const soundIcon = document.querySelector('.sound-wave');
+    if (soundIcon) {
+        soundIcon.addEventListener('click', toggleMusic);
+    }
+}
+
