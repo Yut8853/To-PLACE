@@ -6,7 +6,7 @@ import './light.js'
 import './hamburger.js';
 import './smooth.js'
 import './under-start.js'
-// import { showInitialAnimation, manageInitialAnimation } from './index.js'
+import { showInitialAnimation, manageInitialAnimation } from './index.js'
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -44,7 +44,7 @@ gsap.to(".logo path, .logo path-text, .menu-btn", {
   });
 
 // // ページロード時に実行する処理
-// document.addEventListener('DOMContentLoaded', () => {
-//   showInitialAnimation(); // 初回訪問時のアニメーションを表示
-//   manageInitialAnimation(); // 初回訪問のチェックとアニメーションの制御を実行
-// });
+document.addEventListener('DOMContentLoaded', () => {
+  showInitialAnimation(); // 初回訪問時のアニメーションを表示
+  manageInitialAnimation(); // 初回訪問のチェックとアニメーションの制御を実行
+});

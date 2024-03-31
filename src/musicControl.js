@@ -15,6 +15,7 @@ export function setUpMusic(callback) {
     playMusic();
     localStorage.setItem('isPlaying', 'true');
     disableScroll();
+    document.querySelector('.sound-icon').classList.add('playing'); // 音楽再生時にアニメーション開始
     triggerAnimation(); // アニメーションをトリガー
   });
   
@@ -22,6 +23,7 @@ export function setUpMusic(callback) {
     stopMusic();
     localStorage.setItem('isPlaying', 'false');
     enableScroll();
+    document.querySelector('.sound-icon').classList.remove('playing'); // 音楽再生時にアニメーション開始
     triggerAnimation(); // アニメーションをトリガー
   });
   if (callback && typeof callback === 'function') {

@@ -22,23 +22,24 @@ export function stopMusic() {
 function toggleMusic() {
     if (isPlaying) {
         stopMusic();
+        isPlaying = false; // 音楽が停止していることを示す
     } else {
         playMusic();
+        isPlaying = true; // 音楽が再生中であることを示す
     }
-    updateIcon(); // アイコンの状態を更新
+    updateIcon(); // アイコンとアニメーションの状態を更新
 }
 
-// アイコンの状態に応じてクラスを追加または削除する関数
+// アイコンの状態とアニメーションの同期を取るための関数を修正
 function updateIcon() {
     const soundIcon = document.querySelector('.sound-icon');
-    if (soundIcon) {
-        if (isPlaying) {
-            soundIcon.classList.add('playing');
-        } else {
-            soundIcon.classList.remove('playing');
-        }
+    if (isPlaying) {
+        soundIcon.classList.add('playing'); // 音楽が再生されているとき、アニメーションを開始
+    } else {
+        soundIcon.classList.remove('playing'); // 音楽が停止しているとき、アニメーションを停止
     }
 }
+
 
 // DOMContentLoaded イベントリスナーの設定など、初期化処理を行う関数
 export function initializeMusic() {
@@ -48,3 +49,8 @@ export function initializeMusic() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    initializeMusic(); // 初期化処理
+    // 必要に応じて、音楽の初期状態を設定するコードをここに追加
+    // 例: playMusic(); または、特定の条件に基づいて playMusic() か stopMusic() を呼び出す
+});

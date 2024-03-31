@@ -79,17 +79,24 @@ function updateLoadingScreen(loaded, total) {
 }
 
 function animateLoadingText() {
+  // '.loading-text'要素が存在するかを確認
+  const loadingTextElement = document.querySelector('.loading-text');
+  if (!loadingTextElement) {
+    console.error('Loading text element not found');
+    return; // 要素が存在しない場合は、ここで処理を中断
+  }
+
   if (currentPercent < targetPercent) {
     currentPercent += 1;
-    if (currentPercent >= 100) { // >= 100 を明示的にチェック
-      currentPercent = 100; // 念のため、100に設定
-      completeLoading(); // 直ちにcompleteLoadingを呼び出す
-      return; // ここで処理を終了
+    if (currentPercent >= 100) {
+      currentPercent = 100;
+      completeLoading();
+      return;
     }
-    document.querySelector('.loading-text').innerText = `${Math.floor(currentPercent)}%`;
+    loadingTextElement.innerText = `${Math.floor(currentPercent)}%`;
     requestAnimationFrame(animateLoadingText);
   } else if (currentPercent >= 100) {
-    completeLoading(); // この分岐はおそらく不要になるが、念のため残す
+    completeLoading();
   }
 }
 
