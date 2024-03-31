@@ -43,8 +43,22 @@ gsap.to(".logo path, .logo path-text, .menu-btn", {
     }
   });
 
-// // ページロード時に実行する処理
-document.addEventListener('DOMContentLoaded', () => {
-  showInitialAnimation(); // 初回訪問時のアニメーションを表示
-  manageInitialAnimation(); // 初回訪問のチェックとアニメーションの制御を実行
-});
+  document.addEventListener('DOMContentLoaded', () => {
+    const textElements = gsap.utils.toArray('.text-effect');
+    
+    textElements.forEach(text => {
+      gsap.to(text, {
+        backgroundSize: '100%',
+        ease: 'power1.inOut',
+        scrollTrigger: {
+          trigger: text,
+          start: 'top bottom', // 要素の上端がビューポートの下端に達した時点で発火
+          end: 'top 70%',
+          scrub: true,
+          once: true,
+          // markers: true,
+        },
+      });
+    });
+  });
+  

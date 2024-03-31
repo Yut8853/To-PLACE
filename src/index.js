@@ -2,6 +2,7 @@ import './reset.css';
 import './style.css';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import vertexShaderSource from './assets/shaders/vertex.vert';
 import fragmentShaderSource from './assets/shaders/fragment.frag';
 import { setupScene, updateImage } from './secondCanvas.js';
@@ -9,41 +10,43 @@ import './waveCanvas.js';
 import './hamburger.js';
 import './light.js'
 import './carousel.js';
-import './scrollTrigger.js';
 import './video.js';
 import './smooth.js'
 import './cookie.js';
 import './secondCanvas.js'
+import './scrollTrigger.js'
 import { disableScroll, enableScroll } from './scrollControl.js';
 import { playMusic, stopMusic,audio } from './music.js';
 import { triggerAnimation, setUpMusic, musicOnButton, musicOffButton } from './musicControl.js';
 
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded event triggered');
-    if (document.body.classList.contains('top-page')) {
-      setUpMusic(manageInitialAnimation)
-      initializeScene(imageUrls);
-  
-      Promise.all([
-        import('./music.js')
-        .then(({ initializeMusic }) => {
-          initializeMusic();
-          console.log('initial')
-        })
-        .catch(error => {
-          console.error('Failed to load music module', error);
-        }),
-        import('./scrollControl.js')
-        .then(({ disableScroll, enableScroll }) => {
-          disableScroll();
-          enableScroll();
-        })
-        .catch(error => {
-          console.error('Failed to load scrollControl module', error);
-        })
-      ]);
-    } 
-  });
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOMContentLoaded event triggered');
+  if (document.body.classList.contains('top-page')) {
+    setUpMusic(manageInitialAnimation)
+    // initializeScene(imageUrls);
+    
+    Promise.all([
+      import('./music.js')
+      .then(({ initializeMusic }) => {
+        initializeMusic();
+        console.log('initial')
+      })
+      .catch(error => {
+        console.error('Failed to load music module', error);
+      }),
+      import('./scrollControl.js')
+      .then(({ disableScroll, enableScroll }) => {
+        disableScroll();
+        enableScroll();
+      })
+      .catch(error => {
+        console.error('Failed to load scrollControl module', error);
+      })
+    ]);
+  } 
+});
+
 const imageUrls = [
   './assets/images/top/hero-image-01.webp',
   './assets/images/top/hero-image-02.webp',
@@ -258,6 +261,45 @@ const toggleVisibility = (selector, isVisible) => {
   });
 };
 
+
+// スクロールトリガーの設定関数をトップレベルに移動
+function setupScrollTriggers() {
+  gsap.registerPlugin(ScrollTrigger);
+  const textElements = gsap.utils.toArray('.text-effect');
+  textElements.forEach(text => {
+    gsap.to(text, {
+      backgroundSize: '100%',
+      ease: 'power1.inOut',
+      scrollTrigger: {
+        trigger: text,
+        start: 'top bottom',
+        end: 'top 70%',
+        scrub: true,
+        once: true,
+        markers: true,
+        pinnedContainer: '.top-main',
+      },
+    });
+  });
+}
+
+// 非同期の初期化関数
+async function initialize() {
+  // 必要に応じてここで画像やその他のリソースのロードを待つ
+  // 例: await loadImage(...);
+
+  // シーンの初期化とスクロールトリガーの設定
+  initializeScene(imageUrls);
+  setupScrollTriggers();
+
+  // その他の初期化処理...
+  // ここで ScrollTrigger.refresh() を呼び出すことも可能
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // 初期化関数の呼び出し
+  initialize().catch(error => console.error('Initialization failed', error));
+});
 // 初回訪問時に表示するアニメーションをトリガーする関数
 export const showInitialAnimation = () => {
   toggleVisibility('.loading-screen', true);
@@ -302,9 +344,6 @@ export const manageInitialAnimation = () => {
     });
   }
 }
-
-  
-
 
 
 
