@@ -3,6 +3,7 @@ import './style.css';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
 import vertexShaderSource from './assets/shaders/vertex.vert';
 import fragmentShaderSource from './assets/shaders/fragment.frag';
 import { setupScene, updateImage } from './secondCanvas.js';
@@ -264,7 +265,7 @@ const toggleVisibility = (selector, isVisible) => {
 
 // スクロールトリガーの設定関数をトップレベルに移動
 function setupScrollTriggers() {
-  gsap.registerPlugin(ScrollTrigger);
+
   const textElements = gsap.utils.toArray('.text-effect');
   textElements.forEach(text => {
     gsap.to(text, {
@@ -272,7 +273,7 @@ function setupScrollTriggers() {
       ease: 'power1.inOut',
       scrollTrigger: {
         trigger: text,
-        start: 'top bottom',
+        start: 'top-=2000  bottom',
         end: 'top 70%',
         scrub: true,
         once: true,
