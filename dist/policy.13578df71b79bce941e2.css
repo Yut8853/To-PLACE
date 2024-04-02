@@ -654,10 +654,15 @@ header {
   z-index: 10000;
 }
 
-header > h1 {
+header > a {
   display: flex;
   font-family: "Aboreto", sans-serif;
   color: #fff;
+  text-decoration: none;
+}
+
+header > a > h1 {
+  display: flex;
   align-items: start;
   width: 100%;
   gap: 5px;
@@ -1067,6 +1072,13 @@ header > h1 {
   font-family: "Noto-normal", sans-serif;
   font-size: 24px;
   margin-top: 30px;
+}
+
+.news-img-wrapper {
+  overflow: hidden;
+  position: relative;
+  max-width: 734px;
+  height: 100%;
 }
 
 .news-list > li img {
@@ -1630,160 +1642,39 @@ footer {
     margin-bottom: 1em;
   }
 }
-/*!****************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./src/sales.css ***!
-  \****************************************************************************************************************************************************************/
-@charset "UTF-8";
-* {
-  font-family: "Noto-normal", sans-serif;
-}
-
-.business-hero, .business-info {
+/*!*****************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./src/policy.css ***!
+  \*****************************************************************************************************************************************************************/
+.wrapper {
   max-width: calc(100% - 360px); /* 180px on each side */
   margin: 144px auto 0;
   position: relative;
   z-index: 9;
 }
 
-.business-hero > h2 {
-  font-family: "Corm", sans-serif;
-  font-size: clamp(2.25rem, 0.825rem + 7.12vw, 9.375rem);
-}
-
-.business-info > h2 {
+.wrapper h2 {
   font-family: "Noto-normal", sans-serif;
-  font-size: clamp(1.5rem, 1.4rem + 0.5vw, 2rem);
-  margin-bottom: 100px;
-}
-
-.breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  font-size: 16px;
-}
-
-.breadcrumb li a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.breadcrumb li:not(:last-of-type)::after {
-  content: "›";
-  margin: 0 0.6em; /* 記号の左右の余白 */
-  color: #fff; /* 記号の色 */
-}
-
-.business-hero > img {
-  object-fit: cover;
-  width: 100vw;
-  margin: 50px calc(50% - 50vw) auto;
-  height: 550px;
-}
-
-@media screen and (max-width: 768px) {
-  .business-hero, .business-info {
-    max-width: 100%;
-    margin: 100px auto;
-    padding: 0 20px;
-  }
-  .business-hero > img {
-    height: 300px;
-  }
-}
-figure {
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-  filter: grayscale(100%);
-  transition: filter 0.5s ease-in-out;
-}
-
-figure:hover {
-  filter: grayscale(0%);
-}
-
-figure > img {
-  width: 100%;
-  max-width: 100%;
-  transform-origin: center;
-  transition: transform 0.5s ease-in-out;
-}
-
-figure:hover > img {
-  transform: scale(1.1);
-}
-
-.pagelink {
-  font-family: "Corm", sans-serif;
-  font-size: clamp(1.5rem, -0.075rem + 7.88vw, 9.375rem);
-  text-decoration: none;
-  color: #fff;
-  display: inline-block;
-  text-align: center;
-  position: relative;
-  z-index: 9;
-  top: 150%;
-  left: 50%;
-  transform: translate(-50%, 77%);
-  background-image: linear-gradient(transparent calc(65% - 5px), #d9d9d9 5px);
-  background-size: 0;
-  background-repeat: no-repeat;
-  transition: 0.5s ease;
-}
-
-.pagelink:hover {
-  background-size: 100%;
-}
-
-@media screen and (max-width: 768px) {
-  .pagelink {
-    margin-top: 100px;
-  }
-}
-.container02 {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  position: relative;
-  z-index: 9;
-}
-
-.item {
-  display: flex;
-  gap: 2vw;
-  margin-bottom: 100px;
-}
-
-.item-text h2 {
+  font-size: 24px;
   margin-bottom: 30px;
 }
 
-.item-text p {
+.wrapper p {
+  font-family: "Noto-normal", sans-serif;
   font-size: 16px;
   line-height: 2.5;
-}
-
-.hover-image {
-  transition: transform 0.5s ease;
-}
-
-.hover-image:hover {
-  cursor: pointer;
+  margin-bottom: 30px;
 }
 
 @media screen and (max-width: 768px) {
-  .item {
-    flex-direction: column;
-    margin-bottom: 30px;
+  .wrapper {
+    max-width: 100%;
+    padding: 0 20px;
   }
-  .item-text {
-    margin-top: 10px;
+  .wrapper h2 {
+    font-size: 20px;
   }
-  .item:last-child {
-    margin-bottom: 0;
-  }
-  .item-text {
-    margin-bottom: 50px;
+  .wrapper p {
+    font-size: 16px;
+    line-height: 1.8;
   }
 }
