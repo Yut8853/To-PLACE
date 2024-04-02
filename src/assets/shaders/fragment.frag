@@ -10,10 +10,12 @@ vec2 aspectCorrectedUV() {
     float aspectRatio = uPlaneAspect / uImageAspect;
     vec2 uv = vUv;
 
-    if (aspectRatio < 1.0) {
-        uv.y = uv.y * aspectRatio + (1.0 - aspectRatio) * 0.5;
+    if (aspectRatio >= 1.0) {
+        float scale = aspectRatio;
+        uv.x = (uv.x - 0.5) * scale + 0.5; // X方向をスケールし、中心を基準に調整
     } else {
-        uv.x = uv.x / aspectRatio + (1.0 - 1.0 / aspectRatio) * 0.5;
+        // この条件は横をぴったり合わせるための調整では不要なため、何もしない
+        uv.y = uv.y / aspectRatio; // Y方向をスケールダウン、ただし実際にはこの分岐は使用されない
     }
 
     return uv;

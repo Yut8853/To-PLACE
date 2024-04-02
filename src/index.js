@@ -277,7 +277,7 @@ function setupScrollTriggers() {
         end: 'top 70%',
         scrub: true,
         once: true,
-        markers: true,
+        // markers: true,
         pinnedContainer: '.top-main',
       },
     });

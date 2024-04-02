@@ -2,7 +2,7 @@ import musicSrc from './assets/videos/loops_7.wav';
 
 export let audio = new Audio(musicSrc);
 audio.loop = true;
-audio.volume = 0.05;
+audio.volume = 0.5;
 let isPlaying = false; // 再生状態を管理するフラグ
 
 // 音楽を再生する関数
