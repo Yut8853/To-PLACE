@@ -1078,10 +1078,27 @@ header > a > h1 {
   overflow: hidden;
   position: relative;
   max-width: 734px;
+  height: auto;
+}
+
+.img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
 }
 
-.news-list > li img {
+.img-overlay-bgcolor {
+  background-color: #22201E;
+  z-index: 3;
+}
+
+.img-overlay-black {
+  background-color: #000;
+}
+
+.news-img-wrapper img {
   max-width: 734px;
   width: 100%;
   height: auto;
@@ -1642,16 +1659,16 @@ footer {
     margin-bottom: 1em;
   }
 }
-/*!****************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./src/about.css ***!
-  \****************************************************************************************************************************************************************/
+/*!******************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./src/careers.css ***!
+  \******************************************************************************************************************************************************************/
 @charset "UTF-8";
-/* about.css */
+/* business.css */
 * {
   font-family: "Noto-normal", sans-serif;
 }
 
-.business-hero, .about-info, .about-info2 {
+.business-hero, .careers-info {
   max-width: calc(100% - 360px); /* 180px on each side */
   margin: 144px auto 0;
   position: relative;
@@ -1663,28 +1680,16 @@ footer {
   font-size: clamp(2.25rem, 0.825rem + 7.12vw, 9.375rem);
 }
 
-.about-info {
-  position: relative;
-  z-index: 9;
-}
-
-.about-info > h2, h3 {
+.careers-info > h2 {
   font-family: "Noto-normal", sans-serif;
   font-size: clamp(1.5rem, 1.4rem + 0.5vw, 2rem);
   margin-bottom: 30px;
 }
 
-.about-info > h3 {
-  text-align: center;
-}
-
-.about-info > p {
+.careers-info > p {
   font-family: "Noto-normal", sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 2.5;
-  max-width: 600px;
-  width: 100%;
-  margin: 0 auto 30px;
 }
 
 .breadcrumb {
@@ -1713,67 +1718,77 @@ footer {
 }
 
 @media screen and (max-width: 768px) {
-  .business-hero, .about-info {
+  .business-hero, .careers-info {
     max-width: 100%;
     margin: 100px auto;
     padding: 0 20px;
   }
+  .business-hero > img {
+    height: 300px;
+  }
 }
-.about-info2 {
-  max-width: 600px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.about-info2-wrapper {
-  background: #FFF;
-  margin: 50px calc(50% - 50vw) auto;
-  padding: 50px 0;
-  position: relative;
-  z-index: 9;
-}
-
-.about-info2 dl {
-  font-family: "Noto-normal", sans-serif;
+.container-section {
   display: flex;
   justify-content: space-between;
+}
+
+.text-section h2 {
+  font-size: 18px;
+  font-family: "Noto-normal", sans-serif;
+  margin: 50px 0 30px 0;
+}
+
+.text-section ol {
+  font-size: 16px;
+  line-height: 2.5;
+  font-family: "Noto-normal", sans-serif;
+  margin: 30px 0;
+  list-style: decimal inside;
+}
+
+.text-section h3 {
+  font-size: 16px;
+  font-family: "Noto-normal", sans-serif;
+}
+
+.text-section p {
+  font-size: 16px;
+  line-height: 2.5;
+  font-family: "Noto-normal", sans-serif;
   margin-bottom: 30px;
-  color: #1e1e1e;
 }
 
-@media screen and (max-width: 768px) {
-  .about-info2-wrapper {
-    margin: 50px auto;
-  }
-  .about-info2 dl {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-.pagelink {
-  font-family: "Corm", sans-serif;
-  font-size: clamp(1.5rem, -0.075rem + 7.88vw, 9.375rem);
-  text-decoration: none;
-  color: #fff;
-  display: inline-block;
-  text-align: center;
+.image-section .img {
   position: relative;
-  z-index: 9;
-  top: 150%;
-  left: 50%;
-  transform: translate(-50%, 77%);
-  background-image: linear-gradient(transparent calc(65% - 5px), #d9d9d9 5px);
-  background-size: 0;
-  background-repeat: no-repeat;
-  transition: 0.5s ease;
+  width: min(40vw, 900px);
+  padding: 3vw;
 }
 
-.pagelink:hover {
-  background-size: 100%;
+.image-section .img .img-container {
+  width: 100%;
+  padding-top: 20%;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-section .img .img-container img {
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+}
+
+.img-right {
+  margin-left: -130px;
 }
 
 @media screen and (max-width: 768px) {
-  .pagelink {
-    margin-top: 100px;
+  .container-section {
+    flex-direction: column;
+  }
+  .text-section p {
+    line-height: 1.5;
+  }
+  .image-section {
+    display: none;
   }
 }

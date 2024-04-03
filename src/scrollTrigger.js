@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const textElements = gsap.utils.toArray('.text-effect');
   const imgbgcolor = gsap.utils.toArray('.img-overlay-bgcolor');
   const imgblackcolor = gsap.utils.toArray('.img-overlay-black');
+  const ourimgbgcolor = document.querySelector('.our-img-overlay-bgcolor');
+  const ourimgblackcolor = document.querySelector('.our-img-overlay-black');
   
   textElements.forEach(text => {
     gsap.to(text, {
@@ -28,8 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: img,
-        start: "top top+=1000", // トリガー要素の上端がビューポートの上端から1000px上になった時に開始
-        end: "bottom top", // トリガー要素の下端がビューポートの上端に達した時に終了    
+        start: "-480% center", // トリガー要素の上端がビューポートの上端から1000px上になった時に開始
+        end: "-300% center", // トリガー要素の上端がビューポートの中央に達した時点で終了
         scrub: true,
         once: true,
         markers: true,
@@ -49,8 +51,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }, "-=0.5"); // この値を調整して、前のアニメーションとのオーバーラップを制御
   });
 
-
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ourimgbgcolor, // ここは特定の要素を指す変数
+      start: "-150% center", // ここは実際の要件に応じて調整
+      end: "-90% center", // ここは実際の要件に応じて調整
+      scrub: true,
+      once: true,
+      markers: {
+        startColor: "blue",
+        endColor: "blue",
+        fontSize: "12px",
+      }
+    }
+  });
   
+  tl.to(ourimgbgcolor, {
+      duration: 1.2,
+      xPercent: 100,
+      ease: "cubic-bezier(0.961, 0.03, 0.961)",
+      delay: 0.7,
+    }, "-=0.5")
+    .to(ourimgblackcolor, { // ここも特定の要素を指す変数である必要があります
+      duration: 1.2,
+      xPercent: 100,
+      ease: "cubic-bezier(0.961, 0.03, 0.961)",
+      delay: 0.7, // このアニメーションを0.7秒後に開始
+    }, "-=0.5");
+  
+
+
   gsap.fromTo('.parallax-right', {
       x: "15.1797px",
     }, {
