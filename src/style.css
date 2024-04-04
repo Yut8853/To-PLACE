@@ -944,8 +944,8 @@ header > a > h1 {
 @media screen and (max-width: 768px) {
   .news-section {
     max-width: 100%;
-    margin: 72px auto 0;
-    padding: 0 20px;
+    margin: 72px auto;
+    padding: 0 10px;
   }
   .news-list {
     grid-template-columns: repeat(1, auto);
@@ -1023,18 +1023,21 @@ header > a > h1 {
 @media screen and (max-width: 768px) {
   .ouebusiness-section {
     max-width: 100%;
-    margin: 0;
+    margin: 0px calc(50% - 50vw);
     padding: 0 20px;
-    justify-content: center;
+    justify-content: start;
     flex-direction: column;
     min-height: 800px;
   }
-  .ouebusiness-section > img {
-    margin: 72px calc(50% - 50vw);
+  .ourbusiness-img-wrapper img {
+    width: 100%;
     right: 0;
+    left: 0;
+    display: none;
   }
 
   .ouebusiness-section-text {
+    margin-top: 0px;
     padding: 0 20px;
   }
 
@@ -1156,7 +1159,7 @@ header > a > h1 {
 @media screen and (max-width: 768px) {
   .carousel-section {
     max-width: 100%;
-    margin: 40px auto 0;
+    margin: 74px auto;
     padding: 0 20px;
   }
 
@@ -1290,7 +1293,7 @@ header > a > h1 {
 @media screen and (max-width: 768px) {
   .careers-section {
     max-width: 100%;
-    margin: 72px auto 0;
+    margin: 74px auto;
     padding: 0 20px;
   }
   .careers-btn {

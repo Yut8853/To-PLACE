@@ -52,11 +52,12 @@
 @media screen and (max-width: 768px) {
     .business-hero, .business-info {
         max-width: 100%;
-        margin: 100px auto;
+        margin: 0px auto;
         padding: 0 20px;
     }
     
     .business-hero > img {
+        margin: 50px 0;
         height: 300px;
     }
     
@@ -232,16 +233,21 @@ figure:hover > img {
 
 @media (max-width: 500px) {
   
-.tab-group {
-    flex-wrap: wrap;
-    overflow-x: scroll;
+    .tab-group {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+        width: 900px;
+        margin: 0 0 50px 0;
+    }
+
+    .tab {
+        width: 200px;
+        padding: 10px 0;
+    }
+
 }
 
-.tab {
-    flex: 0 1 150px;
-}
-}
-  
 .panel{
 display: none;
 }
