@@ -5,6 +5,9 @@ import './light.js'
 import './hamburger.js';
 import './smooth.js'
 import './under-start.js'
+import { disableScroll, enableScroll } from './scrollControl.js';
+enableScroll();
+
 
 import gsap from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger";

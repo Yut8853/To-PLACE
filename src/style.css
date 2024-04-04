@@ -27,6 +27,12 @@
   overflow: hidden;
 }
 
+.fixed {
+  position: fixed;
+  top: 0;
+  overflow: hidden;;
+}
+
 .loading-text {
   font-family: 'Corm', sans-serif;
   font-size: clamp(1rem, -0.675rem + 8.38vw, 9.375rem);

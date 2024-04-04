@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }),
       import('./scrollControl.js')
       .then(({ disableScroll, enableScroll }) => {
-        disableScroll();
         enableScroll();
       })
       .catch(error => {
@@ -120,8 +119,6 @@ function completeLoading() {
           setUpMusic({
             playMusic: playMusic,
             stopMusic: stopMusic,
-            disableScroll: disableScroll,
-            enableScroll: enableScroll,
             triggerAnimation: triggerAnimation
           });
           
@@ -312,6 +309,12 @@ export const showInitialAnimation = () => {
   };
 };
 
+document.addEventListener('DOMContentLoaded', (event) => {
+  // 初期画面でスクロールを無効にする
+  disableScroll();
+});
+
+  
 // 初回訪問のチェックとアニメーションの制御
 export const manageInitialAnimation = () => {
   const animationShown = localStorage.getItem('animationShown');
@@ -329,9 +332,9 @@ export const manageInitialAnimation = () => {
     musicOnButton.addEventListener('click', () => {
         audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
         localStorage.setItem('isPlaying', 'true');
-        disableScroll();
         document.querySelector('.container').style.display = 'none';
         document.querySelector('.gradient-container').style.display = 'none';
+        enableScroll();
     });
   }
 
@@ -339,9 +342,9 @@ export const manageInitialAnimation = () => {
     musicOffButton.addEventListener('click', () => {
         audio.pause();
         localStorage.setItem('isPlaying', 'false');
-        enableScroll();
         document.querySelector('.container').style.display = 'none';
         document.querySelector('.gradient-container').style.display = 'none';
+        enableScroll();
     });
   }
 }

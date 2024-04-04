@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         end: "-300% center", // トリガー要素の上端がビューポートの中央に達した時点で終了
         scrub: true,
         once: true,
-        markers: true,
+        // markers: true,
       },
     });
   
@@ -58,11 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
       end: "-90% center", // ここは実際の要件に応じて調整
       scrub: true,
       once: true,
-      markers: {
-        startColor: "blue",
-        endColor: "blue",
-        fontSize: "12px",
-      }
+      // markers: {
+      //   startColor: "blue",
+      //   endColor: "blue",
+      //   fontSize: "12px",
+      // }
     }
   });
   

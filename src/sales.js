@@ -7,6 +7,9 @@ import './smooth.js'
 import './under-start.js'
 import gsap from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { disableScroll, enableScroll } from './scrollControl.js';
+enableScroll();
+
 
 gsap.registerPlugin(ScrollTrigger) 
 

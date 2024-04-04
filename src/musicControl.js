@@ -1,7 +1,6 @@
 import gsap from 'gsap';
 import './blob.js';
 import { playMusic, stopMusic } from './music.js';
-import { disableScroll, enableScroll } from './scrollControl.js';
 
 export let musicOnButton, musicOffButton;
 
@@ -14,7 +13,6 @@ export function setUpMusic(callback) {
   musicOnButton.addEventListener('click', () => {
     playMusic();
     localStorage.setItem('isPlaying', 'true');
-    disableScroll();
     document.querySelector('.sound-icon').classList.add('playing'); // 音楽再生時にアニメーション開始
     triggerAnimation(); // アニメーションをトリガー
   });
@@ -22,7 +20,6 @@ export function setUpMusic(callback) {
   musicOffButton.addEventListener('click', () => {
     stopMusic();
     localStorage.setItem('isPlaying', 'false');
-    enableScroll();
     document.querySelector('.sound-icon').classList.remove('playing'); // 音楽再生時にアニメーション開始
     triggerAnimation(); // アニメーションをトリガー
   });
