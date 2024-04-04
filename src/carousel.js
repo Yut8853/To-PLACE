@@ -1,3 +1,17 @@
+document.addEventListener('DOMContentLoaded', function() {
+  const carousel = document.querySelector('.carousel');
+  if (carousel) {
+    const scroll = createDragScroll({
+      el: '.carousel',
+      wrap: '.carousel--wrap',
+      item: '.carousel--item',
+      bar: '.carousel--progress-bar',
+    });
+  } else {
+    console.error('Carousel element not found');
+  }
+});
+
 const lerp = (f0, f1, t) => (1 - t) * f0 + t * f1;
 const clamp = (val, min, max) => Math.max(min, Math.min(val, max));
 
@@ -77,26 +91,27 @@ const createDragScroll = ({ el, wrap, item, bar }) => {
   const init = () => {
     calculate();
     events();
+    raf(); // 初期ロード時にもraf関数を呼び出してアニメーションループを開始
   };
-  const observer = new IntersectionObserver((entries, observer) => {
+  
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        raf(); // 要素がビューポートに入ったらアニメーションを開始
-        observer.unobserve($el); // 一度開始したら監視を止める
+        calculate(); // IntersectionObserverによってカルーセルがビューポートに入ると、サイズを再計算
       }
     });
   }, {
-    threshold: 0.1 // 要素の10%が見えたらコールバックを実行
+    threshold: 0.1
   });
 
-  observer.observe($bar); // $elの監視を開始
+  observer.observe(document.querySelector(el)); // $el ではなく、ここで直接 el を使用
 
   init();
 
   return { 
     update: calculate,
     refresh: init,
-    stop: () => cancelAnimationFrame(animationFrameId) // アニメーションの停止メソッドを追加
+    stop: () => cancelAnimationFrame(animationFrameId)
   };
 };
 
@@ -117,3 +132,5 @@ requestAnimationFrame(function rafLoop() {
   requestAnimationFrame(rafLoop);
   // scroll.refresh();
 });
+
+

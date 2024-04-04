@@ -20,33 +20,28 @@ import { disableScroll, enableScroll } from './scrollControl.js';
 import { playMusic, stopMusic,audio } from './music.js';
 import { triggerAnimation, setUpMusic, musicOnButton, musicOffButton } from './musicControl.js';
 
-
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOMContentLoaded event triggered');
   if (document.body.classList.contains('top-page')) {
-    setUpMusic(manageInitialAnimation)
+    setUpMusic(manageInitialAnimation);
     // initializeScene(imageUrls);
-    
+    enableScroll();
+    // music.js と scrollControl.js の動的インポート
     Promise.all([
-      import('./music.js')
-      .then(({ initializeMusic }) => {
+      import('./music.js').then(({ initializeMusic }) => {
         initializeMusic();
-        console.log('initial')
-      })
-      .catch(error => {
-        console.error('Failed to load music module', error);
+        console.log('Music module initialized');
       }),
-      import('./scrollControl.js')
-      .then(({ disableScroll, enableScroll }) => {
-        enableScroll();
+      import('./scrollControl.js').then((scrollControlModule) => {
+        // scrollControl.js からエクスポートされた関数の呼び出し
+        scrollControlModule.enableScroll();
+        console.log('Scroll control module loaded, scroll enabled');
       })
-      .catch(error => {
-        console.error('Failed to load scrollControl module', error);
-      })
-    ]);
+    ]).catch(error => {
+      console.error('Failed to load module', error);
+    });
   } 
 });
-
 const imageUrls = [
   './assets/images/top/hero-image-01.webp',
   './assets/images/top/hero-image-02.webp',
@@ -348,8 +343,6 @@ export const manageInitialAnimation = () => {
     });
   }
 }
-
-
 
 
 

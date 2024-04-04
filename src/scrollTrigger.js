@@ -39,12 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     tl.to(img, {
-      duration: 1.2,
+      duration: 1.9,
       xPercent: 100,
       ease: "cubic-bezier(0.961, 0.03, 0.961)",
     })
     .to(imgblackcolor[index], {
-      duration: 1.2,
+      duration: 1.9,
       xPercent: 100,
       ease: "cubic-bezier(0.961, 0.03, 0.961)",
       delay: 0.7, // このアニメーションを0.7秒後に開始
@@ -67,13 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   tl.to(ourimgbgcolor, {
-      duration: 1.2,
+      duration: 2.2,
       xPercent: 100,
       ease: "cubic-bezier(0.961, 0.03, 0.961)",
       delay: 0.7,
     }, "-=0.5")
     .to(ourimgblackcolor, { // ここも特定の要素を指す変数である必要があります
-      duration: 1.2,
+      duration: 2.2,
       xPercent: 100,
       ease: "cubic-bezier(0.961, 0.03, 0.961)",
       delay: 0.7, // このアニメーションを0.7秒後に開始
