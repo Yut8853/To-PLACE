@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollTrigger: {
       trigger: ourimgbgcolor, // ここは特定の要素を指す変数
       start: "-150% center", // ここは実際の要件に応じて調整
-      end: "-90% center", // ここは実際の要件に応じて調整
+      end: "-60% center", // ここは実際の要件に応じて調整
       scrub: true,
       once: true,
       // markers: {
