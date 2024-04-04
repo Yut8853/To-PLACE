@@ -1,5 +1,7 @@
 import { gsap } from 'gsap';
+import { disableScroll } from './scrollControl';
 
+disableScroll();
 let menuOpen = false;
 
 document.querySelector('.menu-btn').addEventListener('click', function() {
