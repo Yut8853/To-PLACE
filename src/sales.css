@@ -58,14 +58,13 @@
     
 }
 
-.container02 {
-    max-width: 1440px;
-    width: 100%;
-    margin: 0 auto;
+.container02-inner {
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
-    gap: 2vw;
+    max-width: 1500px;
+    justify-content: space-between;
+    margin: 0 auto;
+    gap: 2vw; /* アイテム間の余白 */
     position: relative;
     z-index: 9;
 }
@@ -76,6 +75,10 @@ figure {
     overflow: hidden;
     filter: grayscale(100%);
     transition: filter 0.5s ease-in-out;
+    width: 380px;
+    flex-shrink: 0;
+    min-width: 300px;
+    flex-shrink: 0;
 }
 
 figure:hover {
@@ -83,8 +86,9 @@ figure:hover {
 }
 
 figure > img {
-    width: 400px;
-    object-fit: cover;
+    width: 380px;
+    height: auto;
+    object-fit: contain;
     aspect-ratio: 16 / 9;
     transform-origin: center;
     transition: transform 0.5s ease-in-out;  
@@ -92,8 +96,79 @@ figure > img {
 
 figure:hover > img {
     transform: scale(1.1);
-
 }
+    
+.item {
+    display: flex;
+    margin-bottom: 2vw; /* 行間の余白 */
+    flex: 1 1 300px; /* 画面幅に応じてサイズを調整 */
+    justify-content: center; 
+}
+
+.item figure, .item .item-text {
+    margin: 1vw; /* 画像とテキスト枠の余白 */
+}
+
+.item figure {
+    min-width: 300px;
+    max-width: 380px;
+    width: 100%; /* Flexコンテナ内での伸縮を許可 */
+    flex-shrink: 1; /* 必要に応じて縮小を許可 */
+    flex-grow: 0; /* 拡大はしない */
+}
+
+.item-text {
+    flex-grow: 1; /* 利用可能な残りのスペースを使用して拡大 */
+    min-width: 120px; /* テキストエリアの最小幅 */
+    padding-left: 20px; /* 画像とテキストの間隔 */
+    word-wrap: break-word; /* 長い単語を折り返す */
+    overflow-wrap: break-word; /* 代替プロパティ */
+    white-space: normal; /* テキストの折り返し */
+}
+
+.item-text h2 {
+    font-size: clamp(1rem, 0.9rem + 0.5vw, 1.5rem);
+    margin-bottom: 10px;
+}
+
+.item-text p {
+    line-height: 1.8;
+    word-break: break-all;
+}
+
+.item img {
+    width: 100%; /* 画像の幅を親要素に合わせて調整 */
+    height: auto; /* 高さは自動で調整し、アスペクト比を保持 */
+    object-fit: cover; /* 画像が枠に収まるように調整 */
+}
+    
+.hover-image {
+    transition: transform 0.5s ease;
+}
+
+.hover-image:hover {
+    cursor: pointer;
+}
+    
+@media screen and (max-width: 768px) {
+    .item {
+        flex-direction: column;
+        margin-bottom: 30px;
+    }
+
+    .item-text {
+        margin-top: 10px;
+    }
+
+    .item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .item-text {
+        margin-bottom: 50px;
+    }
+}
+        
 
 .pagelink {
     font-family: 'Corm', sans-serif;
@@ -127,46 +202,52 @@ figure:hover > img {
     
 }
 
-.item {
+.tab-group{
     display: flex;
-    flex: 1;
-    gap: 2vw;
-    margin-bottom: 100px;
-}
+    justify-content: space-between;
+    gap: 3vw;
+    margin: 50px auto;
+    position: relative;
+    z-index: 9;
+    max-width: 1500px;
+    width: 100%;
+    
+  }
 
-.item-text h2 {
-    margin-bottom: 30px;
-}
-
-.item-text p {
-    font-size: 16px;
-    line-height: 2.5;
-}
-
-.hover-image {
-    transition: transform 0.5s ease;
-}
-
-.hover-image:hover {
+.tab{
+    list-style: none;
+    max-width: 300px;
+    text-align: center;
+    width: calc(100% / 4);
+    padding: 10px 20px;
+    background: #000;
+    color: #fff;
     cursor: pointer;
+    transition: all 0.2s ease-out;
 }
 
-@media screen and (max-width: 768px) {
-    .item {
-        flex-direction: column;
-        margin-bottom: 30px;
-    }
+@media (max-width: 500px) {
+  
+.tab-group {
+    flex-wrap: wrap;
+    overflow-x: scroll;
+}
 
-    .item-text {
-        margin-top: 10px;
-    }
+.tab {
+    flex: 0 1 150px;
+}
+}
+  
+.panel{
+display: none;
+}
 
-    .item:last-child {
-        margin-bottom: 0;
-    }
-    
-    .item-text {
-        margin-bottom: 50px;
-    }
-    
+.tab.is-active{
+background:#fff;
+color:#000;
+transition: all 0.2s ease-out;
+}
+
+.panel.is-show{
+display:block;
 }
