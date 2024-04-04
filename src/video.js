@@ -1,7 +1,7 @@
 // ビデオファイルのインポート
-import video01 from './assets/videos/AdobeStock_483252332_small.mp4';
-import video02 from './assets/videos/AdobeStock_585956923_small.mp4';
-import video03 from './assets/videos/AdobeStock_732033388_small.mp4';
+import video01 from './assets/videos/toplace-videoimage-01.mp4';
+import video02 from './assets/videos/toplace-videoimage-02.mp4';
+import video03 from './assets/videos/toplace-videoimage-03.mp4';
 
 let isVideoInserted = false; // ビデオ挿入済みフラグ
 
