@@ -4,7 +4,7 @@
 
 .business-hero, .business-info {
     max-width: calc(100% - 360px); /* 180px on each side */
-    margin: 144px auto 0;
+    margin: 0 auto 0;
     position: relative;
     z-index: 9;
 }
@@ -41,7 +41,7 @@
 .business-hero > img {
     object-fit: cover;
     width: 100vw;
-    margin: 50px calc(50% - 50vw) auto;
+    margin: 150px calc(50% - 50vw);
     height: 550px;
 }
 
@@ -58,6 +58,18 @@
     
 }
 
+.container02 {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2vw;
+    position: relative;
+    z-index: 9;
+}
+
 figure {
     position: relative;
     display: inline-block;
@@ -71,8 +83,9 @@ figure:hover {
 }
 
 figure > img {
-    width: 100%;
-    max-width: 100%;
+    width: 400px;
+    object-fit: cover;
+    aspect-ratio: 16 / 9;
     transform-origin: center;
     transition: transform 0.5s ease-in-out;  
 }
@@ -114,16 +127,9 @@ figure:hover > img {
     
 }
 
-.container02 {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    position: relative;
-    z-index: 9;
-}
-
 .item {
     display: flex;
+    flex: 1;
     gap: 2vw;
     margin-bottom: 100px;
 }
