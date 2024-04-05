@@ -27,6 +27,21 @@
   overflow: hidden;
 }
 
+.loading-screen {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  z-index: 9999999;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.loading-screen.initial-hidden {
+  display: none;
+}
+
 .fixed {
   position: fixed;
   top: 0;
@@ -54,6 +69,10 @@
   z-index: 999999;
   overflow: hidden;
   position: relative;
+}
+
+.container.initial-hidden {
+  display: none;
 }
 
 .btn-wrapper {

@@ -1,7 +1,27 @@
-/* business.css */
-* {
-    font-family: 'Noto-normal', sans-serif;
-}
+@font-face {
+    font-family: 'Aboreto';
+    src: url('./assets/fonts/Aboreto-Regular.ttf');
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Corm';
+    src: url('./assets/fonts/CormorantInfant-Light.ttf');
+    font-weight: 100;
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Noto-normal';
+    src: url('./assets/fonts/NotoSerifJP-ExtraLight.otf');
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Sara';
+    src: url('./assets/fonts/Sarala-Regular.ttf');
+    font-display: swap;
+  }
 
 .business-hero, .careers-info {
     max-width: calc(100% - 360px); /* 180px on each side */

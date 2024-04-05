@@ -253,8 +253,47 @@ const toggleVisibility = (selector, isVisible) => {
     }
   });
 };
+// 初回訪問のチェックとアニメーションの制御
+const manageInitialAnimation = () => {
+  const animationShown = localStorage.getItem('animationShown');
 
+  if (!animationShown) {
+    // 初回訪問時のアニメーション表示
+    showInitialAnimation();
+    // localStorage.setItem('animationShown', 'true');
+  } else {
+    // 2回目以降の訪問時には非表示にする要素
+    document.querySelector('.loading-screen').style.display = 'none';
+    document.querySelector('.gradient-container').style.display = 'none';
+    document.querySelector('.container').style.display = 'none';
+    // TOPページのメインアニメーションまたはコンテンツの表示をトリガー
+    triggerMainContentAnimation();
+  }
 
+  if (musicOnButton) {
+    musicOnButton.addEventListener('click', () => {
+        audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
+        localStorage.setItem('isPlaying', 'true');
+        document.querySelector('.loading-screen').style.display = 'none';
+        document.querySelector('.container').style.display = 'none';
+        document.querySelector('.gradient-container').style.display = 'none';
+        localStorage.setItem('animationShown', 'true');
+        triggerMainContentAnimation()
+    });
+  }
+
+  if (musicOffButton) {
+    musicOffButton.addEventListener('click', () => {
+        audio.pause();
+        localStorage.setItem('isPlaying', 'false');
+        document.querySelector('.loading-screen').style.display = 'none';
+        document.querySelector('.container').style.display = 'none';
+        document.querySelector('.gradient-container').style.display = 'none';
+        localStorage.setItem('animationShown', 'true');
+        triggerMainContentAnimation()
+    });
+  }
+}
 // スクロールトリガーの設定関数をトップレベルに移動
 function setupScrollTriggers() {
 
@@ -278,21 +317,15 @@ function setupScrollTriggers() {
 
 // 非同期の初期化関数
 async function initialize() {
-  // 必要に応じてここで画像やその他のリソースのロードを待つ
-  // 例: await loadImage(...);
-
   // シーンの初期化とスクロールトリガーの設定
   initializeScene(imageUrls);
   setupScrollTriggers();
-
-  // その他の初期化処理...
-  // ここで ScrollTrigger.refresh() を呼び出すことも可能
 }
-
 document.addEventListener('DOMContentLoaded', () => {
   // 初期化関数の呼び出し
   initialize().catch(error => console.error('Initialization failed', error));
 });
+
 // 初回訪問時に表示するアニメーションをトリガーする関数
 export const showInitialAnimation = () => {
   toggleVisibility('.loading-screen', true);
@@ -304,59 +337,33 @@ export const showInitialAnimation = () => {
   };
 };
 
+// document.addEventListener('DOMContentLoaded', (event) => {
+//   // 初期画面でスクロールを無効にする
+//   if(localStorage.getItem('animationShown') === null) {
+//     disableScroll();
+//   } else {
+//     document.querySelector('.loading-screen').style.display = 'none';
+//     enableScroll();
+//   }
+// });
+
 document.addEventListener('DOMContentLoaded', (event) => {
-  // 初期画面でスクロールを無効にする
-  disableScroll();
+  const loadingScreen = document.querySelector('.loading-screen');
+  const container = document.querySelector('.container');
+  // localStorageからステータスを取得
+  if(localStorage.getItem('animationShown') === null) {
+    // ローディングが必要な場合、initial-hiddenクラスを削除
+    loadingScreen.classList.remove('initial-hidden');
+    container.classList.remove('initial-hidden');
+    disableScroll();
+  } else {
+    // 2回目以降の訪問では、JavaScriptによる制御で非表示にする
+    loadingScreen.style.display = 'none';
+    enableScroll();
+  }
 });
 
-  
-// 初回訪問のチェックとアニメーションの制御
-export const manageInitialAnimation = () => {
-  const animationShown = localStorage.getItem('animationShown');
-  if (!animationShown) {
-    // 初回訪問時のアニメーション表示
-    showInitialAnimation();
-    localStorage.setItem('animationShown', 'true');
-    enableScroll();
-  } else {
-    // 2回目以降の訪問時には非表示にする要素
-    document.querySelector('.loading-screen').style.display = 'none';
-    document.querySelector('.gradient-container').style.display = 'none';
-    document.querySelector('.container').style.display = 'none';
-    // TOPページのメインアニメーションまたはコンテンツの表示をトリガー
-    triggerMainContentAnimation(); // この関数はTOPページのメインコンテンツやアニメーションを開始します
-    enableScroll();
-  }
-
-  if (musicOnButton) {
-    musicOnButton.addEventListener('click', () => {
-        audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
-        localStorage.setItem('isPlaying', 'true');
-        document.querySelector('.loading-screen').style.display = 'none';
-        document.querySelector('.container').style.display = 'none';
-        document.querySelector('.gradient-container').style.display = 'none';
-        triggerMainContentAnimation()
-        enableScroll();
-    });
-  }
-
-  if (musicOffButton) {
-    musicOffButton.addEventListener('click', () => {
-        audio.pause();
-        localStorage.setItem('isPlaying', 'false');
-        document.querySelector('.loading-screen').style.display = 'none';
-        document.querySelector('.container').style.display = 'none';
-        document.querySelector('.gradient-container').style.display = 'none';
-        triggerMainContentAnimation()
-        enableScroll();
-    });
-  }
-}
-
 function triggerMainContentAnimation() {
-  // ここにTOPページのメインコンテンツやアニメーションを開始するロジックを実装
-  console.log("TOPページのメインコンテンツ表示");
-  // 例えば、メインビジュアルのアニメーションや、ページコンテンツの表示に関連する処理をここで行います。
   triggerAnimation();
   enableScroll()
 }
