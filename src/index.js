@@ -317,6 +317,7 @@ export const manageInitialAnimation = () => {
     // 初回訪問時のアニメーション表示
     showInitialAnimation();
     localStorage.setItem('animationShown', 'true');
+    enableScroll();
   } else {
     // 2回目以降の訪問時には非表示にする要素
     document.querySelector('.loading-screen').style.display = 'none';
@@ -334,6 +335,7 @@ export const manageInitialAnimation = () => {
         document.querySelector('.loading-screen').style.display = 'none';
         document.querySelector('.container').style.display = 'none';
         document.querySelector('.gradient-container').style.display = 'none';
+        triggerMainContentAnimation()
         enableScroll();
     });
   }
@@ -345,6 +347,7 @@ export const manageInitialAnimation = () => {
         document.querySelector('.loading-screen').style.display = 'none';
         document.querySelector('.container').style.display = 'none';
         document.querySelector('.gradient-container').style.display = 'none';
+        triggerMainContentAnimation()
         enableScroll();
     });
   }
