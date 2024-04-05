@@ -314,19 +314,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
 export const manageInitialAnimation = () => {
   const animationShown = localStorage.getItem('animationShown');
   if (!animationShown) {
+    // 初回訪問時のアニメーション表示
     showInitialAnimation();
     localStorage.setItem('animationShown', 'true');
   } else {
     // 2回目以降の訪問時には非表示にする要素
-    toggleVisibility('.loading-screen', false);
-    toggleVisibility('.gradient-container', false);
-    toggleVisibility('.container', false);
+    document.querySelector('.loading-screen').style.display = 'none';
+    document.querySelector('.gradient-container').style.display = 'none';
+    document.querySelector('.container').style.display = 'none';
+    // TOPページのメインアニメーションまたはコンテンツの表示をトリガー
+    triggerMainContentAnimation(); // この関数はTOPページのメインコンテンツやアニメーションを開始します
   }
 
   if (musicOnButton) {
     musicOnButton.addEventListener('click', () => {
         audio.play().catch(error => console.error('音声の再生を開始できませんでした:', error));
         localStorage.setItem('isPlaying', 'true');
+        document.querySelector('.loading-screen').style.display = 'none';
         document.querySelector('.container').style.display = 'none';
         document.querySelector('.gradient-container').style.display = 'none';
         enableScroll();
@@ -337,6 +341,7 @@ export const manageInitialAnimation = () => {
     musicOffButton.addEventListener('click', () => {
         audio.pause();
         localStorage.setItem('isPlaying', 'false');
+        document.querySelector('.loading-screen').style.display = 'none';
         document.querySelector('.container').style.display = 'none';
         document.querySelector('.gradient-container').style.display = 'none';
         enableScroll();
@@ -344,7 +349,12 @@ export const manageInitialAnimation = () => {
   }
 }
 
-
+function triggerMainContentAnimation() {
+  // ここにTOPページのメインコンテンツやアニメーションを開始するロジックを実装
+  console.log("TOPページのメインコンテンツ表示");
+  // 例えば、メインビジュアルのアニメーションや、ページコンテンツの表示に関連する処理をここで行います。
+  triggerAnimation();
+}
 
 
 
