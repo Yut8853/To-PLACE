@@ -324,6 +324,7 @@ export const manageInitialAnimation = () => {
     document.querySelector('.container').style.display = 'none';
     // TOPページのメインアニメーションまたはコンテンツの表示をトリガー
     triggerMainContentAnimation(); // この関数はTOPページのメインコンテンツやアニメーションを開始します
+    enableScroll();
   }
 
   if (musicOnButton) {
@@ -354,6 +355,7 @@ function triggerMainContentAnimation() {
   console.log("TOPページのメインコンテンツ表示");
   // 例えば、メインビジュアルのアニメーションや、ページコンテンツの表示に関連する処理をここで行います。
   triggerAnimation();
+  enableScroll()
 }
 
 
