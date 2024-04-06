@@ -19,8 +19,8 @@
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].[contenthash].js',
         clean: true,
-        publicPath: '/toplace/', 
-        // publicPath: '/', 
+        // publicPath: '/toplace/', 
+        publicPath: '/', 
       },
       devtool: isProduction ? false : 'eval-source-map',
       module: {
