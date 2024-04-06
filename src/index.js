@@ -337,16 +337,6 @@ export const showInitialAnimation = () => {
   };
 };
 
-// document.addEventListener('DOMContentLoaded', (event) => {
-//   // 初期画面でスクロールを無効にする
-//   if(localStorage.getItem('animationShown') === null) {
-//     disableScroll();
-//   } else {
-//     document.querySelector('.loading-screen').style.display = 'none';
-//     enableScroll();
-//   }
-// });
-
 document.addEventListener('DOMContentLoaded', (event) => {
   const loadingScreen = document.querySelector('.loading-screen');
   const container = document.querySelector('.container');

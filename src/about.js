@@ -7,6 +7,7 @@ import './hamburger.js';
 import './smooth.js'
 import './under-start.js'
 import { disableScroll, enableScroll } from './scrollControl.js';
+import { playMusic, stopMusic } from './music.js'
 enableScroll();
 
 import { gsap } from 'gsap';
