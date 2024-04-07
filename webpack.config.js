@@ -92,7 +92,7 @@
               },
             ],
             generator: {
-              filename: 'assets/[type]/[name].[hash][ext]',
+              filename: 'assets/[name].[hash][ext]',
             },
           },
           // GLSL shaders loader
